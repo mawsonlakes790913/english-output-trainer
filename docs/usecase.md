@@ -1,6 +1,6 @@
 # ユースケース図
 
-![ユースケース図](images/usecase.png)
+![ユースケース図](images/usecase.drawio.png)
 
 ## 概要
 
