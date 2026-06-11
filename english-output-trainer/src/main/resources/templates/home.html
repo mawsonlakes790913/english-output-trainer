@@ -1,10 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-	<title>English Output Trainer</title>
+    <meta charset="UTF-8">
+    <title>English Output Trainer</title>
 </head>
 <body>
     <h1>学習モードを選択してください</h1>
     <p>目的に合わせて学習モードを選びましょう。</p>
+
+    <form th:action="@{/study}" method="get">
+        <button type="submit">学習開始</button>
+    </form>
+
 </body>
+</html>

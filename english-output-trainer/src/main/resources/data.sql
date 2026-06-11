@@ -1,13 +1,11 @@
-INSERT INTO questions
-(
+INSERT INTO question (
     japanese_text,
     english_text,
     alternative_answer,
     condition,
     difficulty
 )
-VALUES
-(
+VALUES (
     '私は英語を勉強するために毎日練習しています。',
     'I practice every day to study English.',
     'I practice every day in order to study English.',
@@ -15,16 +13,14 @@ VALUES
     '初級'
 );
 
-INSERT INTO questions
-(
+INSERT INTO question (
     japanese_text,
     english_text,
     alternative_answer,
     condition,
     difficulty
 )
-VALUES
-(
+VALUES (
     '彼はその仕事を終えるために残業した。',
     'He worked overtime to finish the task.',
     NULL,
@@ -32,16 +28,14 @@ VALUES
     '初級'
 );
 
-INSERT INTO questions
-(
+INSERT INTO question (
     japanese_text,
     english_text,
     alternative_answer,
     condition,
     difficulty
 )
-VALUES
-(
+VALUES (
     '彼女は英語を話すことが好きです。',
     'She likes speaking English.',
     'She likes to speak English.',
@@ -49,16 +43,14 @@ VALUES
     '初級'
 );
 
-INSERT INTO questions
-(
+INSERT INTO question (
     japanese_text,
     english_text,
     alternative_answer,
     condition,
     difficulty
 )
-VALUES
-(
+VALUES (
     '彼は宿題を終えてからテレビを見た。',
     'He watched TV after finishing his homework.',
     NULL,
@@ -66,16 +58,14 @@ VALUES
     '中級'
 );
 
-INSERT INTO questions
-(
+INSERT INTO question (
     japanese_text,
     english_text,
     alternative_answer,
     condition,
     difficulty
 )
-VALUES
-(
+VALUES (
     'その知らせは私を驚かせた。',
     'The news surprised me.',
     NULL,

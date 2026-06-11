@@ -1,9 +1,14 @@
+DROP TABLE IF EXISTS study_history;
+DROP TABLE IF EXISTS favorites;
+DROP TABLE IF EXISTS question;
+DROP TABLE IF EXISTS users;
+
 CREATE TABLE users (
     user_id VARCHAR(20) PRIMARY KEY,
     password VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE questions (
+CREATE TABLE question (
     question_id BIGSERIAL PRIMARY KEY,
     japanese_text TEXT NOT NULL,
     english_text TEXT NOT NULL,
@@ -24,7 +29,7 @@ CREATE TABLE favorites (
 
     CONSTRAINT fk_favorites_question
         FOREIGN KEY (question_id)
-        REFERENCES questions(question_id)
+        REFERENCES question(question_id)
 );
 
 CREATE TABLE study_history (
@@ -41,5 +46,5 @@ CREATE TABLE study_history (
 
     CONSTRAINT fk_study_history_question
         FOREIGN KEY (question_id)
-        REFERENCES questions(question_id)
+        REFERENCES question(question_id)
 );

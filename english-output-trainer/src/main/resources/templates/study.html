@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+	<title>English Output Trainer</title>
+</head>
+<body>
+    <h1>通常学習</h1>
+    <p>頑張りましょう</p>
+    <div th:each="question : ${question}">
+        <!-- 日本語 -->
+        <h2 th:text="${question.japaneseText}">
+            日本語問題
+        </h2>
+        <!-- 条件 -->
+        <p th:if="${question.condition != null}">
+            条件：
+            <span th:text="${question.condition}">
+                条件
+            </span>
+        </p>
+        <!-- 解答表示ボタン -->
+        <button type="button" onclick="showAnswer()">
+            解答を見る
+        </button>
+        <!-- 解答エリア（初期非表示） -->
+        <div id="answerArea" style="display:none">
+            <p>
+                解答：
+                <span th:text="${question.englishText}">
+                    English Answer
+                </span>
+            </p>
+        </div>
+    </div>
+    <!-- 次の問題 -->
+    <div>
+        <a th:if="${page.hasNext()}"
+           th:href="@{/study(page=${page.number + 1},size=1)}">
+            次の問題へ
+        </a>
+    </div>
+    <script>
+        function showAnswer() {
+            document.getElementById("answerArea").style.display = "block";
+        }
+    </script>
+</body>
+</html>
