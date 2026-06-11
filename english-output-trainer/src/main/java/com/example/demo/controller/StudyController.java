@@ -26,11 +26,12 @@ public class StudyController {
 	        @PageableDefault(page = 0, size = 1) Pageable pageable) {
 
 	    Page<Question> questionPage = studyService.getQuestion(pageable);
-
 	    
-	    Question question = questionPage.getContent().get(0);
+	    // Question question = questionPage.getContent().get(0);
 
-	    model.addAttribute("question", question);
+	    model.addAttribute(
+	    	    "question",
+	    	    questionPage.getContent());
 	    model.addAttribute("page", questionPage);
 
 	    return "study";
