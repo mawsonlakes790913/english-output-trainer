@@ -36,7 +36,7 @@ ER図は Mermaid 記法を利用して作成した。
 ER図では、
 
 - USER
-- PROBLEM
+- QUESTION
 - FAVORITE
 - STUDY_HISTORY
 

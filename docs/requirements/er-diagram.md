@@ -2,18 +2,18 @@
 erDiagram
 
     USER ||--o{ FAVORITE
-    PROBLEM ||--o{ FAVORITE
+    Question ||--o{ FAVORITE
 
     USER ||--o{ STUDY_HISTORY
-    PROBLEM ||--o{ STUDY_HISTORY
+    Question ||--o{ STUDY_HISTORY
 
     USER {
         varchar user_id PK
         varchar password
     }
 
-    PROBLEM {
-        bigint problem_id PK
+    Question {
+        bigint question_id PK
         text japanese_text
         text english_text
         text alternative_answer
@@ -23,12 +23,12 @@ erDiagram
 
     FAVORITE {
         varchar user_id FK
-        bigint problem_id FK
+        bigint question_id FK
     }
 
     STUDY_HISTORY {
         varchar user_id FK
-        bigint problem_id FK
+        bigint question_id FK
         varchar evaluation
         timestamp last_studied_at
     }

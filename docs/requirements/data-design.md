@@ -15,7 +15,7 @@ English Output Trainer において、
 | エンティティ | 説明 |
 |------------|------|
 | User | ユーザー情報 |
-| Problem | 問題情報 |
+| Question | 問題情報 |
 | Favorite | お気に入り情報 |
 | StudyHistory | 学習履歴 |
 
@@ -34,7 +34,7 @@ English Output Trainer において、
 
 ---
 
-### Problem
+### Question
 
 出題問題を管理する。
 
@@ -63,7 +63,7 @@ English Output Trainer において、
 主キー
 
 - user_id
-- problem_id
+- question_id
 
 複合主キーとする。
 
@@ -85,7 +85,7 @@ English Output Trainer において、
 主キー
 
 - user_id
-- problem_id
+- question_id
 
 複合主キーとする。
 
@@ -94,11 +94,11 @@ English Output Trainer において、
 ## 4. リレーション概要
 
 - User と Favorite は 1対多　1人のユーザーは複数のお気に入り問題を登録できるため。
-- Problem と Favorite は 1対多　1つの問題は複数のユーザーからお気に入り登録される可能性があるため。
+- Question と Favorite は 1対多　1つの問題は複数のユーザーからお気に入り登録される可能性があるため。
 - User と StudyHistory は 1対多　1人のユーザーは複数の学習履歴を持つため。
-- Problem と StudyHistory は 1対多　 1つの問題は複数のユーザーによって学習されるため。
-- User と Problem は Favorite を介して多対多の関係を持つ。
-- User と Problem は StudyHistory を介して多対多の関係を持つ。
+- Question と StudyHistory は 1対多　 1つの問題は複数のユーザーによって学習されるため。
+- User と Question は Favorite を介して多対多の関係を持つ。
+- User と Question は StudyHistory を介して多対多の関係を持つ。
 - Favorite はお気に入り登録情報を管理する中間テーブルである。
 - StudyHistory は学習履歴および自己評価情報を管理する中間テーブルである。
 
@@ -111,5 +111,5 @@ English Output Trainer において、
 - Hard評価およびGood評価の問題は復習対象とする。
 - Easy評価は履歴として保存するが復習対象には含めない。
 - 最終学習日時を保持し、一定期間経過した問題のみ復習対象とする。
-- User と Problem の多対多関係は Favorite および StudyHistory によって管理する。
+- User と Question の多対多関係は Favorite および StudyHistory によって管理する。
 
