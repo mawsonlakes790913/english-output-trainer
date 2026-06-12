@@ -893,6 +893,12 @@ questions.get(page)
 
 で問題を取り出す構成になった。
 
+つまりセッションにList<Question>をquestionsという名前で格納し、 
+
+HTML側から得た数字(デフォルトは0)を引数に、
+
+questionsのn番目のQuestion(問題)を取り出す ということ
+
 ---
 
 ## クラス全体
@@ -903,57 +909,6 @@ questions.get(page)
 @SessionAttributes("questions")
 public class StudyController
 ```
-
----
-
-### @Controller
-
-```java
-@Controller
-```
-
-Spring MVC の Controller であることを示す。
-
-```text
-GET /study
-↓
-StudyController
-↓
-study.html
-```
-
-を繋ぐ役割。
-
----
-
-### @RequiredArgsConstructor
-
-```java
-@RequiredArgsConstructor
-```
-
-Lombok によりコンストラクタを自動生成する。
-
----
-
-例えば
-
-```java
-private final StudyServiceImpl studyService;
-```
-
-があるので、
-
-実際には内部的に
-
-```java
-public StudyController(
-        StudyServiceImpl studyService){
-    this.studyService = studyService;
-}
-```
-
-が生成される。
 
 ---
 
@@ -992,24 +947,6 @@ session.setAttribute(
 方式へ移行するなら活用できる。
 
 現状では実質的な効果はほぼない。
-
----
-
-# フィールド
-
-```java
-private final StudyServiceImpl studyService;
-```
-
-Service を呼び出すためのオブジェクト。
-
----
-
-利用箇所
-
-```java
-studyService.getRandomQuestion();
-```
 
 ---
 
@@ -1251,14 +1188,20 @@ Session内の保存名
 
 ---
 
-イメージ
+イメージとしては、
 
 ```text
-Session
+Sessionに"questions"という名前で
 
-questions
-↓
-[問題3, 問題1, 問題5, 問題2, 問題4]
+[
+  問題3,
+  問題1,
+  問題5,
+  問題2,
+  問題4
+](これが「""」のない第二引数のquestion)
+
+を保存する
 ```
 
 ---
@@ -1411,6 +1354,14 @@ Question question
 ```
 
 へ格納する。
+
+---
+
+```java
+Question question = questions.get(page);
+```
+
+ここでListのgetメソッドに引数として数字を渡してn番目の問題を取得している
 
 ---
 
@@ -1733,3 +1684,835 @@ SQLなし
 - 出題順固定
 
 を実現できるようになった。
+
+---
+
+# 4. study.html 改修内容
+
+## この改修の目的
+
+今回の Controller 改修により、
+
+```java
+Page<Question>
+```
+
+を利用したページング方式から、
+
+```java
+List<Question>
+```
+
+を Session に保存し、
+
+```java
+Question question =
+        questions.get(page);
+```
+
+で1問ずつ取り出す方式へ変更された。
+
+そのため HTML 側も、
+
+```java
+Page
+```
+
+依存の実装から、
+
+Controller が渡す独自の値を利用する実装へ変更する必要があった。
+
+---
+
+# ① th:each の削除
+
+## 旧実装
+
+```html
+<div th:each="question : ${question}" class="mt-3">
+```
+
+---
+
+### なぜ必要だったのか
+
+以前 Controller は
+
+```java
+model.addAttribute(
+        "question",
+        questionPage.getContent());
+```
+
+としていた。
+
+---
+
+`questionPage.getContent()`
+
+の戻り値は
+
+```java
+List<Question>
+```
+
+である。
+
+---
+
+つまり HTML に渡される
+
+```java
+question
+```
+
+は
+
+```text
+Questionが複数入ったList
+```
+
+だった。
+
+---
+
+そのため
+
+```html
+th:each
+```
+
+を利用して
+
+```text
+Listの中身を1件ずつ取り出す
+```
+
+必要があった。
+
+---
+
+イメージ
+
+```text
+question
+
+↓
+[
+ Question①,
+ Question②,
+ Question③
+]
+```
+
+---
+
+```html
+th:each="question : ${question}"
+```
+
+↓
+
+```text
+1件ずつ取り出す
+```
+
+---
+
+## 新実装
+
+Controller
+
+```java
+Question question =
+        questions.get(page);
+
+model.addAttribute(
+        "question",
+        question);
+```
+
+---
+
+この時点で
+
+```java
+question
+```
+
+は
+
+```java
+Question
+```
+
+である。
+
+---
+
+つまり
+
+```text
+既に1件だけ取り出されている
+```
+
+状態。
+
+---
+
+そのため
+
+```html
+th:each
+```
+
+は不要となった。
+
+---
+
+変更後
+
+```html
+<div class="mt-3">
+```
+
+のみ。
+
+---
+
+# ② 問題番号表示の変更
+
+## 旧実装
+
+```html
+<span th:text="${page.number + 1 + '/' + page.totalPages}">
+```
+
+---
+
+以前は
+
+```java
+Page<Question>
+```
+
+を利用していた。
+
+そのため
+
+```java
+page.number
+```
+
+や
+
+```java
+page.totalPages
+```
+
+が利用できた。
+
+---
+
+例
+
+```text
+page.number = 0
+page.totalPages = 100
+```
+
+↓
+
+```text
+1/100
+```
+
+表示。
+
+---
+
+## 新実装
+
+Controller
+
+```java
+model.addAttribute(
+        "currentPage",
+        page + 1);
+
+model.addAttribute(
+        "totalPages",
+        questions.size());
+```
+
+---
+
+HTML
+
+```html
+<span th:text="${currentPage + '/' + totalPages}">
+```
+
+---
+
+Page オブジェクトが存在しないため、
+
+Controller が用意した
+
+```java
+currentPage
+```
+
+と
+
+```java
+totalPages
+```
+
+を使用するようになった。
+
+---
+
+# ③ 前へボタンの変更
+
+## 旧実装
+
+```html
+th:if="${page.hasPrevious()}"
+```
+
+---
+
+Page が持つ機能。
+
+---
+
+```java
+page.hasPrevious()
+```
+
+↓
+
+```text
+前ページが存在するか
+```
+
+を判定していた。
+
+---
+
+リンク
+
+```html
+th:href="@{/study(page=${page.number - 1},size=1)}"
+```
+
+---
+
+例
+
+```text
+現在 page.number = 3
+```
+
+↓
+
+```text
+/study?page=2&size=1
+```
+
+生成。
+
+---
+
+## 新実装
+
+Controller
+
+```java
+model.addAttribute(
+        "hasPrevious",
+        page > 0);
+```
+
+---
+
+HTML
+
+```html
+th:if="${hasPrevious}"
+```
+
+---
+
+Controller が
+
+```java
+true
+```
+
+または
+
+```java
+false
+```
+
+を渡している。
+
+---
+
+リンク
+
+```html
+th:href="@{/study(page=${currentPage - 2})}"
+```
+
+---
+
+なぜ
+
+```java
+-2
+```
+
+なのか。
+
+---
+
+例
+
+```text
+現在3問目
+```
+
+の場合
+
+```text
+currentPage = 3
+```
+
+である。
+
+---
+
+しかし URL は
+
+```text
+0始まり
+```
+
+で管理している。
+
+---
+
+3問目
+
+```text
+page=2
+```
+
+である。
+
+---
+
+前へ移動するなら
+
+```text
+page=1
+```
+
+へ行きたい。
+
+---
+
+計算
+
+```text
+currentPage - 2
+
+3 - 2
+
+= 1
+```
+
+となる。
+
+---
+
+# ④ 次へボタンの変更
+
+## 旧実装
+
+```html
+th:if="${page.hasNext()}"
+```
+
+---
+
+```java
+page.hasNext()
+```
+
+を利用していた。
+
+---
+
+リンク
+
+```html
+th:href="@{/study(page=${page.number + 1},size=1)}"
+```
+
+---
+
+例
+
+```text
+page=2
+```
+
+↓
+
+```text
+page=3
+```
+
+へ移動。
+
+---
+
+## 新実装
+
+Controller
+
+```java
+model.addAttribute(
+        "hasNext",
+        page < questions.size() - 1);
+```
+
+---
+
+HTML
+
+```html
+th:if="${hasNext}"
+```
+
+---
+
+リンク
+
+```html
+th:href="@{/study(page=${currentPage})}"
+```
+
+---
+
+なぜ
+
+```java
+currentPage
+```
+
+なのか。
+
+---
+
+例
+
+```text
+現在3問目
+```
+
+なら
+
+```text
+currentPage = 3
+```
+
+である。
+
+---
+
+URLは0始まり。
+
+---
+
+次へ進むと
+
+```text
+page=3
+```
+
+へ移動したい。
+
+---
+
+つまり
+
+```text
+currentPage
+```
+
+そのままが次の page 値になる。
+
+---
+
+# ⑤ Completeボタンの変更
+
+## 旧実装
+
+```html
+th:if="${!page.hasNext()}"
+```
+
+---
+
+Page の機能を利用していた。
+
+---
+
+## 新実装
+
+```html
+th:if="${!hasNext}"
+```
+
+---
+
+Controller が渡した
+
+```java
+hasNext
+```
+
+を利用する。
+
+---
+
+つまり
+
+```text
+最後の問題
+```
+
+になったら
+
+```text
+Complete
+```
+
+ボタンが表示される。
+
+---
+
+# ⑥ 解答表示部分
+
+今回ほぼ変更なし。
+
+---
+
+```html
+<span th:text="${question.englishText}">
+```
+
+---
+
+Controller
+
+```java
+model.addAttribute(
+        "question",
+        question);
+```
+
+で渡された
+
+```java
+Question
+```
+
+の
+
+```java
+getEnglishText()
+```
+
+を表示している。
+
+---
+
+同様に
+
+```html
+${question.japaneseText}
+```
+
+↓
+
+```java
+question.getJapaneseText()
+```
+
+---
+
+```html
+${question.condition}
+```
+
+↓
+
+```java
+question.getCondition()
+```
+
+を表示している。
+
+---
+
+# 今回の改修で最も重要な変更
+
+以前
+
+```text
+Page<Question>
+↓
+HTMLがPageの機能を利用
+```
+
+だった。
+
+---
+
+現在
+
+```text
+Session
+↓
+List<Question>
+↓
+Controller
+↓
+currentPage
+totalPages
+hasPrevious
+hasNext
+question
+↓
+HTML
+```
+
+という構造になった。
+
+---
+
+つまり今回の study.html の修正は、
+
+```text
+Page<Question> に依存した画面
+
+↓
+
+Controller が用意した独自情報を利用する画面
+```
+
+へ変更するための対応である。
+
+これにより Session に保存されたランダムな問題一覧を順番に表示できるようになった。
+
+---
+
+# 所感
+
+今回は単純な画面修正ではなく、学習画面全体の設計を見直す改修となった。
+
+当初は Spring Data JPA の `Page<Question>` を利用したページネーションを採用していた。教科書でも紹介されている代表的な実装方法であり、実際に実装した際も非常に便利だと感じていた。しかし、ランダム出題を実装しようと考えた際に、ページ遷移のたびに SQL が再実行されるという特徴が思わぬ落とし穴となった。
+
+今回のアプリケーションでは「学習開始時に決定した出題順を維持したい」という要件があるため、単純なページネーションでは同じ問題が再度出題される可能性がある。便利な仕組みであっても、要件によっては別の設計が必要になることを実感した。
+
+また、セッションを利用した実装は想像以上に難しかった。特に、
+
+- Sessionに保存する値
+- Sessionの保存名
+- List<Question>
+- Question
+- page
+- currentPage
+
+など、似たような名前の変数や値が多数登場するため、頭の中で整理しながら実装する必要があった。
+
+さらに、
+
+```java
+if (session.getAttribute("questions") == null)
+```
+
+のように、
+
+「初回アクセス時だけDBから取得する」
+
+という処理も実装しなければならず、単純に値を保存・取得するだけではないことも理解できた。
+
+一方で、この改修を通して教科書を読んだだけでは曖昧だったセッションの仕組みがかなり明確になった。
+
+これまでは、
+
+```text
+セッション = ユーザーごとの一時保存領域
+```
+
+という程度の理解だったが、
+
+今回実際に
+
+```java
+List<Question>
+```
+
+を保存し、
+
+```java
+questions.get(page)
+```
+
+で取り出す仕組みを実装したことで、
+
+```text
+学習開始時に決定した状態を保持し続けるための仕組み
+```
+
+であることを体感できた。
+
+また、今回の実装によって新たな疑問も生まれた。
+
+例えば、
+
+```text
+Sessionに保存された
+List<Question>
+```
+
+はいつまで保持されるのか。
+
+ブラウザを閉じたら消えるのか。
+
+一定時間操作しなかったら消えるのか。
+
+サーバー再起動時はどうなるのか。
+
+など、セッションのライフサイクルに興味が湧いてきた。
+
+今回はまず動作することを優先したが、今後はセッション管理や有効期限についても理解を深めていきたい。
+
+全体として、Service・Controller・HTML のすべてを修正する必要があり、これまで学習した内容を総動員するような課題だった。しかし、その分だけ HTTP リクエスト、Session、Model、Thymeleaf の連携が理解でき、非常に学びの多い実装となった。
+
+---
+
+# 次回やること
+
+- 順番に出題するモードを実装する
+- ランダムに出題するモードを実装する
+- 学習開始時に出題方式を選択できるようにする
+- Sessionのライフサイクルについて調査する
+- Session終了時の挙動を確認する
