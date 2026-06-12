@@ -7,10 +7,10 @@
 実装した画面は以下の2画面のみである。
 
 - ホーム画面（home.html）
-![ホーム画面1](../docs/images/initial-study-screen1.png)
+![ホーム画面1](/docs/images/initial-study-screen1.png)
 - 学習画面（study.html）
-![学習画面1](../docs/images/initial-study-screen2.png)
-![学習画面2](../docs/images/initial-study-screen3.png)
+![学習画面1](/docs/images/initial-study-screen2.png)
+![学習画面2](/docs/images/initial-study-screen3.png)
 
 学習機能も非常にシンプルな構成とし、あらかじめ登録した5問の問題を順番に表示するだけとした。
 
