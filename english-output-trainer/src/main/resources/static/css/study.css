@@ -1,0 +1,9 @@
+@charset "UTF-8";
+
+.button {
+    display: inline-block;
+    padding: 8px 16px;
+    border: 1px solid #000;
+    text-decoration: none;
+    color: black;
+}
