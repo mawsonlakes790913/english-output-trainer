@@ -40,15 +40,10 @@ public class StudyController {
 		
 		// ③ page番目の問題を取り出す
 		Question question = questions.get(page);
-				
+		
 		// ④ HTMLが必要な情報をModelへ格納
-		model.addAttribute("question", question);
-		model.addAttribute("currentPage", page + 1);
-		model.addAttribute("totalPages", questions.size());
-		model.addAttribute("hasPrevious", page > 0);
-		model.addAttribute(
-		        "hasNext",
-		        page < questions.size() - 1);
+		setStudyModel(model, questions, page);
+
 		
 
 		// ⑤ study.htmlを返す
@@ -72,14 +67,9 @@ public class StudyController {
 		
 		// 出題再開点を取得
 		Question question = questions.get(page);
-				
-		model.addAttribute("question", question);
-		model.addAttribute("currentPage", page + 1);
-		model.addAttribute("totalPages", questions.size());
-		model.addAttribute("hasPrevious", page > 0);
-		model.addAttribute(
-		        "hasNext",
-		        page < questions.size() - 1);
+		
+		// HTMLが必要な情報をModelへ格納
+		setStudyModel(model, questions, page);
 		
 		//for (Question q : questions) {
 		//    System.out.print(q.getQuestionId() + " ");
@@ -114,4 +104,20 @@ public class StudyController {
 		//System.out.print("quit");
 		return "redirect:/";
 	}	
+	
+	private void setStudyModel(
+	        Model model,
+	        List<Question> questions,
+	        int page) {
+
+	    Question question = questions.get(page);
+
+	    model.addAttribute("question", question);
+	    model.addAttribute("currentPage", page + 1);
+	    model.addAttribute("totalPages", questions.size());
+	    model.addAttribute("hasPrevious", page > 0);
+	    model.addAttribute(
+	            "hasNext",
+	            page < questions.size() - 1);
+	}
 }
