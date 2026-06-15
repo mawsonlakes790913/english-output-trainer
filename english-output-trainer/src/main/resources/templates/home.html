@@ -14,7 +14,8 @@
         <button type="submit"
         		id="btn">学習を開始する</button>
     </form>
-    <form th:action="@{/study/resume}" method="get">
+    <form th:if="${resumable}"
+    	  th:action="@{/study/resume}" method="get">
         <button type="submit"
         		id="btn">途中から始める</button>
     </form>
