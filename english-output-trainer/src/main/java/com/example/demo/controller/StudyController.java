@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.example.demo.entity.Question;
 import com.example.demo.service.StudyServiceImpl;
@@ -19,28 +18,11 @@ import lombok.RequiredArgsConstructor;
 
 
 
-@SessionAttributes("questions")
 @Controller
 @RequiredArgsConstructor
 public class StudyController {
 	
 	private final StudyServiceImpl studyService;
-	
-	// @GetMapping("/study")
-	// public String getStudy(Model model,
-	        // @PageableDefault(page = 0, size = 1) Pageable pageable) {
-
-	    // Page<Question> questionPage = studyService.getQuestion(pageable);
-	    
-	    // Question question = questionPage.getContent().get(0);
-
-	    // model.addAttribute(
-	    	    // "question",
-	    	    // questionPage.getContent());
-	    // model.addAttribute("page", questionPage);
-
-	    // return "study";
-	// }
 
 	@GetMapping("/study")
 	public String getStudy(Model model,
@@ -66,11 +48,24 @@ public class StudyController {
 		model.addAttribute(
 		        "hasNext",
 		        page < questions.size() - 1);
+		
 
 		// ⑤ study.htmlを返す
 		return "study";
 		
 	}
 	
+	@GetMapping("/study/complete")
+	public String completeStudy(Model model,
+							    HttpSession session) {
+		session.removeAttribute("questions");
+		return "redirect:/complete";
+	}
 	
+	@GetMapping("/study/quit")
+	public String quitStudy(Model model,
+							    HttpSession session) {
+		session.removeAttribute("questions");
+		return "redirect:/";
+	}	
 }

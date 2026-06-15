@@ -20,28 +20,15 @@ public class StudyServiceImpl implements StudyService {
 	
 	private final QuestionRepository repository;
 	
-	// public Page<Question> getQuestion(Pageable pageable){
-		// 問題一覧取得
-		// return repository.findAll(pageable);
-		
-		// Page<Question> questionList = repository.findAll(pageable);
-		// MyBatisなら
-		// ①まずListへ格納
-		// List<Question> questionList = repository.findAll(pageable);
-		// ②問題総数取得
-		// long count = repository.count();
-		// ③Pageのインスタンス生成
-		// return new PageImpl<Question>(questionList, pageable, count);
-	// }
-
-	//public List<Question> getQuestion(){
-		//return repository.findAll();
-	//}
-	
 	public List<Question> getRandomQuestion(){
 		
-		List<Question> extractedQuestions = repository.findAll();
+		List<Question> extractedQuestions = repository.findAll(); 
 		Collections.shuffle(extractedQuestions);
+		// シャッフルが行われているかコンソールに出力して確認
+		//for (Question q : extractedQuestions) {
+		//    System.out.print(q.getQuestionId() + " ");
+		//}
+		//System.out.println();
 		return extractedQuestions;
 	}
 }
