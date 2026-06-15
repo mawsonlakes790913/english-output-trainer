@@ -13,7 +13,6 @@
     <h1>通常学習</h1>
     <p>頑張りましょう</p>
     <div class="mt-3">
-        <p th:text="${hasNext}"></p>
         <span th:text="${currentPage + '/' + totalPages}">
             現在の問題数/総問題数
         </span>
@@ -52,28 +51,21 @@
            class="btn btn-primary">
             次の問題へ
         </a>
-        <!--
-		旧実装
-        <a th:if="${!hasNext}"
-           th:href="@{/complete}"
-           class="btn btn-success">
-            Complete
-        </a>
-        -->
         <a th:if="${!hasNext}"
            th:href="@{/study/complete}"
            class="btn btn-success">
            Complete
         </a>
     </div>
+    <!-- 学習中断 -->
+    <div class="mt-3">
+        <a th:href="@{/study/suspend(page=${currentPage - 1})}"
+           class="btn btn-danger">
+           中断する
+        </a>
+    </div>    
     <!-- 学習終了 -->
     <div class="mt-3">
-		<!--
-        <a th:href="@{/}"
-           class="btn btn-danger">
-            やめる
-        </a>
-        -->
         <a th:href="@{/study/quit}"
            class="btn btn-danger">
            やめる

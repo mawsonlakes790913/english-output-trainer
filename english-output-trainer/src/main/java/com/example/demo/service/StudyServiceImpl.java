@@ -25,10 +25,10 @@ public class StudyServiceImpl implements StudyService {
 		List<Question> extractedQuestions = repository.findAll(); 
 		Collections.shuffle(extractedQuestions);
 		// シャッフルが行われているかコンソールに出力して確認
-		//for (Question q : extractedQuestions) {
-		//    System.out.print(q.getQuestionId() + " ");
-		//}
-		//System.out.println();
+		for (Question q : extractedQuestions) {
+		    System.out.print(q.getQuestionId() + " ");
+		}
+		System.out.println();
 		return extractedQuestions;
 	}
 }
