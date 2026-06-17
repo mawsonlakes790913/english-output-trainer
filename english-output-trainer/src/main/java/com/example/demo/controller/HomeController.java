@@ -15,6 +15,7 @@ public class HomeController {
 	    boolean resumable =
 	            session.getAttribute("questions") != null;
 	    model.addAttribute("resumable", resumable);
+	    
 	    // hello.htmlを表示
 		return "home";
 	}

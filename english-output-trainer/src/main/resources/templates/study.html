@@ -60,6 +60,7 @@
     <!-- 学習中断 -->
     <div class="mt-3">
         <a th:href="@{/study/suspend(page=${currentPage - 1})}"
+           onclick="return confirm('学習を中断しますか？');"
            class="btn btn-danger">
            中断する
         </a>
@@ -67,6 +68,7 @@
     <!-- 学習終了 -->
     <div class="mt-3">
         <a th:href="@{/study/quit}"
+           onclick="return confirm('学習を終了しますか？');"
            class="btn btn-danger">
            やめる
         </a>
