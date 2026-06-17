@@ -20,6 +20,11 @@ public class StudyServiceImpl implements StudyService {
 	
 	private final QuestionRepository repository;
 	
+	public List<Question> getQuestion(){
+		List<Question> extractedQuestions = repository.findAll();
+		return extractedQuestions;
+	}
+	
 	public List<Question> getRandomQuestion(){
 		
 		List<Question> extractedQuestions = repository.findAll(); 

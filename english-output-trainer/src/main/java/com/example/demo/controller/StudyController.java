@@ -52,16 +52,24 @@ public class StudyController {
 	}
 	
 	@GetMapping("/study/start")
-	public String startStudy(HttpSession session) {
+	public String startStudy(Model model,
+							 HttpSession session,
+							 @RequestParam String mode) {
 	    // 既存の学習状態を破棄
 	    session.removeAttribute("questions");
 	    session.removeAttribute("currentPage");
 	    
+	    //先に宣言
+	    List<Question> questions;
+	    
 	    // 新しい問題セットを作成
-	    List<Question> questions =
-	            studyService.getRandomQuestion();
+	    if ("sequential".equals(mode)) {
+	    	questions = studyService.getQuestion();
+	    } else {
+	    	questions = studyService.getRandomQuestion();
+	    }
 
-	    session.setAttribute("questions", questions);
+		session.setAttribute("questions", questions);
 	    session.setAttribute("currentPage", 0);
 	    
 	    return "redirect:/study";

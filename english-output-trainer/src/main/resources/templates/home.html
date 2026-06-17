@@ -9,16 +9,31 @@
 <body>
     <h1>学習モードを選択してください</h1>
     <p>目的に合わせて学習モードを選びましょう。</p>
+	<button id="startButton"
+            type="button"
+            onclick="showButton()">
+                新規開始
+    </button>
+    <div id="proceedButton" style="display:none;" class="mt-3">
+		<a th:href="@{/study/start(mode='sequential')}">順番に出題する</a>
+    	</form>
+    	<a th:href="@{/study/start(mode='random')}">ランダムに出題する</a>
+    	</form>
+    </div>
 
-    <form th:action="@{/study/start}" method="get">
-        <button type="submit"
-        		id="btn">学習を開始する</button>
-    </form>
     <form th:if="${resumable}"
     	  th:action="@{/study/resume}" method="get">
         <button type="submit"
         		id="btn">途中から始める</button>
     </form>
+	<script>
+	    function showButton() {
+	        document.getElementById("startButton")
+	                .style.display = "none";
+	        document.getElementById("proceedButton")
+	                .style.display = "block";
+	    }
+	</script>
 
 </body>
 </html>
