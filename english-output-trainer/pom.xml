@@ -88,6 +88,18 @@
 		    <artifactId>webjars-locator</artifactId>
 		    <version>0.52</version>
 		</dependency>
+		
+		<dependency>
+		    <groupId>org.webjars.npm</groupId>
+		    <artifactId>bootstrap-icons</artifactId>
+		    <version>1.13.1</version>
+		</dependency>
+		
+		    <!-- thymeleaf-layout-dialect -->
+	    <dependency>
+	        <groupId>nz.net.ultraq.thymeleaf</groupId>
+	        <artifactId>thymeleaf-layout-dialect</artifactId>
+	    </dependency>
 	
 	</dependencies>
 

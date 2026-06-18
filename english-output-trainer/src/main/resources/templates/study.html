@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
 <head>
     <meta charset="UTF-8">
     <title>English Output Trainer</title>
@@ -9,7 +11,7 @@
           th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
 </head>
 <body>
-<div class="container text-center">
+<div layout:fragment="content" class="text-center">
     <h1>通常学習</h1>
     <p>頑張りましょう</p>
     <div class="mt-3">
