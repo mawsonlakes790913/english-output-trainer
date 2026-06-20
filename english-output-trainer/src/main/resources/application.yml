@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: english-output-trainer
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/english_output_trainer
+    username: postgres
+    password: su839045yx
+    # driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  sql:
+    init:
+      mode: always
+  
