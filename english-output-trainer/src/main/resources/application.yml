@@ -17,3 +17,6 @@ spring:
     init:
       mode: always
   
+  # Messageプロパティ
+  messages:
+    basename: messages,validationMessages
