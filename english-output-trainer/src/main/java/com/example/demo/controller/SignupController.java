@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,26 +26,46 @@ public class SignupController {
 	private final UserServiceImpl userServiceImpl;
 	private final ModelMapper modelMapper;
 	
-	@GetMapping("/signup")
+	@GetMapping("/signup/signup")
 	public String getSignup(Model model, @ModelAttribute SignupForm form) {
-		return "signup";
+		return "signup/signup";
+	}
+	
+	@GetMapping("/signup/complete")
+	public String getSignupComplete(){
+		return "signup/complete";
 	}
 	
 	@PostMapping("/signup")
 	public String postSignup(Model model,
 							 @ModelAttribute @Validated SignupForm form,
 							 BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
-            // NG：ユーザー登録画面に戻ります
-            return getSignup(model, form); 
-        }
-		
-		log.info(form.toString());
-		
-		// formをUsersクラスに変換
-        Users users = modelMapper.map(form, Users.class);
-        // ユーザー登録
-        userServiceImpl.signup(users);
-		return "redirect:/login";
+		// ① 通常のバリデーションエラー確認
+	    if (bindingResult.hasErrors()) {
+	        return getSignup(model, form);
+	    }
+
+	    try {
+	    	log.info(form.toString());
+	    	// formをUsersクラスに変換
+	        Users users = modelMapper.map(form, Users.class);
+	        // ② Serviceの業務処理
+	        userServiceImpl.signup(users);
+
+	    } catch (DuplicateKeyException e) {
+
+	        // ③ Serviceで発生した重複エラーをBindingResultへ追加
+	        bindingResult.rejectValue(
+	                "userId",
+	                "duplicate",
+	                e.getMessage());
+
+	        return getSignup(model, form);
+	    }
+
+	    return "redirect:/signup/complete";
 	}
+
+	
+
 }

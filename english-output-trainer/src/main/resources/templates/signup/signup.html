@@ -1,4 +1,3 @@
-<!--
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
@@ -21,7 +20,7 @@
 	            <form method="post" th:action="@{/signup}"
 	                  th:object="${signupForm}">
 	                <h2 class="text-center mb-4" th:text="#{signup.title}">新規登録</h2>
-				    
+	                <!-- グローバルエラー -->
 				    <div th:if="${#fields.hasGlobalErrors()}"
 				         class="alert alert-danger">
 				
@@ -31,7 +30,7 @@
 				        </p>
 				
 				    </div>	                
-			        
+　　　　　　　　　　　　<!-- ユーザーID -->
 			        <div class="form-group">
 			            <label for="userId" th:text="#{userId}">ユーザーID</label>
 			            <input type="text" id="userId" class="form-control"
@@ -40,7 +39,7 @@
 			            <div class="invalid-feedback"
 			                 th:errors="*{userId}">
 			        </div>
-			       
+                    <!-- 年齢 -->
 			        <div class="form-group">
 			            <label for="age" th:text="#{age}">年齢</label>
 			            <input type="text" id="age" class="form-control"
@@ -49,7 +48,7 @@
 			            <div class="invalid-feedback"
 			                 th:errors="*{age}">
 			        </div>
-			     
+                    <!-- パスワード -->
 			        <div class="form-group">
 			            <label for="password" th:text="#{password}">パスワード</label>
 			            <input type="text" id="password" class="form-control"
@@ -58,6 +57,7 @@
 			            <div class="invalid-feedback"
 			                 th:errors="*{password}">
 			        </div>
+			        <!-- 登録ボタン -->
 			        <div class="form-group">
 			            <label for="confirm-password" th:text="#{confirm.password}">パスワード(確認)</label>
 			            <input type="text" id="confirm-password" class="form-control"
@@ -66,7 +66,7 @@
 			            <div class="invalid-feedback"
 			                 th:errors="*{passwordConfirm}">
 			        </div>	
-			
+
 			        <input type="submit" th:value="#{signup.btn}"
 			            class="btn btn-primary w-100 mt-4">
 			        <div class="text-center mt-2">
@@ -78,4 +78,3 @@
 	</div>
 </body>
 </html>
--->
