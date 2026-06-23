@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LogAspect {
 	
-	/** 対象：[UserService]をクラス名に含んでいること */
+	/** 対象：[Service]をクラス名に含んでいること */
 	@Pointcut("execution(* com.example.demo.service.*.*(..))")
 	public void serviceMethods(){}
 	
