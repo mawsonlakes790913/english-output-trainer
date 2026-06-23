@@ -65,6 +65,14 @@ public class SignupController {
 
 	    return "redirect:/signup/complete";
 	}
+	// AOP動作確認用の例外
+	//@GetMapping("/test-error")
+	//public String testError() {
+
+	    //userServiceImpl.testException();
+
+	    //return "home";
+	//}
 
 	
 

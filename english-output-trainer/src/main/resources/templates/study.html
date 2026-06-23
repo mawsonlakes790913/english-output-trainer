@@ -9,6 +9,7 @@
           th:href="@{/css/study.css}">
     <link rel="stylesheet"
           th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <script th:src="@{/js/study.js}" defer></script>
 </head>
 <body>
 <div layout:fragment="content" class="text-center">
@@ -76,13 +77,5 @@
         </a>
     </div>
 </div>
-<script>
-    function showAnswer() {
-        document.getElementById("answerButton")
-                .style.display = "none";
-        document.getElementById("answerArea")
-                .style.display = "block";
-    }
-</script>
 </body>
 </html>

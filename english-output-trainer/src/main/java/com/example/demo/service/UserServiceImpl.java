@@ -25,5 +25,8 @@ public class UserServiceImpl {
     log.info("ユーザー登録完了 userId={}",
              savedUser.getUserId());
 	}
-    
+	// AOP動作確認用の例外
+	//public void testException() {
+	//    throw new RuntimeException("AOP動作確認用の例外");
+	//}
 }
