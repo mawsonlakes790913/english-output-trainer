@@ -101,18 +101,30 @@
 	        <artifactId>thymeleaf-layout-dialect</artifactId>
 	    </dependency>
 	    
-		        <!-- validator -->
+		<!-- validator -->
 	    <dependency>
 	        <groupId>org.springframework.boot</groupId>
 	        <artifactId>spring-boot-starter-validation</artifactId>
 	    </dependency>
 	    
-	    		<!-- Model Mapper -->
+	    <!-- Model Mapper -->
 		<dependency>
 		    <groupId>org.modelmapper.extensions</groupId>
 		    <artifactId>modelmapper-spring</artifactId>
 		    <version>3.2.0</version>
 		</dependency>
+		
+		<!-- Security -->
+	    <dependency>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-starter-security</artifactId>
+	    </dependency>
+	
+	    <!-- Thymeleaf拡張ライブラリ（セキュリティ） -->
+	    <dependency>
+	        <groupId>org.thymeleaf.extras</groupId>
+	        <artifactId>thymeleaf-extras-springsecurity6</artifactId>
+	    </dependency>
 	
 	</dependencies>
 

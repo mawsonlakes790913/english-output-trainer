@@ -18,6 +18,11 @@
 	        <div class="col-md-6 col-lg-4">
 	            <form method="post" th:action="@{/login}">
 	                <h2 class="text-center mb-4">ログイン</h2>
+	                <p th:if="${session.SPRING_SECURITY_LAST_EXCEPTION} != null"
+		               th:text="${session.SPRING_SECURITY_LAST_EXCEPTION.message}"
+		               class="text-danger">
+		               ログインエラーメッセージ
+		            </p>
 	                <div class="mb-3">
 	                    <input type="text"
 	                           class="form-control"
