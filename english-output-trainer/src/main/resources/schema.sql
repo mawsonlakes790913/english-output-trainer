@@ -5,7 +5,8 @@ DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
     user_id VARCHAR(20) PRIMARY KEY,
-    password VARCHAR(255) NOT NULL
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE question (
