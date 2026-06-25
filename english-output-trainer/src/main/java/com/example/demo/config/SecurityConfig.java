@@ -34,7 +34,11 @@ public class SecurityConfig {
 				    .defaultSuccessUrl("/")
 				    .failureUrl("/login?error")
 				    .permitAll()
-				);
+				)
+			.logout(logout -> logout
+            .logoutUrl("/logout")
+            .logoutSuccessUrl("/login?logout")
+        );
 		
 		// CSRFを無効化
 		http.csrf(csrf -> csrf.disable());
