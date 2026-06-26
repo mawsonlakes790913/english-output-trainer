@@ -13,16 +13,21 @@
 	            English Output Trainer
 	        </h1>
 	        <div class="ms-auto d-flex gap-3 align-items-center">
-			<a class="btn btn-primary" href="/login">ログイン</a>
-		        <form method="post"
-		              th:action="@{/logout}"
-		              class="m-0">
-		            <button type="submit"
-		                    class="btn btn-outline-light btn-sm">
-		                ログアウト
-		            </button>
-		
-		        </form>
+				<!-- ここから追加 -->
+				<span th:text="'こんにちは、' + ${loginUser} + 'さん'">
+	                ゲスト
+	            </span>
+	            <!-- ここまで追加 -->
+				<a class="btn btn-primary" href="/login">ログイン</a>
+			        <form method="post"
+			              th:action="@{/logout}"
+			              class="m-0">
+			            <button type="submit"
+			                    class="btn btn-outline-light btn-sm">
+			                ログアウト
+			            </button>
+			
+			        </form>
 	        </div>
 	
 	    </div>
