@@ -41,7 +41,7 @@ public class SecurityConfig {
         );
 		
 		// CSRFを無効化
-		http.csrf(csrf -> csrf.disable());
+		//http.csrf(csrf -> csrf.disable());
 		
 		return http.build();
 
