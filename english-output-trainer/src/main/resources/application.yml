@@ -20,3 +20,9 @@ spring:
   # Messageプロパティ
   messages:
     basename: messages,validationMessages
+    
+ # Tomcat設定
+server:
+  servlet:
+    session:
+      timeout: 1m

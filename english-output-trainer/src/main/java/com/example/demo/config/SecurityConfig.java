@@ -34,11 +34,18 @@ public class SecurityConfig {
 				    .defaultSuccessUrl("/")
 				    .failureUrl("/login?error")
 				    .permitAll()
-				)
+			)
+			
 			.logout(logout -> logout
             .logoutUrl("/logout")
             .logoutSuccessUrl("/login?logout")
-        );
+            )
+            
+            .rememberMe(remember -> remember
+                    .rememberMeParameter("remember-me")
+                    .tokenValiditySeconds(3600)
+            );
+        
 		
 		// CSRFを無効化
 		//http.csrf(csrf -> csrf.disable());
