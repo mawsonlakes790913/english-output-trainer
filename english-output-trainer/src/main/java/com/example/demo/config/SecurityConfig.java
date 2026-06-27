@@ -1,5 +1,6 @@
 package com.example.demo.config;
 
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,17 +22,29 @@ public class SecurityConfig {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		
-		// セキュリティ対象外の設定
-		http.authorizeHttpRequests(authorize -> authorize
-				.anyRequest().permitAll()
-			)
+
+
+        
+        // セキュリティ対象外の設定
+     	http.authorizeHttpRequests(authorize -> authorize
+     			.requestMatchers(
+                        PathRequest.toStaticResources().atCommonLocations()
+                    ).permitAll()
+     			.requestMatchers("/").permitAll()
+     			.requestMatchers("/login").permitAll()
+                .requestMatchers("/study", "/study/**").permitAll()
+                .requestMatchers("/signup", "/signup/**").permitAll()
+                .requestMatchers("/complete").permitAll()
+                .requestMatchers("/admin").hasAuthority("ROLE_ADMIN")
+                .anyRequest().authenticated()
+             )
 			
 		
 			.formLogin(login -> login
 				    .loginPage("/login")
 				    .usernameParameter("userId")
 				    .passwordParameter("password")
-				    .defaultSuccessUrl("/")
+				    .defaultSuccessUrl("/menu", true)
 				    .failureUrl("/login?error")
 				    .permitAll()
 			)
