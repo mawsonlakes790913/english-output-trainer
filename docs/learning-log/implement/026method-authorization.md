@@ -220,6 +220,9 @@ public String deleteUser(
 
 各行にフォームを配置することで、削除ボタンを押した行の`userId`だけがControllerへ送信される。
 
+![完成予想1](../../images/026-1.png)
+![完成予想1](../../images/026-2.png)
+
 ---
 
 # ユーザー削除メソッドの認可
