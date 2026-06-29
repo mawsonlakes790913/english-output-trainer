@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+	<meta charset="UTF-8">
+	<title>Common Error</title>
+    <link rel="stylesheet"
+          th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+</head>
+<body>
+	<div layout:fragment="content">
+		<h1 th:text="${status} + ' ' + ${error}"></h1>
+		<p>これは、404エラーの専用ページです</p>
+		<a th:href="@{/user/list}"
+		   class="btn btn-info">ホーム画面に戻る</a>
+	</div>
+</body>
+</html>
