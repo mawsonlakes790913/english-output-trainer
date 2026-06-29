@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+
+<head>
+	<meta charset="UTF-8">
+	<title>ユーザー一覧</title>
+	<link rel="stylesheet" th:href="@{/css/study.css}">
+	<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+	<script th:src="@{/js/study.js}" defer></script>
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<div class="header border-bottom">
+			<h1 class="h2">ユーザー一覧画面</h1>
+			<!-- 一覧表示 -->
+			<div>
+				<table class="table table-striped table-bordered table-hover text-center">
+					<thead>
+						<tr>
+							<th>ユーザーID</th>
+							<th>Role</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="item : ${userList}">
+						    <form th:action="@{/admin/delete}" method="post">
+						        <td th:text="${item.userId}"></td>
+						        <td th:text="${item.role}"></td>
+						        <td>
+						            <input type="hidden" name="userId" th:value="${item.userId}">
+						            <button type="submit"
+						            		class="btn btn-danger">削除</button>
+						        </td>
+						    </form>
+						</tr>						
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

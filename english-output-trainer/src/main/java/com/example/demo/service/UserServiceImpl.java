@@ -1,10 +1,13 @@
 package com.example.demo.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.entity.Users;
 import com.example.demo.repository.UserRepository;
@@ -48,4 +51,18 @@ public class UserServiceImpl {
 	//public void testException() {
 	//    throw new RuntimeException("AOP動作確認用の例外");
 	//}
+	
+	// ユーザー一覧取得
+	public List<Users> getUsers(){
+		List<Users> users = repository.findAll();
+		return users;
+	}
+	
+	// 指定したユーザー削除
+	@Transactional
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public void deleteUserOne(String userId) {
+        repository.deleteById(userId);
+        log.info("削除対象={}", userId);
+    }
 }

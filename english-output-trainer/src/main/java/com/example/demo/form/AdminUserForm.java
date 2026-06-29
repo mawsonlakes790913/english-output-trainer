@@ -1,0 +1,13 @@
+package com.example.demo.form;
+
+import lombok.Data;
+
+@Data
+public class AdminUserForm {
+	
+	private String userId;
+	//private Integer age;
+	//private String password;
+	private String role;
+
+}
