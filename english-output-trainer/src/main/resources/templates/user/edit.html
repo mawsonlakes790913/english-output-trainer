@@ -3,7 +3,7 @@
 	layout:decorate="~{layout/layout}">
 <head>
 	<meta charset="UTF-8">
-	<title>会員情報確認・編集</title>
+	<title>会員情報編集</title>
 	<link rel="stylesheet" th:href="@{/css/study.css}">
 	<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
 	<script th:src="@{/js/study.js}" defer></script>
@@ -11,7 +11,7 @@
 <body>
 	<div layout:fragment="content">
 		<div class="header border-bottom">
-			<h1 class="h2">会員情報</h1>
+			<h1 class="h2">会員情報編集</h1>
 			<!-- 一覧表示 -->
 			<div>
 				<table class="table table-striped table-bordered table-hover text-center align-items-center">
@@ -23,14 +23,7 @@
 					</thead>
 					<tbody>
 						<tr>
-						        <td th:text="${user.userId}"></td>
-						        <td>
-									<a th:href="@{/user/detail}" class="btn btn-primary">編集</a>
-									<form th:action="@{/user/delete}" method="post" class="d-inline">
-									    <button type="submit"
-									            class="btn btn-danger">退会する</button>
-									</form>
-						        </td>
+							ここにformを挿入
 						</tr>						
 					</tbody>
 				</table>

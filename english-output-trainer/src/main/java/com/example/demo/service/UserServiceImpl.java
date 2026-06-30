@@ -58,11 +58,19 @@ public class UserServiceImpl {
 		return users;
 	}
 	
-	// 指定したユーザー削除
+	// 指定したユーザー削除(Admin用)
 	@Transactional
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void deleteUserOne(String userId) {
         repository.deleteById(userId);
         log.info("削除対象={}", userId);
     }
+
+	// 指定したユーザー削除(会員用)
+	@Transactional
+	public void cancelMembership(String userId) {
+        repository.deleteById(userId);
+        log.info("削除対象={}", userId);
+    }
+	
 }
