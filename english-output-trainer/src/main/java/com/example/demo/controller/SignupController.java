@@ -47,6 +47,7 @@ public class SignupController {
 
 	    try {
 	    	log.info(form.toString());
+	    	//Users users = modelMapper.map(form, Users.class);
 	    	
 	    	Users users = new Users();
 
