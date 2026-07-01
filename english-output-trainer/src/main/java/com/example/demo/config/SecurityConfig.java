@@ -37,6 +37,7 @@ public class SecurityConfig {
                 .requestMatchers("/study", "/study/**").permitAll()
                 .requestMatchers("/signup", "/signup/**").permitAll()
                 .requestMatchers("/complete").permitAll()
+                .requestMatchers("/user/canceled").permitAll()
                 .requestMatchers("/admin").hasAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated()
              )

@@ -64,6 +64,7 @@ public class UserMenuController {
 	    request.logout();
 
 	    return "redirect:/user/canceled";
+	    //return "redirect:/login";
 	}
 
 	@GetMapping("/user/canceled")
