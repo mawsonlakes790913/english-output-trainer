@@ -16,6 +16,6 @@ public class AdminService {
 	
 	@Transactional
 	public void deleteOneUser(String userId) {
-		repository.deleteById(userId);
+		repository.deleteByUserId(userId);
 	}
 }

@@ -25,7 +25,7 @@
 						<tr>
 						        <td th:text="${user.userId}"></td>
 						        <td>
-									<a th:href="@{/user/detail}" class="btn btn-primary">編集</a>
+									<a th:href="@{/user/edit}" class="btn btn-primary">編集</a>
 									<form th:action="@{/user/delete}" method="post" class="d-inline">
 									    <button type="submit"
 									            class="btn btn-danger">退会する</button>

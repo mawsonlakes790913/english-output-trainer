@@ -47,8 +47,12 @@ public class SignupController {
 
 	    try {
 	    	log.info(form.toString());
-	    	// formをUsersクラスに変換
-	        Users users = modelMapper.map(form, Users.class);
+	    	
+	    	Users users = new Users();
+
+	    	users.setUserId(form.getUserId());
+	    	users.setPassword(form.getPassword());
+	    	
 	        // ② Serviceの業務処理
 	        userServiceImpl.signup(users);
 

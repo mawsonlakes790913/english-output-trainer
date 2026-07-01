@@ -23,17 +23,18 @@ public class UserServiceImpl {
 	private final PasswordEncoder encoder;
 	
 	public void signup(Users user) {
-		boolean isExists = repository.existsById(user.getUserId());
+		boolean isExists = repository.existsByUserId(user.getUserId());
         if (isExists) {
             throw new DuplicateKeyException("既に存在するユーザーです");
         }
-        
     // 自動でRoleをGeneral(一般)にする
     user.setRole("ROLE_GENERAL");
         
     // パスワードのハッシュ化
     String rawPassword = user.getPassword();
     user.setPassword(encoder.encode(rawPassword));
+    
+    System.out.println("id=" + user.getId());
         
     Users savedUser = repository.save(user);
 
@@ -42,15 +43,22 @@ public class UserServiceImpl {
 	}
 	
 	// ユーザー取得
-	public Users getUserOne(String userId) {
-		Optional<Users> option = repository.findById(userId);
-		Users user = option.orElse(null);
-		return user;
-	}
-	// AOP動作確認用の例外
-	//public void testException() {
-	//    throw new RuntimeException("AOP動作確認用の例外");
+	//public Users getUserOne(String userId) {
+	//	Optional<Users> option = repository.findByUserId(userId);
+	//	Users user = option.orElse(null);
+	//	return user;
 	//}
+	
+	public Users getUserOne(String userId) {
+	    System.out.println("検索するuserId=" + userId);
+
+	    Optional<Users> option = repository.findByUserId(userId);
+
+	    System.out.println("検索結果=" + option);
+
+	    return option.orElse(null);
+	}
+
 	
 	// ユーザー一覧取得
 	public List<Users> getUsers(){
@@ -62,15 +70,36 @@ public class UserServiceImpl {
 	@Transactional
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void deleteUserOne(String userId) {
-        repository.deleteById(userId);
+        repository.deleteByUserId(userId);
         log.info("削除対象={}", userId);
     }
 
 	// 指定したユーザー削除(会員用)
 	@Transactional
 	public void cancelMembership(String userId) {
-        repository.deleteById(userId);
+        repository.deleteByUserId(userId);
         log.info("削除対象={}", userId);
     }
 	
+	@Transactional
+	public void updateUserId(String currentUserId, String newUserId) {
+
+	    // 新しいユーザーIDが既に使われているか確認
+		boolean isExists = repository.existsByUserId(newUserId);
+	    if (isExists) {
+	        throw new DuplicateKeyException("既に存在するユーザーです");
+	    }
+	    // 現在のユーザーを取得
+	    Users user = getUserOne(currentUserId);
+	    if (user == null) {
+	        throw new IllegalArgumentException("ユーザーが存在しません");
+	    }
+
+	    // userIdだけ変更
+	    user.setUserId(newUserId);
+
+	    // 更新
+	    repository.save(user);
+
+	}
 }
