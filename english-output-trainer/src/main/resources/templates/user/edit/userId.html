@@ -14,8 +14,8 @@
 			<h1 class="h2">会員情報編集</h1>
 			<!-- 一覧表示 -->
 			<div>
-				<form th:action="@{/user/edit}"
-				      th:object="${editForm}"
+				<form th:action="@{/user/edit/userId}"
+				      th:object="${editUserIdForm}"
 				      method="post">
 				
 				    <table class="table table-striped table-bordered table-hover text-center align-items-center">

@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class UserServiceImpl {
 	private final UserRepository repository;
-	private final PasswordEncoder encoder;
+	private final PasswordEncoder passwordEncoder;
 	
 	public void signup(Users user) {
 		boolean isExists = repository.existsByUserId(user.getUserId());
@@ -32,7 +32,7 @@ public class UserServiceImpl {
         
     // パスワードのハッシュ化
     String rawPassword = user.getPassword();
-    user.setPassword(encoder.encode(rawPassword));
+    user.setPassword(passwordEncoder.encode(rawPassword));
     
     System.out.println("id=" + user.getId());
         
@@ -102,4 +102,36 @@ public class UserServiceImpl {
 	    repository.save(user);
 
 	}
+	
+	@Transactional
+	public void updateUserPassword(String userId, String currentPassword, String newPassword) {
+
+	    // 新しいパスワードが既に使われているか確認
+		//boolean isExists = repository.existsByUserId(newPassword);
+	    //if (isExists) {
+	    //    throw new DuplicateKeyException("既に存在するパスワードです");
+	    //}
+		
+	    // 現在のユーザーを取得
+	    Users user = getUserOne(userId);
+	    if (user == null) {
+	        throw new IllegalArgumentException("ユーザーが存在しません");
+	    }
+	    
+	    // 現在のパスワードが一致するか確認
+	    boolean isMatch =
+	            passwordEncoder.matches(currentPassword, user.getPassword());
+
+	    if (!isMatch) {
+	        throw new IllegalArgumentException("現在のパスワードが正しくありません");
+	    }
+	    // パスワードをハッシュ化して更新
+	    user.setPassword(passwordEncoder.encode(newPassword));
+
+	    // 更新
+	    repository.save(user);
+
+	}
+	
+	
 }

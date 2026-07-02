@@ -14,25 +14,29 @@
 			<h1 class="h2">会員情報</h1>
 			<!-- 一覧表示 -->
 			<div>
-				<table class="table table-striped table-bordered table-hover text-center align-items-center">
-					<thead>
-						<tr>
-							<th>ユーザーID</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-						        <td th:text="${user.userId}"></td>
-						        <td>
-									<a th:href="@{/user/edit}" class="btn btn-primary">編集</a>
-									<form th:action="@{/user/delete}" method="post" class="d-inline">
-									    <button type="submit"
-									            class="btn btn-danger">退会する</button>
-									</form>
-						        </td>
-						</tr>						
-					</tbody>
+				<table class="table table-striped table-bordered table-hover align-items-center">
+				    <tr>
+				        <th class="align-middle text-center">ユーザーID</th>
+				        <td th:text="${user.userId}"
+				        	class="align-middle"></td>
+				        <td class="align-middle text-center">
+				            <a th:href="@{/user/edit/userId}"
+				               class="btn btn-primary">
+				                編集
+				            </a>
+				        </td>
+				    </tr>
+				
+				    <tr>
+				        <th class="align-middle text-center">パスワード</th>
+				        <td class="align-middle">************</td>
+				        <td class="align-middle text-center" style="width:120px;">
+				            <a th:href="@{/user/edit/password}"
+				               class="btn btn-primary">
+				                編集
+				            </a>
+				        </td>
+				    </tr>
 				</table>
 			</div>
 		</div>
