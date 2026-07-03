@@ -1,35 +1,34 @@
 ```mermaid
 erDiagram
 
-    USER ||--o{ FAVORITE
-    Question ||--o{ FAVORITE
-
-    USER ||--o{ STUDY_HISTORY
-    Question ||--o{ STUDY_HISTORY
+    USER ||--o{ FAVORITE : has
+    QUESTION ||--o{ FAVORITE : has
+    USER ||--o{ STUDY_HISTORY : has
+    QUESTION ||--o{ STUDY_HISTORY : has
 
     USER {
-        varchar user_id PK
-        varchar password
+        string user_id PK
+        string password
     }
 
-    Question {
-        bigint question_id PK
-        text japanese_text
-        text english_text
-        text alternative_answer
-        varchar condition
-        varchar difficulty
+    QUESTION {
+        int question_id PK
+        string japanese_text
+        string english_text
+        string alternative_answer
+        string condition
+        string difficulty
     }
 
     FAVORITE {
-        varchar user_id FK
-        bigint question_id FK
+        string user_id FK
+        int question_id FK
     }
 
     STUDY_HISTORY {
-        varchar user_id FK
-        bigint question_id FK
-        varchar evaluation
-        timestamp last_studied_at
+        string user_id FK
+        int question_id FK
+        string evaluation
+        string last_studied_at
     }
 ```
