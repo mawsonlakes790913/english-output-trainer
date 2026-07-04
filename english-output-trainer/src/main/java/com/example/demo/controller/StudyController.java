@@ -2,15 +2,19 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.data.domain.Page;
 //import org.springframework.data.domain.Pageable;
 //import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.Question;
+import com.example.demo.service.EvaluationService;
 import com.example.demo.service.StudyServiceImpl;
 
 import jakarta.servlet.http.HttpSession;
@@ -22,6 +26,7 @@ public class StudyController {
 	
 	private final StudyServiceImpl studyService;
 	//private List<Question> questions;
+	private final EvaluationService evaluationService;
 	
 	@GetMapping("/study")
 	public String getStudy(Model model,
@@ -131,6 +136,18 @@ public class StudyController {
 		return "redirect:/";
 	}	
 	
+	@PostMapping("/study/evaluation")
+	public String postEvaluation(@AuthenticationPrincipal UserDetails loginUser,
+	        				   @RequestParam Long questionId,
+	        				   @RequestParam String evaluation,
+	        				   @RequestParam Integer page) {
+		evaluationService.updateEvaluation(
+		        loginUser.getUsername(),
+		        questionId,
+		        evaluation);
+		return "redirect:/study?page=" + (page + 1);
+	}
+	
 	private void setStudyModel(
 	        Model model,
 	        List<Question> questions,
@@ -146,4 +163,6 @@ public class StudyController {
 	            "hasNext",
 	            page < questions.size() - 1);
 	}
+	
+
 }

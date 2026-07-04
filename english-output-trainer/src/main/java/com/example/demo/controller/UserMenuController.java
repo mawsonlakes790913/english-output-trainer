@@ -145,12 +145,6 @@ public class UserMenuController {
 
 	    try {
 	    	log.info(form.toString());
-	    	//Users users = modelMapper.map(form, Users.class);
-	    	
-	    	//Users users = new Users();
-
-	    	//users.setUserId(loginUser.getUserId());
-	    	//users.setPassword(form.getPassword());
 	    	
 	        // ② Serviceの業務処理
 	        userServiceImpl.updateUserPassword(
