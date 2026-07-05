@@ -11,4 +11,7 @@ public interface StudyHistoryRepository extends JpaRepository<StudyHistory, Stud
 	
 	Optional<StudyHistory> findByStudyHistoryKey(StudyHistoryKey studyHistoryKey);
 	
+	long countByStudyHistoryKeyUserIdAndEvaluation(
+	        Long userId,
+	        String evaluation);
 }

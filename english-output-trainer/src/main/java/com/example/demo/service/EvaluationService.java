@@ -30,7 +30,7 @@ public class EvaluationService {
 		key.setUserId(user.getId());
 		key.setQuestionId(questionId);
 		
-		// 存在確認
+		// 存在確認とUPSDATE及びINSERT処理
 		Optional<StudyHistory> optionalStudyHistory =
 		        studyHistoryRepository.findByStudyHistoryKey(key);
 		

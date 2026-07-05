@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>English Output Trainer</title>
+    <link rel="stylesheet"
+          th:href="@{/css/study.css}">
+    <link rel="stylesheet"
+          th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <script th:src="@{/js/study.js}" defer></script>
+</head>
+
+<body>
+<div layout:fragment="content">
+
+    <div class="header border-bottom mb-4">
+        <h1 class="h2">復習メニュー</h1>
+    </div>
+
+    <!-- 出題方法 -->
+    <div class="card mb-4">
+        <div class="card-header">
+            出題方法
+        </div>
+
+        <div class="card-body">
+
+            <div class="form-check">
+                <input class="form-check-input"
+                       type="radio"
+                       name="order"
+                       id="sequential"
+                       value="sequential"
+                       checked>
+
+                <label class="form-check-label" for="sequential">
+                    順番に出題
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input"
+                       type="radio"
+                       name="order"
+                       id="random"
+                       value="random">
+
+                <label class="form-check-label" for="random">
+                    ランダムに出題
+                </label>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Hard -->
+    <div class="mb-3">
+
+        <button class="btn btn-danger w-100">
+            Hardから出題
+        </button>
+
+        <div class="mt-2">
+            登録数：
+            <span th:text="${evaluatedHard}"></span>問
+        </div>
+
+    </div>
+
+    <!-- Good -->
+    <div class="mb-3">
+
+        <button class="btn btn-primary w-100">
+            Goodから出題
+        </button>
+
+        <div class="mt-2">
+            登録数：
+            <span th:text="${evaluatedGood}"></span>問
+        </div>
+
+    </div>
+
+    <!-- Easy -->
+    <div class="mb-3">
+
+        <button class="btn btn-success w-100">
+            Easyから出題
+        </button>
+
+        <div class="mt-2">
+            登録数：
+            <span th:text="${evaluatedEasy}"></span>問
+        </div>
+
+    </div>
+
+    <!-- Hard + Good -->
+    <div class="mb-3">
+
+        <button class="btn btn-warning w-100">
+            Hard + Goodから出題
+        </button>
+
+        <div class="mt-2">
+            登録数：
+            <span th:text="${evaluatedHard + evaluatedGood}"></span>問
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>

@@ -6,4 +6,6 @@ import com.example.demo.entity.Question;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 	
+	long countByDifficulty(String difficulty);
+	
 }
