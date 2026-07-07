@@ -2,7 +2,7 @@ package com.example.demo.service;
 
 import org.springframework.stereotype.Service;
 
-import com.example.demo.repository.QuestionRepository;
+import com.example.demo.entity.Evaluation;
 import com.example.demo.repository.StudyHistoryRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ReviewService {
 	
-	private final QuestionRepository questionRepository;
+//	private final QuestionRepository questionRepository;
 	private final StudyHistoryRepository studyHistoryRepository;
 	
 //	public long countTotalAdvanced() {
@@ -30,26 +30,13 @@ public class ReviewService {
 //	}
 	
 	
-	public long countEvaluatedHard(Long userId) {
+	public long countEvaluation(Long userId, Evaluation evaluation) {
         return studyHistoryRepository
                 .countByStudyHistoryKeyUserIdAndEvaluation(
                         userId,
-                        "HARD");
+                        evaluation);
     }
-	
-	public long countEvaluatedGood(Long userId) {
-        return studyHistoryRepository
-                .countByStudyHistoryKeyUserIdAndEvaluation(
-                        userId,
-                        "GOOD");
-    }
-	
-	public long countEvaluatedEasy(Long userId) {
-        return studyHistoryRepository
-                .countByStudyHistoryKeyUserIdAndEvaluation(
-                        userId,
-                        "EASY");
-    }
+
 
 //
 //	int getFavoriteCount(String userId);

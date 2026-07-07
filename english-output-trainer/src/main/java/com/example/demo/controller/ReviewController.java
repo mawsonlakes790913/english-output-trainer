@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.example.demo.entity.Evaluation;
 import com.example.demo.entity.Users;
 import com.example.demo.service.ReviewService;
 import com.example.demo.service.UserServiceImpl;
@@ -31,9 +32,9 @@ public class ReviewController {
 //	    long totalIntermediate = reviewService.countTotalIntermediate();
 //	    long totalBeginner = reviewService.countTotalBeginner();
 
-	    long evaluatedHard = reviewService.countEvaluatedHard(userId);
-	    long evaluatedGood = reviewService.countEvaluatedGood(userId);
-	    long evaluatedEasy = reviewService.countEvaluatedEasy(userId);
+	    long evaluatedHard = reviewService.countEvaluation(userId, Evaluation.HARD);
+	    long evaluatedGood = reviewService.countEvaluation(userId, Evaluation.GOOD);
+	    long evaluatedEasy = reviewService.countEvaluation(userId, Evaluation.EASY);
 	    
 //	    model.addAttribute("totalAdvanced", totalAdvanced);
 //	    model.addAttribute("totalIntermediate", totalIntermediate);

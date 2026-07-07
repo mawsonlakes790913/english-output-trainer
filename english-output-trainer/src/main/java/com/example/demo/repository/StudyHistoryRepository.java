@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.example.demo.entity.Evaluation;
 import com.example.demo.entity.StudyHistory;
 import com.example.demo.entity.StudyHistoryKey;
 
@@ -13,5 +14,5 @@ public interface StudyHistoryRepository extends JpaRepository<StudyHistory, Stud
 	
 	long countByStudyHistoryKeyUserIdAndEvaluation(
 	        Long userId,
-	        String evaluation);
+	        Evaluation evaluation);
 }
