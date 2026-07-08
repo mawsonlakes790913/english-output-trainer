@@ -1,7 +1,11 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
+import com.example.demo.entity.Difficulty;
 import com.example.demo.entity.Evaluation;
 import com.example.demo.repository.StudyHistoryRepository;
 
@@ -36,6 +40,50 @@ public class ReviewService {
                         userId,
                         evaluation);
     }
+	
+	public long countReviewQuestions(Long userId, List<Evaluation> evaluations, List<Difficulty> difficulties) {
+		
+		List<String> evaluationList;
+		List<String> difficultyList;
+		
+	    if (evaluations == null || evaluations.isEmpty()) {
+
+	        evaluationList = List.of(
+	                Evaluation.HARD.name(),
+	                Evaluation.GOOD.name(),
+	                Evaluation.EASY.name());
+
+	    } else {
+
+	        evaluationList = new ArrayList<>();
+
+	        for (Evaluation evaluation : evaluations) {
+	            evaluationList.add(evaluation.name());
+	        }
+	    }
+	    
+	    // 難易度
+	    if (difficulties == null || difficulties.isEmpty()) {
+
+	        difficultyList = List.of(
+	                Difficulty.BEGINNER.name(),
+	                Difficulty.INTERMEDIATE.name(),
+	                Difficulty.ADVANCED.name());
+
+	    } else {
+
+	        difficultyList = new ArrayList<>();
+
+	        for (Difficulty difficulty : difficulties) {
+	            difficultyList.add(difficulty.name());
+	        }
+	    }
+		
+	    return studyHistoryRepository.countQuestions(
+	            userId,
+	            evaluationList,
+	            difficultyList);
+	}
 
 
 //

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.example.demo.entity.Evaluation;
 import com.example.demo.entity.StudyHistory;
 import com.example.demo.entity.StudyHistoryKey;
 import com.example.demo.entity.Users;
@@ -20,7 +21,7 @@ public class EvaluationService {
 	private final StudyHistoryRepository studyHistoryRepository;
 	private final UserServiceImpl userServiceImpl;
 	
-	public void updateEvaluation(String loginUser, Long questionId, String evaluation) {
+	public void updateEvaluation(String loginUser, Long questionId, Evaluation evaluation) {
 		
 		// ユーザー情報を取得
 		Users user = userServiceImpl.getUserOne(loginUser);

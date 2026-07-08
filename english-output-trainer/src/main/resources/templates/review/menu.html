@@ -2,153 +2,193 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout}">
+
 <head>
     <meta charset="UTF-8">
     <title>English Output Trainer</title>
-    <link rel="stylesheet"
-          th:href="@{/css/study.css}">
+
     <link rel="stylesheet"
           th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
-    <script th:src="@{/js/study.js}" defer></script>
+    <script th:src="@{/js/review.js}" defer></script>
 </head>
 
 <body>
+
 <div layout:fragment="content">
 
     <div class="header border-bottom mb-4">
         <h1 class="h2">復習メニュー</h1>
     </div>
 
-	<!-- 出題方法 -->
-	<div class="mb-4">
-	
-	    <h5>出題方法</h5>
-	
-	    <div class="form-check form-check-inline">
-	        <input class="form-check-input"
-	               type="radio"
-	               name="order"
-	               id="sequential"
-	               value="sequential"
-	               checked>
-	
-	        <label class="form-check-label" for="sequential">
-	            順番に出題
-	        </label>
-	    </div>
-	
-	    <div class="form-check form-check-inline">
-	        <input class="form-check-input"
-	               type="radio"
-	               name="order"
-	               id="random"
-	               value="random">
-	
-	        <label class="form-check-label" for="random">
-	            ランダムに出題
-	        </label>
-	    </div>
-	
-	</div>
-	
-	<div class="row g-3">
-	
-	    <!-- Hard -->
-	    <div class="col-md-6">
-	
-	        <div class="card h-100">
-	
-	            <div class="card-body text-center">
-	
-	                <h4 class="card-title text-danger">Hard</h4>
-	
-	                <p class="display-6"
-	                   th:text="${evaluatedHard} + '問'">
-	                </p>
-	
-	                <button class="btn btn-danger">
-	                    出題する
-	                </button>
-	
-	            </div>
-	
-	        </div>
-	
-	    </div>
-	
-	    <!-- Good -->
-	    <div class="col-md-6">
-	
-	        <div class="card h-100">
-	
-	            <div class="card-body text-center">
-	
-	                <h4 class="card-title text-primary">Good</h4>
-	
-	                <p class="display-6"
-	                   th:text="${evaluatedGood} + '問'">
-	                </p>
-	
-	                <button class="btn btn-primary">
-	                    出題する
-	                </button>
-	
-	            </div>
-	
-	        </div>
-	
-	    </div>
-	
-	    <!-- Easy -->
-	    <div class="col-md-6">
-	
-	        <div class="card h-100">
-	
-	            <div class="card-body text-center">
-	
-	                <h4 class="card-title text-success">Easy</h4>
-	
-	                <p class="display-6"
-	                   th:text="${evaluatedEasy} + '問'">
-	                </p>
-	
-	                <button class="btn btn-success">
-	                    出題する
-	                </button>
-	
-	            </div>
-	
-	        </div>
-	
-	    </div>
-	
-	    <!-- Hard + Good -->
-	    <div class="col-md-6">
-	
-	        <div class="card h-100">
-	
-	            <div class="card-body text-center">
-	
-	                <h4 class="card-title text-warning">
-	                    Hard + Good
-	                </h4>
-	
-	                <p class="display-6"
-	                   th:text="${evaluatedHard + evaluatedGood} + '問'">
-	                </p>
-	
-	                <button class="btn btn-warning">
-	                    出題する
-	                </button>
-	
-	            </div>
-	
-	        </div>
-	
-	    </div>
-	
-	</div>
+    <form>
+
+        <!-- 出題方法 -->
+        <div class="card mb-4">
+
+            <div class="card-header">
+                出題方法
+            </div>
+
+            <div class="card-body">
+
+                <div class="form-check">
+                    <input class="form-check-input"
+                           type="radio"
+                           name="order"
+                           value="SEQUENTIAL"
+                           checked>
+
+                    <label class="form-check-label">
+                        順番に出題
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input"
+                           type="radio"
+                           name="order"
+                           value="RANDOM">
+
+                    <label class="form-check-label">
+                        ランダムに出題
+                    </label>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- 評価 -->
+        <div class="card mb-4">
+
+            <div class="card-header">
+                評価
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col text-center">
+
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="evaluations"
+                                   value="HARD">
+
+                            <label class="form-check-label text-danger fw-bold">
+                                Hard
+                            </label>
+                        </div>
+
+                    </div>
+
+                    <div class="col text-center">
+
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="evaluations"
+                                   value="GOOD">
+
+                            <label class="form-check-label text-primary fw-bold">
+                                Good
+                            </label>
+                        </div>
+
+                    </div>
+
+                    <div class="col text-center">
+
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   name="evaluations"
+                                   value="EASY">
+
+                            <label class="form-check-label text-success fw-bold">
+                                Easy
+                            </label>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- 問題難易度 -->
+        <div class="card mb-4">
+
+            <div class="card-header">
+                問題難易度
+            </div>
+
+            <div class="card-body">
+
+                <div class="form-check mb-2">
+                    <input class="form-check-input"
+                           type="checkbox"
+                           name="difficulties"
+                           value="BEGINNER">
+
+                    <label class="form-check-label">
+                        初級
+                    </label>
+                </div>
+
+                <div class="form-check mb-2">
+                    <input class="form-check-input"
+                           type="checkbox"
+                           name="difficulties"
+                           value="INTERMEDIATE">
+
+                    <label class="form-check-label">
+                        中級
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input"
+                           type="checkbox"
+                           name="difficulties"
+                           value="ADVANCED">
+
+                    <label class="form-check-label">
+                        上級
+                    </label>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- 出題数 -->
+        <div class="text-center mb-4">
+
+            <div class="text-secondary mb-2">
+                出題数
+            </div>
+
+            <h2 class="fw-bold"
+                id="countReviewQuestions">
+                -
+            </h2>
+
+        </div>
+
+        <!-- 出題開始 -->
+        <button type="submit"
+                class="btn btn-primary btn-lg w-100">
+            出題開始
+        </button>
+
+    </form>
 
 </div>
+
 </body>
 </html>

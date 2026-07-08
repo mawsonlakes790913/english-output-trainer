@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.entity.Evaluation;
 import com.example.demo.entity.Question;
 import com.example.demo.service.EvaluationService;
 import com.example.demo.service.StudyServiceImpl;
@@ -139,7 +140,7 @@ public class StudyController {
 	@PostMapping("/study/evaluation")
 	public String postEvaluation(@AuthenticationPrincipal UserDetails loginUser,
 	        				   @RequestParam Long questionId,
-	        				   @RequestParam String evaluation,
+	        				   @RequestParam Evaluation evaluation,
 	        				   @RequestParam Integer page) {
 		evaluationService.updateEvaluation(
 		        loginUser.getUsername(),

@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -13,6 +15,9 @@ import lombok.Data;
 public class StudyHistory {
 	@EmbeddedId
 	private StudyHistoryKey studyHistoryKey;
-	private String evaluation;
+	
+    @Enumerated(EnumType.STRING)
+    private Evaluation evaluation;
+    
 	private LocalDateTime evaluationUpdatedAt;
 }
