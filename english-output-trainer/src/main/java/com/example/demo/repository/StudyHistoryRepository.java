@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.example.demo.entity.Evaluation;
+import com.example.demo.entity.Question;
 import com.example.demo.entity.StudyHistory;
 import com.example.demo.entity.StudyHistoryKey;
 
@@ -33,4 +34,20 @@ public interface StudyHistoryRepository extends JpaRepository<StudyHistory, Stud
 				    @Param("evaluations") List<String> evaluations,
 				    @Param("difficulties") List<String> difficulties
 				);
+	
+	@Query(value = """
+			SELECT q.*
+			FROM study_history sh
+			JOIN question q
+			  ON sh.question_id = q.question_id
+			WHERE sh.user_id = :userId
+			  AND sh.evaluation IN (:evaluations)
+			  AND q.difficulty IN (:difficulties)
+			ORDER BY sh.evaluation_updated_at ASC
+			""", nativeQuery = true)
+			List<Question> getQuestions(
+					    @Param("userId") Long userId,
+					    @Param("evaluations") List<String> evaluations,
+					    @Param("difficulties") List<String> difficulties
+					);
 }

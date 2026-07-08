@@ -95,22 +95,6 @@ public class StudyController {
 		
 		return "redirect:/study?page=" + page;
 		
-		// セッションに保存してあった問題リストを取得
-		//List<Question> questions = (List<Question>) session.getAttribute("questions");
-		
-		// 出題再開点を取得
-		//Question question = questions.get(page);
-		
-		// HTMLが必要な情報をModelへ格納
-		//setStudyModel(model, questions, page);
-		
-		//for (Question q : questions) {
-		//    System.out.print(q.getQuestionId() + " ");
-		//}
-		//System.out.println();
-		//System.out.print("resume");
-		
-		//return "study";
 	}
 	
 	@GetMapping("/study/complete")
@@ -141,11 +125,20 @@ public class StudyController {
 	public String postEvaluation(@AuthenticationPrincipal UserDetails loginUser,
 	        				   @RequestParam Long questionId,
 	        				   @RequestParam Evaluation evaluation,
-	        				   @RequestParam Integer page) {
+	        				   @RequestParam Integer page,
+	        				   HttpSession session) {
 		evaluationService.updateEvaluation(
 		        loginUser.getUsername(),
 		        questionId,
 		        evaluation);
+		
+		List<Question> questions =
+			    (List<Question>) session.getAttribute("questions");
+		
+		if (page + 1 >= questions.size()) {
+		    return "redirect:/review/complete";
+		}
+		
 		return "redirect:/study?page=" + (page + 1);
 	}
 	
