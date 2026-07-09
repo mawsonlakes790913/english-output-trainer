@@ -20,12 +20,12 @@ public class HomeController {
 		return "home";
 	}
 	
-	// 通常学習をクリック
-	@GetMapping("/study/menu")
-	public String getStudyMenu() {
-		
-		return "study/menu";
-	}
+//	// 通常学習をクリック
+//	@GetMapping("/study/menu")
+//	public String getStudyMenu() {
+//		
+//		return "study/menu";
+//	}
 	
 //	// 復習をクリック
 //	@GetMapping("/review/menu")

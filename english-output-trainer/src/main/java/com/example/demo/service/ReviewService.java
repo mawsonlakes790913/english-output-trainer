@@ -20,22 +20,6 @@ public class ReviewService {
 //	private final QuestionRepository questionRepository;
 	private final StudyHistoryRepository studyHistoryRepository;
 	
-//	public long countTotalAdvanced() {
-//		long totalAdvanced = questionRepository.countByDifficulty("Advanced");
-//		return totalAdvanced;
-//	}
-//	
-//	public long countTotalIntermediate() {
-//		long totalIntermediate = questionRepository.countByDifficulty("Intermediate");
-//		return totalIntermediate;
-//	}
-//
-//	public long countTotalBegginer() {
-//		long totalBegginner = questionRepository.countByDifficulty("Beginner");
-//		return totalBeginner;
-//	}
-	
-	
 	public long countEvaluation(Long userId, Evaluation evaluation) {
         return studyHistoryRepository
                 .countByStudyHistoryKeyUserIdAndEvaluation(
@@ -43,43 +27,8 @@ public class ReviewService {
                         evaluation);
     }
 	
+	//復習出題数取得
 	public long countReviewQuestions(Long userId, List<Evaluation> evaluations, List<Difficulty> difficulties) {
-		
-//		List<String> evaluationList;
-//		List<String> difficultyList;
-//		
-//	    if (evaluations == null || evaluations.isEmpty()) {
-//
-//	        evaluationList = List.of(
-//	                Evaluation.HARD.name(),
-//	                Evaluation.GOOD.name(),
-//	                Evaluation.EASY.name());
-//
-//	    } else {
-//
-//	        evaluationList = new ArrayList<>();
-//
-//	        for (Evaluation evaluation : evaluations) {
-//	            evaluationList.add(evaluation.name());
-//	        }
-//	    }
-//	    
-//	    // 難易度
-//	    if (difficulties == null || difficulties.isEmpty()) {
-//
-//	        difficultyList = List.of(
-//	                Difficulty.BEGINNER.name(),
-//	                Difficulty.INTERMEDIATE.name(),
-//	                Difficulty.ADVANCED.name());
-//
-//	    } else {
-//
-//	        difficultyList = new ArrayList<>();
-//
-//	        for (Difficulty difficulty : difficulties) {
-//	            difficultyList.add(difficulty.name());
-//	        }
-//	    }
 		
 	    return studyHistoryRepository.countQuestions(
 	            userId,

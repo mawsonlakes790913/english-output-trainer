@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>English Output Trainer</title>
+
+    <link rel="stylesheet"
+          th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <!-- <script th:src="@{/js/review.js}" defer></script> -->
+</head>
+
+<body>
+
+<div layout:fragment="content">
+
+    <div class="header border-bottom mb-4">
+        <h1 class="h2">学習メニュー</h1>
+    </div>
+
+    <form th:action="@{/study/start}" method="get">
+
+        <!-- 出題方法 -->
+        <div class="card mb-4">
+
+            <div class="card-header">
+                出題方法
+            </div>
+
+            <div class="card-body">
+
+                <div class="form-check">
+                    <input class="form-check-input"
+                           type="radio"
+                           name="order"
+                           value="SEQUENTIAL"
+                           checked>
+
+                    <label class="form-check-label">
+                        順番に出題
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <input class="form-check-input"
+                           type="radio"
+                           name="order"
+                           value="RANDOM">
+
+                    <label class="form-check-label">
+                        ランダムに出題
+                    </label>
+                </div>
+            </div>
+        </div>
+
+		<!-- 問題難易度 -->
+		<div class="row g-3 mb-4">
+		
+		    <!-- 初級 -->
+		    <div class="col-md-4">
+		        <div class="accordion" id="beginnerAccordion">
+		
+		            <div class="accordion-item">
+		
+		                <h2 class="accordion-header">
+		
+		                    <button class="accordion-button collapsed bg-danger-subtle fs-4 py-3"
+		                            type="button"
+		                            data-bs-toggle="collapse"
+		                            data-bs-target="#beginnerCollapse">
+		
+		                        <span th:text="'初級 : ' + ${studyMenu.beginnerCount} + '問'"></span> 
+		
+		                    </button>
+		
+		                </h2>
+		
+		                <div id="beginnerCollapse"
+		                     class="accordion-collapse collapse">
+		
+		                    <div class="accordion-body">
+		
+		                        <select class="form-select"
+		                                name="beginnerRange">
+		
+		                            <option value="">選択してください</option>
+		
+		                            <option th:each="range : ${studyMenu.beginnerRanges}"
+		                                    th:value="${range.start}"
+		                                    th:text="${range.displayText}">
+		                            </option>
+		
+		                        </select>
+		
+		                    </div>
+		
+		                </div>
+		
+		            </div>
+		
+		        </div>
+		    </div>
+		
+		    <!-- 中級 -->
+		    <div class="col-md-4">
+		
+		        <div class="accordion" id="intermediateAccordion">
+		
+		            <div class="accordion-item">
+		
+		                <h2 class="accordion-header">
+		
+		                    <button class="accordion-button collapsed bg-primary-subtle fs-4 py-3"
+		                            type="button"
+		                            data-bs-toggle="collapse"
+		                            data-bs-target="#intermediateCollapse">
+		
+		                        <span th:text="'中級 : ' + ${studyMenu.intermediateCount} + '問'"></span>
+		
+		                    </button>
+		
+		                </h2>
+		
+		                <div id="intermediateCollapse"
+		                     class="accordion-collapse collapse">
+		
+		                    <div class="accordion-body">
+		
+		                        <select class="form-select"
+		                                name="intermediateRange">
+		
+		                            <option value="">選択してください</option>
+		
+		                            <option th:each="range : ${studyMenu.intermediateRanges}"
+		                                    th:value="${range.start}"
+		                                    th:text="${range.displayText}">
+		                            </option>
+		
+		                        </select>
+		
+		                    </div>
+		
+		                </div>
+		
+		            </div>
+		
+		        </div>
+		
+		    </div>
+		
+		    <!-- 上級 -->
+		    <div class="col-md-4">
+		
+		        <div class="accordion" id="advancedAccordion">
+		
+		            <div class="accordion-item">
+		
+		                <h2 class="accordion-header">
+		
+		                    <button class="accordion-button collapsed bg-success-subtle fs-4 py-3"
+		                            type="button"
+		                            data-bs-toggle="collapse"
+		                            data-bs-target="#advancedCollapse">
+		
+		                        <span th:text="'上級 : ' + ${studyMenu.advancedCount} + '問'"></span>
+		
+		                    </button>
+		
+		                </h2>
+		
+		                <div id="advancedCollapse"
+		                     class="accordion-collapse collapse">
+		
+		                    <div class="accordion-body">
+		
+		                        <select class="form-select"
+		                                name="advancedRange">
+		
+		                            <option value="">選択してください</option>
+		
+		                            <option th:each="range : ${studyMenu.advancedRanges}"
+		                                    th:value="${range.start}"
+		                                    th:text="${range.displayText}">
+		                            </option>
+		
+		                        </select>
+		
+		                    </div>
+		
+		                </div>
+		
+		            </div>
+		
+		        </div>
+		
+		    </div>
+		
+		</div>
+		
+		
+
+        <!-- 出題開始 -->
+        <button type="submit"
+                class="btn btn-primary btn-lg w-100">
+            出題開始
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>
