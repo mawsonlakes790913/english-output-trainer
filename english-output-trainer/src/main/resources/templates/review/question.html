@@ -16,7 +16,7 @@
     <h1>復習</h1>
     <p>頑張りましょう</p>
     <div class="mt-3">
-        <span th:text="${currentPage + '/' + totalPages}">
+        <span th:text="${nextPageIndex + '/' + totalPages}">
             現在の問題数/総問題数
         </span>
         <h2 th:text="${question.japaneseText}">
@@ -57,7 +57,7 @@
 	               value="HARD">
 	        <input type="hidden"
            		   name="page"
-           		   th:value="${currentPage - 1}">
+           		   th:value="${nextPageIndex - 1}">
 	        <button type="submit" class="btn btn-danger btn-lg">
 	            Hard（難しかった）
 	        </button>
@@ -72,7 +72,7 @@
 	               value="GOOD">
 	        <input type="hidden"
            		   name="page"
-           		   th:value="${currentPage - 1}">
+           		   th:value="${nextPageIndex - 1}">
 	        <button type="submit" class="btn btn-success btn-lg">
 	            Good（少し考えた）
 	        </button>
@@ -87,7 +87,7 @@
 	               value="EASY">
 	        <input type="hidden"
            		   name="page"
-           		   th:value="${currentPage - 1}">
+           		   th:value="${nextPageIndex - 1}">
 	        <button type="submit" class="btn btn-primary btn-lg">
 	            Easy（余裕だった）
 	        </button>
@@ -98,12 +98,12 @@
     <div class="mb-5 d-flex justify-content-center gap-4"
     	 style="margin-top:60px;">
         <a th:if="${hasPrevious}"
-           th:href="@{/review/question(page=${currentPage - 2})}"
+           th:href="@{/review/question(page=${nextPageIndex - 2})}"
            class="btn btn-outline-primary">
             前の問題へ
         </a>
         <a th:if="${hasNext}"
-           th:href="@{/review/question(page=${currentPage})}"
+           th:href="@{/review/question(page=${nextPageIndex})}"
            class="btn btn-outline-primary">
             次の問題へ
         </a>
@@ -117,7 +117,7 @@
     <!-- 学習中断・終了 -->
     <div class="d-flex justify-content-center gap-3"
          style="margin-top:90px;">
-        <a th:href="@{/review/suspend(page=${currentPage - 1})}"
+        <a th:href="@{/review/suspend(page=${nextPageIndex - 1})}"
            onclick="return confirm('復習を中断しますか？');"
            class="btn btn-outline-danger btn-sm"
            style="width:100px;">

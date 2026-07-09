@@ -66,7 +66,7 @@ public class ReviewController {
 
 		// /questionへの直接アクセスを禁ずる
 	    if (questions == null) {
-	        return "redirect:review/menu";
+	        return "redirect:/";
 	    }
 		// HTMLが必要な情報をModelへ格納
 		setReviewQuestionModel(model, questions, page);
@@ -83,7 +83,7 @@ public class ReviewController {
 	    Question question = questions.get(page);
 
 	    model.addAttribute("question", question);
-	    model.addAttribute("currentPage", page + 1);
+	    model.addAttribute("nextPageIndex", page + 1);
 	    model.addAttribute("totalPages", questions.size());
 	    model.addAttribute("hasPrevious", page > 0);
 	    model.addAttribute(

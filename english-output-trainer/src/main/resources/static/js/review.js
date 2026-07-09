@@ -38,5 +38,8 @@ document.addEventListener("DOMContentLoaded", () => {
     checkboxes.forEach(cb => {
         cb.addEventListener("change", updateCount);
     });
+    
+        // 初回表示時にも件数を取得
+    updateCount();
 
 });
