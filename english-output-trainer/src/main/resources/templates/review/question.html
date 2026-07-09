@@ -22,12 +22,14 @@
         <h2 th:text="${question.japaneseText}">
             日本語問題
         </h2>
-        <p th:if="${question.condition != null}">
-            条件：
-            <span th:text="${question.condition}">
-                条件
-            </span>
-        </p>
+        <div style="min-height:40px;">
+	        <p th:if="${question.condition != null}">
+	            条件：
+	            <span th:text="${question.condition}">
+	                条件
+	            </span>
+	        </p>
+        </div>
         <div style="min-height:80px;">
             <button id="answerButton"
                     type="button"
