@@ -45,19 +45,37 @@ public class StudyController {
 	@GetMapping("/study/start")
 	public String getStudyStart(
 	        HttpSession session,
-	        @RequestParam(name = "difficulty") Difficulty difficulty,
-	        @RequestParam(name = "start") int start,
-	        @RequestParam(name = "random") boolean random) {
+	        @RequestParam(required = false) Integer beginnerRange,
+	        @RequestParam(required = false) Integer intermediateRange,
+	        @RequestParam(required = false) Integer advancedRange,
+	        @RequestParam(name = "random") boolean random
+	        ) {
+		
+	    Difficulty difficulty;
+	    int start;
+		
+	    if (beginnerRange != null) {
+	        difficulty = Difficulty.BEGINNER;
+	        start = beginnerRange;
+	    } else if (intermediateRange != null) {
+	        difficulty = Difficulty.INTERMEDIATE;
+	        start = intermediateRange;
+	    } else if (advancedRange != null) {
+	        difficulty = Difficulty.ADVANCED;
+	        start = advancedRange;
+	    } else {
+	        return "redirect:/study/menu";
+	    }
 		
 	    // 既存の学習状態を破棄
-	    session.removeAttribute("questions");
-	    session.removeAttribute("currentPage");
+	    session.removeAttribute("studyQuestions");
+	    session.removeAttribute("studyCurrentPage");
 	    
 	    //問題セットを取得
 	    List<Question> questions = studyService.getQuestions(difficulty, start, random);
 
-		session.setAttribute("questions", questions);
-	    session.setAttribute("currentPage", 0);
+		session.setAttribute("studyQuestions", questions);
+	    session.setAttribute("studyCurrentPage", 0);
 	    
 	    return "redirect:/study/question";
 	    
