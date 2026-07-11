@@ -30,34 +30,7 @@ public class StudyController {
 	private final StudyServiceImpl studyService;
 	//private List<Question> questions;
 	private final EvaluationService evaluationService;
-	
-	@GetMapping("/study")
-	public String getStudy(Model model,
-						   HttpSession session,
-						   @RequestParam(defaultValue = "0") int page){
-		// ① Sessionになければ取得して保存
-		//if (session.getAttribute("questions") == null) {
-		//	List<Question> questions = studyService.getRandomQuestion();
-		//	session.setAttribute("questions", questions);
-		//}
-		
-		// ② Sessionからquestions取得
-		List<Question> questions = (List<Question>) session.getAttribute("questions");
-		
-		// ③ page番目の問題を取り出す
-		//Question question = questions.get(page);
-		
-		// /studyへの直接アクセスを禁ずる
-	    if (questions == null) {
-	        return "redirect:/";
-	    }
-		
-		// ④ HTMLが必要な情報をModelへ格納
-		setStudyModel(model, questions, page);
-
-		// ⑤ study.htmlを返す
-		return "study";
-	}
+	private final QuestionModelUtil questionModelUtil;
 	
 	@GetMapping("/study/resume")
 	public String resumeStudy(Model model,
@@ -162,10 +135,27 @@ public class StudyController {
 		session.setAttribute("questions", questions);
 	    session.setAttribute("currentPage", 0);
 	    
-	    return "redirect:/study";
+	    return "redirect:/study/question";
 	    
 	}
 	
+	@GetMapping("/study/question")
+	public String getStudyQuestion(Model model,
+								   HttpSession session,
+								   @RequestParam(defaultValue = "0") int page) {
+		// Sessionからquestions取得
+		List<Question> questions = (List<Question>) session.getAttribute("studyQuestions");
+		
+		// /questionへの直接アクセスを禁ずる
+	    if (questions == null) {
+	        return "redirect:study/menu";
+	    }
+	    
+		// HTMLが必要な情報をModelへ格納
+	    questionModelUtil.setQuestionModel(model, questions, page);
+		
+		return "study/question";
+	}
 	
-
 }
+	

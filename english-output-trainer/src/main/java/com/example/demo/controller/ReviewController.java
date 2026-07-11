@@ -29,6 +29,7 @@ public class ReviewController {
 	private final UserServiceImpl userServiceImpl;
 	private final ReviewService reviewService;
 	private final EvaluationService evaluationService;
+	private final QuestionModelUtil questionModelUtil;
 	
 	@GetMapping("/review/menu")
 	public String getReviewMenu() {
@@ -69,27 +70,27 @@ public class ReviewController {
 	        return "redirect:/";
 	    }
 		// HTMLが必要な情報をModelへ格納
-		setReviewQuestionModel(model, questions, page);
+	    questionModelUtil.setQuestionModel(model, questions, page);
 
 		// study.htmlを返す
 		return "review/question";	    
 	}
 	
-	private void setReviewQuestionModel(
-	        Model model,
-	        List<Question> questions,
-	        int page) {
-
-	    Question question = questions.get(page);
-
-	    model.addAttribute("question", question);
-	    model.addAttribute("nextPageIndex", page + 1);
-	    model.addAttribute("totalPages", questions.size());
-	    model.addAttribute("hasPrevious", page > 0);
-	    model.addAttribute(
-	            "hasNext",
-	            page < questions.size() - 1);
-	}
+//	private void setReviewQuestionModel(
+//	        Model model,
+//	        List<Question> questions,
+//	        int page) {
+//
+//	    Question question = questions.get(page);
+//
+//	    model.addAttribute("question", question);
+//	    model.addAttribute("nextPageIndex", page + 1);
+//	    model.addAttribute("totalPages", questions.size());
+//	    model.addAttribute("hasPrevious", page > 0);
+//	    model.addAttribute(
+//	            "hasNext",
+//	            page < questions.size() - 1);
+//	}
 
 	
 	@GetMapping("/review/start")
