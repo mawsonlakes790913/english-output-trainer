@@ -31,46 +31,7 @@ public class StudyController {
 	//private List<Question> questions;
 	private final EvaluationService evaluationService;
 	private final QuestionModelUtil questionModelUtil;
-	
-//	@GetMapping("/study/resume")
-//	public String resumeStudy(Model model,
-//							  HttpSession session
-//							  ) {
-//		// 中断していないならホームに戻す
-//		if (session.getAttribute("questions") == null) {
-//		    return "redirect:/";
-//		}
-//		// 中断時のページ情報を取得
-//		Integer page =
-//		        (Integer) session.getAttribute("currentPage");
-//		
-//		return "redirect:/study?page=" + page;
-//		
-//	}
-	
-	@GetMapping("/study/complete")
-	public String completeStudy(HttpSession session) {
-		session.removeAttribute("questions");
-		session.removeAttribute("currentPage");
-		//System.out.print("complete");
-		return "redirect:/complete";
-	}
-	
-	@GetMapping("/study/suspend")
-	public String suspendStudy(@RequestParam int page,
-							    HttpSession session) {
-		session.setAttribute("currentPage", page);
-		//System.out.print("suspend");
-		return "redirect:/";
-	}	
-	
-	@GetMapping("/study/quit")
-	public String quitStudy(HttpSession session) {
-		session.removeAttribute("questions");
-		session.removeAttribute("currentPage");
-		//System.out.print("quit");
-		return "redirect:/";
-	}	
+
 	
 	@PostMapping("/study/evaluation")
 	public String postEvaluation(@AuthenticationPrincipal UserDetails loginUser,
@@ -159,7 +120,7 @@ public class StudyController {
 	
 	
 	@GetMapping("/study/resume")
-	public String getResumeStudy(Model model,
+	public String getStudyResume(Model model,
 							  HttpSession session
 							  ) {
 		// 中断していないならmenuに戻す
@@ -173,6 +134,30 @@ public class StudyController {
 		return "redirect:/study/question?page=" + page;
 		
 	}
+	
+	@GetMapping("/study/complete")
+	public String getStudyComplete(HttpSession session) {
+		session.removeAttribute("studyQuestions");
+		session.removeAttribute("studyCurrentPage");
+		//System.out.print("complete");
+		return "redirect:/complete";
+	}
+	
+	@GetMapping("/study/suspend")
+	public String getStudySuspend(@RequestParam int page,
+							    HttpSession session) {
+		session.setAttribute("studyCurrentPage", page);
+		//System.out.print("suspend");
+		return "redirect:/";
+	}	
+	
+	@GetMapping("/study/quit")
+	public String getStudyQuit(HttpSession session) {
+		session.removeAttribute("studyQuestions");
+		session.removeAttribute("studyCurrentPage");
+		//System.out.print("quit");
+		return "redirect:/";
+	}	
 	
 }
 	
