@@ -24,22 +24,39 @@ public class StudyServiceImpl implements StudyService {
 	
 	private final QuestionRepository questionRepository;
 	
-	public List<Question> getQuestion(){
-		List<Question> extractedQuestions = questionRepository.findAll();
+//	public List<Question> getQuestion(){
+//		List<Question> extractedQuestions = questionRepository.findAll();
+//		return extractedQuestions;
+//	}
+	
+	public List<Question> getQuestions(Difficulty difficulty,
+									  int start,
+									  boolean random){
+		
+		int offset = start - 1;
+		
+		List<Question> extractedQuestions = questionRepository.getQuestions(difficulty, offset);
+		
+		// シャッフルする
+		if (random) {
+			Collections.shuffle(extractedQuestions);
+		} 
+		
+		
 		return extractedQuestions;
 	}
 	
-	public List<Question> getRandomQuestion(){
-		
-		List<Question> extractedQuestions = questionRepository.findAll(); 
-		Collections.shuffle(extractedQuestions);
-		// シャッフルが行われているかコンソールに出力して確認
-		for (Question q : extractedQuestions) {
-		    System.out.print(q.getQuestionId() + " ");
-		}
-		System.out.println();
-		return extractedQuestions;
-	}
+//	public List<Question> getRandomQuestion(){
+//		
+//		List<Question> extractedQuestions = questionRepository.findAll(); 
+//		Collections.shuffle(extractedQuestions);
+//		// シャッフルが行われているかコンソールに出力して確認
+//		for (Question q : extractedQuestions) {
+//		    System.out.print(q.getQuestionId() + " ");
+//		}
+//		System.out.println();
+//		return extractedQuestions;
+//	}
 	
 	public StudyMenuDto countStudyQuestions() {
 		
@@ -81,5 +98,17 @@ public class StudyServiceImpl implements StudyService {
 		}
 
 		return ranges;
+	}
+	
+	public List<Question> getRandomQuestion(){
+		
+		List<Question> extractedQuestions = questionRepository.findAll(); 
+		Collections.shuffle(extractedQuestions);
+		// シャッフルが行われているかコンソールに出力して確認
+		for (Question q : extractedQuestions) {
+		    System.out.print(q.getQuestionId() + " ");
+		}
+		System.out.println();
+		return extractedQuestions;
 	}
 }
