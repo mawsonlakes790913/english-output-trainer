@@ -32,21 +32,21 @@ public class StudyController {
 	private final EvaluationService evaluationService;
 	private final QuestionModelUtil questionModelUtil;
 	
-	@GetMapping("/study/resume")
-	public String resumeStudy(Model model,
-							  HttpSession session
-							  ) {
-		// 中断していないならホームに戻す
-		if (session.getAttribute("questions") == null) {
-		    return "redirect:/";
-		}
-		// 中断時のページ情報を取得
-		Integer page =
-		        (Integer) session.getAttribute("currentPage");
-		
-		return "redirect:/study?page=" + page;
-		
-	}
+//	@GetMapping("/study/resume")
+//	public String resumeStudy(Model model,
+//							  HttpSession session
+//							  ) {
+//		// 中断していないならホームに戻す
+//		if (session.getAttribute("questions") == null) {
+//		    return "redirect:/";
+//		}
+//		// 中断時のページ情報を取得
+//		Integer page =
+//		        (Integer) session.getAttribute("currentPage");
+//		
+//		return "redirect:/study?page=" + page;
+//		
+//	}
 	
 	@GetMapping("/study/complete")
 	public String completeStudy(HttpSession session) {
@@ -155,6 +155,23 @@ public class StudyController {
 	    questionModelUtil.setQuestionModel(model, questions, page);
 		
 		return "study/question";
+	}
+	
+	
+	@GetMapping("/study/resume")
+	public String getResumeStudy(Model model,
+							  HttpSession session
+							  ) {
+		// 中断していないならmenuに戻す
+		if (session.getAttribute("studyQuestions") == null) {
+		    return "redirect:/study/menu";
+		}
+		// 中断時のページ情報を取得
+		Integer page =
+		        (Integer) session.getAttribute("studyCurrentPage");
+		
+		return "redirect:/study/question?page=" + page;
+		
 	}
 	
 }

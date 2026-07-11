@@ -131,7 +131,7 @@ public class ReviewController {
 							  ) {
 		// 中断していないならmenuに戻す
 		if (session.getAttribute("reviewQuestions") == null) {
-		    return "redirect:review/menu";
+		    return "redirect:/review/menu";
 		}
 		// 中断時のページ情報を取得
 		Integer page =
