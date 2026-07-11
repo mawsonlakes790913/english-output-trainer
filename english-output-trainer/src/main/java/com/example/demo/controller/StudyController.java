@@ -33,43 +33,6 @@ public class StudyController {
 	private final QuestionModelUtil questionModelUtil;
 
 	
-	@PostMapping("/study/evaluation")
-	public String postEvaluation(@AuthenticationPrincipal UserDetails loginUser,
-	        				   @RequestParam Long questionId,
-	        				   @RequestParam Evaluation evaluation,
-	        				   @RequestParam Integer page,
-	        				   HttpSession session) {
-		evaluationService.updateEvaluation(
-		        loginUser.getUsername(),
-		        questionId,
-		        evaluation);
-		
-		List<Question> questions =
-			    (List<Question>) session.getAttribute("questions");
-		
-		if (page + 1 >= questions.size()) {
-		    return "redirect:/review/complete";
-		}
-		
-		return "redirect:/study?page=" + (page + 1);
-	}
-	
-	private void setStudyModel(
-	        Model model,
-	        List<Question> questions,
-	        int page) {
-
-	    Question question = questions.get(page);
-
-	    model.addAttribute("question", question);
-	    model.addAttribute("currentPage", page + 1);
-	    model.addAttribute("totalPages", questions.size());
-	    model.addAttribute("hasPrevious", page > 0);
-	    model.addAttribute(
-	            "hasNext",
-	            page < questions.size() - 1);
-	}
-	
 	@GetMapping("/study/menu")
 	public String getStudyMenu(Model model) {
 
@@ -158,6 +121,27 @@ public class StudyController {
 		//System.out.print("quit");
 		return "redirect:/";
 	}	
+	
+	@PostMapping("/study/evaluation")
+	public String postEvaluation(@AuthenticationPrincipal UserDetails loginUser,
+	        				   @RequestParam Long questionId,
+	        				   @RequestParam Evaluation evaluation,
+	        				   @RequestParam Integer page,
+	        				   HttpSession session) {
+		evaluationService.updateEvaluation(
+		        loginUser.getUsername(),
+		        questionId,
+		        evaluation);
+		
+		List<Question> questions =
+			    (List<Question>) session.getAttribute("studyQuestions");
+		
+		if (page + 1 >= questions.size()) {
+		    return "redirect:/study/complete";
+		}
+		
+		return "redirect:/study?page=" + (page + 1);
+	}
 	
 }
 	
