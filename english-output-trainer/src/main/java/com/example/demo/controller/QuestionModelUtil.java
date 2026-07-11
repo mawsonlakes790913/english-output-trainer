@@ -18,7 +18,7 @@ public class QuestionModelUtil {
         Question question = questions.get(page);
 
         model.addAttribute("question", question);
-        model.addAttribute("currentPage", page + 1);
+        model.addAttribute("nextPageIndex", page + 1);
         model.addAttribute("totalPages", questions.size());
         model.addAttribute("hasPrevious", page > 0);
         model.addAttribute("hasNext", page < questions.size() - 1);
