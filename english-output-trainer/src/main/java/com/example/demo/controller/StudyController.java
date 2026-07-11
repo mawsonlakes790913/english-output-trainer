@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.dto.StudyMenuDto;
+import com.example.demo.entity.Difficulty;
 import com.example.demo.entity.Evaluation;
 import com.example.demo.entity.Question;
 import com.example.demo.service.EvaluationService;
@@ -56,30 +57,6 @@ public class StudyController {
 
 		// ⑤ study.htmlを返す
 		return "study";
-	}
-	
-	@GetMapping("/study/start")
-	public String startStudy(Model model,
-							 HttpSession session,
-							 @RequestParam String mode) {
-	    // 既存の学習状態を破棄
-	    session.removeAttribute("questions");
-	    session.removeAttribute("currentPage");
-	    
-	    //先に宣言
-	    List<Question> questions;
-	    
-	    // 新しい問題セットを作成
-	    if ("sequential".equals(mode)) {
-	    	questions = studyService.getQuestion();
-	    } else {
-	    	questions = studyService.getRandomQuestion();
-	    }
-
-		session.setAttribute("questions", questions);
-	    session.setAttribute("currentPage", 0);
-	    
-	    return "redirect:/study";
 	}
 	
 	@GetMapping("/study/resume")
@@ -165,13 +142,29 @@ public class StudyController {
 		StudyMenuDto menu = studyService.countStudyQuestions();
 	    model.addAttribute("studyMenu", menu);
 
-//	    model.addAttribute("beginnerRanges", menu.getBeginnerRanges());
-//	    model.addAttribute("intermediateRanges", menu.getIntermediateRanges());
-//	    model.addAttribute("advancedRanges", menu.getAdvancedRanges());
-
 	    return "study/menu";
 	}
 	
+	@GetMapping("/study/start")
+	public String getStudyStart(
+	        HttpSession session,
+	        @RequestParam(name = "difficulty") Difficulty difficulty,
+	        @RequestParam(name = "start") int start,
+	        @RequestParam(name = "random") boolean random) {
+		
+	    // 既存の学習状態を破棄
+	    session.removeAttribute("questions");
+	    session.removeAttribute("currentPage");
+	    
+	    //問題セットを取得
+	    List<Question> questions = studyService.getQuestions(difficulty, start, random);
+
+		session.setAttribute("questions", questions);
+	    session.setAttribute("currentPage", 0);
+	    
+	    return "redirect:/study";
+	    
+	}
 	
 	
 
