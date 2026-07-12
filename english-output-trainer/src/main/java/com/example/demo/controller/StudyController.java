@@ -18,6 +18,7 @@ import com.example.demo.entity.Difficulty;
 import com.example.demo.entity.Evaluation;
 import com.example.demo.entity.Question;
 import com.example.demo.service.EvaluationService;
+import com.example.demo.service.FavoritesService;
 import com.example.demo.service.StudyServiceImpl;
 
 import jakarta.servlet.http.HttpSession;
@@ -31,6 +32,7 @@ public class StudyController {
 	//private List<Question> questions;
 	private final EvaluationService evaluationService;
 	private final QuestionModelUtil questionModelUtil;
+	private final FavoritesService favoritesService;	
 
 	
 	@GetMapping("/study/menu")
@@ -84,7 +86,8 @@ public class StudyController {
 	@GetMapping("/study/question")
 	public String getStudyQuestion(Model model,
 								   HttpSession session,
-								   @RequestParam(defaultValue = "0") int page) {
+								   @RequestParam(defaultValue = "0") int page,
+								   @AuthenticationPrincipal UserDetails loginUser) {
 		// Sessionからquestions取得
 		List<Question> questions = (List<Question>) session.getAttribute("studyQuestions");
 		
@@ -93,8 +96,20 @@ public class StudyController {
 	        return "redirect:study/menu";
 	    }
 	    
+	    // 現在表示する問題を取得
+	    Question question = questions.get(page);
+	    
 		// HTMLが必要な情報をModelへ格納
 	    questionModelUtil.setQuestionModel(model, questions, page);
+	    
+	    // ログインしている場合だけお気に入り判定
+	    if (loginUser != null) {
+	        boolean isFavorite = favoritesService.isFavorite(
+	                loginUser.getUsername(),
+	                question.getQuestionId());
+
+	        model.addAttribute("isFavorite", isFavorite);
+	    }
 		
 		return "study/question";
 	}
