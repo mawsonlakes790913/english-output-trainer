@@ -23,13 +23,7 @@ public class FavoritesService {
 	
 	public boolean toggleFavorite(String loginUser, long questionId) {
 		
-		// ユーザー情報を取得
-		Users user = userServiceImpl.getUserOne(loginUser);
-		
-		// 複合キー情報を取得
-		FavoritesKey key = new FavoritesKey();
-		key.setUserId(user.getId());
-		key.setQuestionId(questionId);
+		FavoritesKey key = createFavoritesKey(loginUser, questionId);
 		
 		// 存在確認とINSERT及びDELETE処理
 		Optional<Favorites> optionalFavorites =
@@ -51,5 +45,28 @@ public class FavoritesService {
 
 		}
 	}
+	
+	public boolean isFavorite(String loginUser, long questionId) {
+		
+		FavoritesKey key = createFavoritesKey(loginUser, questionId);
+		
+		return favoritesRepository.existsById(key);
+	}
+	
+	private FavoritesKey createFavoritesKey(String loginUser, long questionId) {
+		
+		// ユーザー情報を取得
+		Users user = userServiceImpl.getUserOne(loginUser);
+		
+		// 複合キー情報を取得
+		FavoritesKey key = new FavoritesKey();
+		key.setUserId(user.getId());
+		key.setQuestionId(questionId);
+		
+		return key;
+		
+	}
+	
+	
 	
 }

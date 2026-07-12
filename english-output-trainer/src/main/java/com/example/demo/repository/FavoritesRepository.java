@@ -11,4 +11,7 @@ public interface FavoritesRepository extends JpaRepository<Favorites, FavoritesK
 	
 	Optional<Favorites> findByFavoritesKey(FavoritesKey favoritesKey);
 	
+	// 自分でDELETE処理を書く場合
+	//void deleteByFavoritesKey(FavoritesKey favoritesKey);
+	
 }
