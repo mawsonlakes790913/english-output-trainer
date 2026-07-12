@@ -35,8 +35,9 @@
 		    </h2>
 		
 		    <button id="favoriteButton"
-		            type="button"
-		            class="btn p-0 border-0 bg-transparent">
+			        type="button"
+			        class="btn p-0 border-0 bg-transparent"
+			        th:data-question-id="${question.questionId}">
 		
 		        <i id="favoriteIcon"
 				   th:class="${isFavorite}
