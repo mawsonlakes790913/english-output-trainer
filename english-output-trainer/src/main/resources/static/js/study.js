@@ -38,10 +38,37 @@ if (favoriteButton) {
 
         })
         .then(response => response.text())
-        .then(result => {
-            console.log(result);
-        });
+		.then(result => {
+		
+		    const favoriteIcon =
+		            document.getElementById("favoriteIcon");
+		
+		    if (result === "true") {
+		
+		        favoriteIcon.classList.remove(
+		                "bi-heart",
+		                "text-secondary");
+		
+		        favoriteIcon.classList.add(
+		                "bi-heart-fill",
+		                "text-danger");
+		
+		    } else {
+		
+		        favoriteIcon.classList.remove(
+		                "bi-heart-fill",
+		                "text-danger");
+		
+		        favoriteIcon.classList.add(
+		                "bi-heart",
+		                "text-secondary");
+		
+		    }
+		
+		});
 
     });
 
 }
+
+const favoriteIcon = document.getElementById("favoriteIcon");
