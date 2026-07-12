@@ -39,7 +39,10 @@
 		            class="btn p-0 border-0 bg-transparent">
 		
 		        <i id="favoriteIcon"
-		           class="bi bi-heart fs-2 text-secondary"></i>
+				   th:class="${isFavorite}
+				        ? 'bi bi-heart-fill fs-2 text-danger'
+				        : 'bi bi-heart fs-2 text-secondary'">
+				</i>
 		
 		    </button>
 		
