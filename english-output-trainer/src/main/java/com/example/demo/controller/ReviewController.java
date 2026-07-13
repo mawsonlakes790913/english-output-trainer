@@ -16,6 +16,7 @@ import com.example.demo.entity.Evaluation;
 import com.example.demo.entity.Question;
 import com.example.demo.entity.Users;
 import com.example.demo.service.EvaluationService;
+import com.example.demo.service.FavoritesService;
 import com.example.demo.service.ReviewService;
 import com.example.demo.service.UserServiceImpl;
 
@@ -30,6 +31,7 @@ public class ReviewController {
 	private final ReviewService reviewService;
 	private final EvaluationService evaluationService;
 	private final QuestionModelUtil questionModelUtil;
+	private final FavoritesService favoritesService;
 	
 	@GetMapping("/review/menu")
 	public String getReviewMenu() {
@@ -60,17 +62,31 @@ public class ReviewController {
 	@GetMapping("/review/question")
 	public String getReviewQuestion(Model model,
 			   					    HttpSession session,
-			   					    @RequestParam(defaultValue = "0") int page) {
+			   					    @RequestParam(defaultValue = "0") int page,
+			   					    @AuthenticationPrincipal UserDetails loginUser) {
 		
 		// Sessionからquestions取得
 		List<Question> questions = (List<Question>) session.getAttribute("reviewQuestions");
 
 		// /questionへの直接アクセスを禁ずる
 	    if (questions == null) {
-	        return "redirect:/";
+	        return "redirect:review/menu";
 	    }
+	    
+	    // 現在表示する問題を取得
+	    Question question = questions.get(page);
+	    
 		// HTMLが必要な情報をModelへ格納
 	    questionModelUtil.setQuestionModel(model, questions, page);
+	    
+	    // ログインしている場合だけお気に入り判定
+	    if (loginUser != null) {
+	        boolean isFavorite = favoritesService.isFavorite(
+	                loginUser.getUsername(),
+	                question.getQuestionId());
+
+	        model.addAttribute("isFavorite", isFavorite);
+	    }
 
 		// study.htmlを返す
 		return "review/question";	    
