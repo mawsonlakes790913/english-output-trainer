@@ -45,6 +45,6 @@ public class FavoritesController {
 		List<Question> favoritesList = favoritesService.getFavoritesList(user.getId());
 		
 		model.addAttribute("favoritesList", favoritesList);
-		return "favorite/list";
+		return "favorites/list";
 	}
 }
