@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+
+<head>
+	<meta charset="UTF-8">
+	<title>お気に入り登録一覧</title>
+	<link rel="stylesheet" th:href="@{/css/study.css}">
+	<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+	<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+	<script th:src="@{/js/study.js}" defer></script>
+	<script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<div class="header border-bottom">
+			<h1 class="h2">お気に入り一覧画面</h1>
+			<!-- 一覧表示 -->
+			<div>
+				<table class="table table-striped table-bordered table-hover text-center">
+					<thead>
+						<tr>
+							<th>問題</th>
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="item : ${favoritesList}">
+						    <form th:action="@{favorites/detail}" method="post">
+						        <td class="text-start align-middle"
+						        	th:text="${item.japaneseText}"></td>
+						        <td class="align-middle">
+								<!-- ここに答えを表示するボタンを追加 -->
+								</td>
+						        <td>
+								    <button id="favoriteButton"
+									        type="button"
+									        class="btn p-0 border-0 bg-transparent">
+									</button>
+								        <i id="favoriteIcon"
+								           class="bi bi-heart fs-2 text-secondary"></i>
+						        </td>
+						    </form>
+						</tr>						
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+</div>
+</body>
+</html>
