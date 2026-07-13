@@ -34,13 +34,18 @@
 						        	th:text="${item.japaneseText}"></td>
 						        <td class="align-middle">
 								<!-- ここに答えを表示するボタンを追加 -->
-								    <button
-								        type="button"
-								        class="btn btn-outline-primary btn-sm"
-								        data-bs-toggle="modal"
-								        data-bs-target="#questionDetailModal">
-								        詳細
-								    </button>
+									<button
+									    type="button"
+									    class="btn btn-outline-primary btn-sm"
+									    data-bs-toggle="modal"
+									    data-bs-target="#questionDetailModal"
+									
+									    th:attr="
+									        data-japanese=${item.japaneseText},
+									        data-english=${item.englishText},
+									        data-alternative=${item.alternativeAnswer}">
+									    詳細
+									</button>
 								</td>
 						        <td>
 								    <button id="favoriteButton"
