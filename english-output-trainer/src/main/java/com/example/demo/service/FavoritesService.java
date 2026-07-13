@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.entity.Favorites;
 import com.example.demo.entity.FavoritesKey;
+import com.example.demo.entity.Question;
 import com.example.demo.entity.Users;
 import com.example.demo.repository.FavoritesRepository;
 
@@ -65,6 +67,16 @@ public class FavoritesService {
 		
 		return key;
 		
+	}
+	
+	public List<Question> getFavoritesList(String loginUser) {
+		
+		// ユーザー情報を取得
+		Users user = userServiceImpl.getUserOne(loginUser);
+		long userId = user.getId();
+		
+		List<Question> favoritesList = favoritesRepository.getFavoritesList(userId);
+		return favoritesList;
 	}
 	
 	
