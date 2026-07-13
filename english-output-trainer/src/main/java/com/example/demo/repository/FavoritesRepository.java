@@ -1,11 +1,15 @@
 package com.example.demo.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.example.demo.entity.Favorites;
 import com.example.demo.entity.FavoritesKey;
+import com.example.demo.entity.Question;
 
 public interface FavoritesRepository extends JpaRepository<Favorites, FavoritesKey> {
 	
@@ -13,5 +17,17 @@ public interface FavoritesRepository extends JpaRepository<Favorites, FavoritesK
 	
 	// 自分でDELETE処理を書く場合
 	//void deleteByFavoritesKey(FavoritesKey favoritesKey);
+	
+	@Query(value = """
+			SELECT q.*
+			FROM favorites f
+			JOIN question q
+			ON f.question_id = q.question_id
+			WHERE f.user_id = :userId
+			ORDER BY f.created_at
+			""", nativeQuery = true)
+			List<Question> getFavoritesList(
+					@Param("userId") Long userId
+					);
 	
 }
