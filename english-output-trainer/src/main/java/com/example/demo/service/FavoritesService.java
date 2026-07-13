@@ -69,11 +69,7 @@ public class FavoritesService {
 		
 	}
 	
-	public List<Question> getFavoritesList(String loginUser) {
-		
-		// ユーザー情報を取得
-		Users user = userServiceImpl.getUserOne(loginUser);
-		long userId = user.getId();
+	public List<Question> getFavoritesList(Long userId) {
 		
 		List<Question> favoritesList = favoritesRepository.getFavoritesList(userId);
 		return favoritesList;
