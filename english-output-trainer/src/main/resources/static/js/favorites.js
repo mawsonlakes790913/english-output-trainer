@@ -1,25 +1,34 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    const detailButtons = document.querySelectorAll(".btn-outline-primary");
+    const detailButtons =
+        document.querySelectorAll(".detailButton");
 
     detailButtons.forEach(function(button) {
 
         button.addEventListener("click", function() {
 
-            const japanese = button.dataset.japanese;
-            const english = button.dataset.english;
-            const alternative = button.dataset.alternative;
+            document.getElementById("modalJapanese").textContent =
+                button.dataset.japanese;
 
-            document.getElementById("modalJapanese").textContent = japanese;
-            document.getElementById("modalEnglish").textContent = english;
+            document.getElementById("modalEnglish").textContent =
+                button.dataset.english;
 
-            const alternativeArea = document.getElementById("modalAlternativeArea");
+            const alternativeArea =
+                document.getElementById("modalAlternativeArea");
 
-            if (alternative) {
-                document.getElementById("modalAlternative").textContent = alternative;
+            if (button.dataset.alternative) {
+
+                document.getElementById("modalAlternative").textContent =
+                    button.dataset.alternative;
+
                 alternativeArea.style.display = "";
+
             } else {
+
+                document.getElementById("modalAlternative").textContent = "";
+
                 alternativeArea.style.display = "none";
+
             }
 
         });

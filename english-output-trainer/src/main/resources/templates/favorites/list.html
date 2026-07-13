@@ -9,7 +9,7 @@
 	<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
 	<link rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-	<script th:src="@{/js/study.js}" defer></script>
+	<script th:src="@{/js/favorites.js}" defer></script>
 	<script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
 </head>
 
@@ -29,33 +29,29 @@
 					</thead>
 					<tbody>
 						<tr th:each="item : ${favoritesList}">
-						    <form th:action="@{favorites/detail}" method="post">
 						        <td class="text-start align-middle"
 						        	th:text="${item.japaneseText}"></td>
 						        <td class="align-middle">
 								<!-- ここに答えを表示するボタンを追加 -->
-									<button
-									    type="button"
-									    class="btn btn-outline-primary btn-sm"
-									    data-bs-toggle="modal"
-									    data-bs-target="#questionDetailModal"
-									
-									    th:attr="
-									        data-japanese=${item.japaneseText},
-									        data-english=${item.englishText},
-									        data-alternative=${item.alternativeAnswer}">
+									<button type="button"
+									        class="detailButton btn btn-outline-primary btn-sm"
+									        data-bs-toggle="modal"
+									        data-bs-target="#questionDetailModal"
+									        th:data-japanese="${item.japaneseText}"
+									        th:data-english="${item.englishText}"
+									        th:data-alternative="${item.alternativeAnswer}">
 									    詳細
 									</button>
 								</td>
 						        <td>
-								    <button id="favoriteButton"
-									        type="button"
-									        class="btn p-0 border-0 bg-transparent">
+									<button type="button"
+									        class="favoriteButton btn p-0 border-0 bg-transparent"
+									        th:data-question-id="${item.questionId}">
+									
+									    <i class="bi bi-heart-fill fs-2 text-danger"></i>
+									
 									</button>
-								        <i id="favoriteIcon"
-								           class="bi bi-heart fs-2 text-secondary"></i>
 						        </td>
-						    </form>
 						</tr>						
 					</tbody>
 				</table>
