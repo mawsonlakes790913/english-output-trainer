@@ -34,6 +34,13 @@
 						        	th:text="${item.japaneseText}"></td>
 						        <td class="align-middle">
 								<!-- ここに答えを表示するボタンを追加 -->
+								    <button
+								        type="button"
+								        class="btn btn-outline-primary btn-sm"
+								        data-bs-toggle="modal"
+								        data-bs-target="#questionDetailModal">
+								        詳細
+								    </button>
 								</td>
 						        <td>
 								    <button id="favoriteButton"
@@ -49,6 +56,44 @@
 				</table>
 			</div>
 		</div>
+	    <div class="modal fade" id="questionDetailModal">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	
+	            <div class="modal-header">
+	                <h5 class="modal-title">問題詳細</h5>
+	                <button type="button"
+	                        class="btn-close"
+	                        data-bs-dismiss="modal"></button>
+	            </div>
+	
+	            <div class="modal-body">
+	            <!-- 詳細をここに表示 -->
+					    <p>
+					        <strong>日本語</strong><br>
+					        <span id="modalJapanese"></span>
+					    </p>
+					
+					    <p>
+					        <strong>英語</strong><br>
+					        <span id="modalEnglish"></span>
+					    </p>
+					
+					    <p id="modalAlternativeArea">
+					        <strong>別解</strong><br>
+					        <span id="modalAlternative"></span>
+					    </p>
+					</div>
+		            <div class="modal-footer">
+		                <button type="button"
+		                        class="btn btn-secondary"
+		                        data-bs-dismiss="modal">
+		                    閉じる
+		                </button>
+		            </div>				
+	            </div>
+	        </div>
+	    </div>
 	</div>
 
 </div>
