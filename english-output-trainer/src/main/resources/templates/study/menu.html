@@ -9,7 +9,7 @@
 
     <link rel="stylesheet"
           th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
-    <!-- <script th:src="@{/js/review.js}" defer></script> -->
+    <script th:src="@{/js/study-menu.js}" defer></script>
 </head>
 
 <body>
@@ -85,7 +85,8 @@
 		
 		                    <div class="accordion-body">
 		
-		                        <select class="form-select"
+		                        <select id="beginnerRange"
+		                        		class="form-select"
 		                                name="beginnerRange">
 		
 		                            <option value="">選択してください</option>
@@ -131,7 +132,8 @@
 		
 		                    <div class="accordion-body">
 		
-		                        <select class="form-select"
+		                        <select id="intermediateRange"
+		                        		class="form-select"
 		                                name="intermediateRange">
 		
 		                            <option value="">選択してください</option>
@@ -178,7 +180,8 @@
 		
 		                    <div class="accordion-body">
 		
-		                        <select class="form-select"
+		                        <select id="advancedRange"
+		                        		class="form-select"
 		                                name="advancedRange">
 		
 		                            <option value="">選択してください</option>
