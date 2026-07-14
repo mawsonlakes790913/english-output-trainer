@@ -1,7 +1,8 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -38,13 +39,17 @@ public class FavoritesController {
 	
 	@GetMapping("/favorites/list")
 	public String getFavoritesList(@AuthenticationPrincipal UserDetails loginUser,
+								   @PageableDefault(page = 0, size = 50) Pageable pageable,
 								   Model model) {
 		Users user =
 		        userServiceImpl.getUserOne(loginUser.getUsername());
 
-		List<Question> favoritesList = favoritesService.getFavoritesList(user.getId());
+		Page<Question> favoritesList = favoritesService.getFavoritesList(user.getId(), pageable);
 		
-		model.addAttribute("favoritesList", favoritesList);
+		//model.addAttribute("favoritesList", favoritesList);
+		model.addAttribute("favoritesList", favoritesList.getContent());
+		model.addAttribute("page", favoritesList);
 		return "favorites/list";
 	}
+
 }
