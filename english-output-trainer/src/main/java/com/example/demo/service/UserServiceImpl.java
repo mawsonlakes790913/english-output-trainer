@@ -54,7 +54,8 @@ public class UserServiceImpl {
 
 	    Optional<Users> option = repository.findByUserId(userId);
 
-	    System.out.println("検索結果=" + option);
+	    //System.out.println("検索結果=" + option);
+	    System.out.println("検索結果=" + option.orElse(null).getUserId());
 
 	    return option.orElse(null);
 	}
