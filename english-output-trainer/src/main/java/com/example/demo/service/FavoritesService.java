@@ -26,6 +26,8 @@ public class FavoritesService {
 	
 	public boolean toggleFavorite(String loginUser, long questionId) {
 		
+	    Users user = userServiceImpl.getUserOne(loginUser);
+		
 		FavoritesKey key = createFavoritesKey(loginUser, questionId);
 		
 		// 存在確認とINSERT及びDELETE処理
@@ -34,12 +36,17 @@ public class FavoritesService {
 		
 		if (optionalFavorites.isEmpty()) {
 			//ここでINSERT
-		    Favorites favorite = new Favorites();
-		    favorite.setFavoritesKey(key);
-		    favorite.setCreatedAt(LocalDateTime.now());
+	        Question question = new Question();
+	        question.setQuestionId(questionId);
 
-		    favoritesRepository.save(favorite);
-		    return true;
+	        Favorites favorite = new Favorites();
+	        favorite.setFavoritesKey(key);
+	        favorite.setUser(user);
+	        favorite.setQuestion(question);
+	        favorite.setCreatedAt(LocalDateTime.now());
+
+	        favoritesRepository.save(favorite);
+	        return true;
 		    
 		} else {
 			//ここでDELETE
