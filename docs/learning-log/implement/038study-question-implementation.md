@@ -1191,6 +1191,188 @@ List<Question> extractedQuestions = questionRepository.getQuestions(
 
 ---
 
+# 【追記】study/menuで複数の出題範囲を選択できてしまう問題を修正
+
+## 発生した問題
+
+`study/menu` では、初級・中級・上級それぞれの出題範囲を選択できるが、複数の難易度の範囲を同時に選択できてしまっていた。
+
+### 症状
+
+- 初級と中級を同時に選択できる
+- 中級と上級を同時に選択できる
+- 3つすべてを選択することも可能
+
+しかし、Controllerでは左側（初級 → 中級 → 上級）の順に判定しているため、複数選択した場合は左側の選択が優先され、右側の選択は無視されてしまう。
+
+そのため、ユーザーから見ると
+
+「複数選択できるのに、実際には1つしか反映されない」
+
+という分かりにくいUIになっていた。
+
+---
+
+## 原因
+
+各難易度がそれぞれ独立した `<select>` 要素になっており、ブラウザ側で複数選択を制御する仕組みがなかった。
+
+また、Controllerでは「どれか1つだけ選択される」ことを前提として処理を書いていたため、複数選択された場合でもエラーにはならず、最初に判定された難易度だけが使用されていた。
+
+そのため、
+
+- ユーザーが誤った操作を行えてしまう
+- サーバー側でも入力内容を検証していない
+
+という状態になっていた。
+
+---
+
+## 修正
+
+### study-menu.jsを新設
+
+**commit**
+
+```bash
+git commit -m "feat: add exclusive range selection for study menu"
+```
+
+出題範囲を選択した際、他の難易度の選択を自動的に解除するJavaScriptを追加した。
+
+これにより、画面上では常に1つの難易度だけが選択された状態となり、複数選択による誤操作を防止できるようになった。
+
+```javascript
+document.addEventListener("DOMContentLoaded", function () {
+
+    const beginnerRange =
+        document.getElementById("beginnerRange");
+
+    const intermediateRange =
+        document.getElementById("intermediateRange");
+
+    const advancedRange =
+        document.getElementById("advancedRange");
+
+    beginnerRange.addEventListener("change", function () {
+
+        if (beginnerRange.value !== "") {
+            intermediateRange.value = "";
+            advancedRange.value = "";
+        }
+
+    });
+
+    intermediateRange.addEventListener("change", function () {
+
+        if (intermediateRange.value !== "") {
+            beginnerRange.value = "";
+            advancedRange.value = "";
+        }
+
+    });
+
+    advancedRange.addEventListener("change", function () {
+
+        if (advancedRange.value !== "") {
+            beginnerRange.value = "";
+            intermediateRange.value = "";
+        }
+
+    });
+
+});
+```
+
+---
+
+### study/menu.htmlを修正
+
+**commit**
+
+```bash
+git commit -m "feat: connect study menu to range selection script"
+```
+
+JavaScriptから各 `<select>` 要素を取得できるように、`id` 属性を追加した。
+
+#### 修正前
+
+```html
+<select class="form-select"
+        name="beginnerRange">
+```
+
+#### 修正後
+
+```html
+<select id="beginnerRange"
+        class="form-select"
+        name="beginnerRange">
+```
+
+中級・上級についても同様に `id` を追加した。
+
+また、作成した `study-menu.js` を読み込むため、
+
+```html
+<script th:src="@{/js/study-menu.js}" defer></script>
+```
+
+を追加した。
+
+これにより、ページ表示時にJavaScriptが実行され、範囲選択の制御が有効になるようになった。
+
+---
+
+### StudyController#getStudyStart()に入力チェックを追加
+
+**commit**
+
+```bash
+git commit -m "fix: validate single range selection in study start"
+```
+
+JavaScriptによる制御だけでは、
+
+- JavaScriptが無効になっている場合
+- ブラウザの開発者ツールなどから不正なリクエストを送信した場合
+
+には複数選択されたままリクエストを送信できてしまう。
+
+そのため、サーバー側でも「選択された範囲は必ず1つだけである」ことを検証する処理を追加した。
+
+```java
+int selectedCount = 0;
+
+if (beginnerRange != null) selectedCount++;
+if (intermediateRange != null) selectedCount++;
+if (advancedRange != null) selectedCount++;
+
+if (selectedCount != 1) {
+    throw new IllegalArgumentException("範囲は1つだけ選択してください");
+}
+```
+
+これは画面側で防ぎきれなかった場合の**最後の防御線（フェイルセーフ）**であり、不正な入力をサーバー側で確実に拒否するための処理である。
+
+---
+
+## 再確認
+
+問題はすべて選択したとおりに取得され、複数選択も構造上できなくなった
+![](../../images/038-2.png)
+
+---
+
+## 学んだこと
+
+- JavaScriptはユーザーの操作性を向上させるための仕組みであり、入力チェックを完全に任せてはいけない。
+- サーバー側でも入力値を検証することで、不正なリクエストや想定外の操作に対応できる。
+- Webアプリでは、**画面側（JavaScript）とサーバー側（Controller）の両方で入力を制御する**ことで、安全性と使いやすさを両立できる。
+
+---
+
 # 所感
 
 今回の実装では、以前作成した通常学習機能をそのまま流用するのではなく、Review機能の設計を参考にしながら大幅に整理した。
