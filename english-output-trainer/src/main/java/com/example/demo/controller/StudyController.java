@@ -53,6 +53,16 @@ public class StudyController {
 	        @RequestParam(name = "random") boolean random
 	        ) {
 		
+	    int selectedCount = 0;
+
+	    if (beginnerRange != null) selectedCount++;
+	    if (intermediateRange != null) selectedCount++;
+	    if (advancedRange != null) selectedCount++;
+
+	    if (selectedCount != 1) {
+	        throw new IllegalArgumentException("範囲は1つだけ選択してください");
+	    }
+		
 	    Difficulty difficulty;
 	    int start;
 		
