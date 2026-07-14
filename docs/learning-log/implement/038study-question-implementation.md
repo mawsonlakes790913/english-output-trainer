@@ -1017,6 +1017,180 @@ order → random
 
 ---
 
+# 【追記】study/menuで難易度に応じた問題が取得されない不具合を修正
+
+## 発生した問題
+
+`study/menu` で中級・上級を選択しても、正しい問題が取得されない不具合が発生した。
+
+### 症状
+
+- 中級の「1-100」を選択しても初級の「1-100」が出題される
+- 上級の「1-100」を選択しても初級の「1-100」が出題される
+- 初級の問題数を超える範囲（例：中級「201-250」）を選択するとエラーになる
+
+つまり、難易度に関係なく常に初級問題を取得していた。
+
+---
+
+## 原因
+
+### ① SQLで難易度が固定されていた
+
+`QuestionRepository#getQuestions()` のSQLを確認したところ、
+
+```java
+@Query(value = """
+        SELECT *
+        FROM question
+        WHERE difficulty = 'BEGINNER'
+        ORDER BY question_id
+        LIMIT 100 OFFSET :offset
+        """, nativeQuery = true)
+List<Question> getQuestions(
+        @Param("difficulty") Difficulty difficulty,
+        @Param("offset") int offset
+);
+```
+
+となっており、
+
+```sql
+WHERE difficulty = 'BEGINNER'
+```
+
+と難易度が固定されていた。
+
+そのため、
+
+- 初級を選択 → 正常
+- 中級を選択 → 初級を取得
+- 上級を選択 → 初級を取得
+
+という動作になっていた。
+
+---
+
+### ② nativeQueryではEnum型の扱いに注意
+
+SQLを
+
+```sql
+WHERE difficulty = :difficulty
+```
+
+へ変更したところ、
+
+```
+ERROR: operator does not exist: character varying = smallint
+```
+
+というエラーが発生した。
+
+これは、
+
+- DBの `difficulty` 列は `VARCHAR`
+- `nativeQuery` では `Difficulty` 型が文字列ではなく数値（Ordinal値）として扱われる場合がある
+
+ためである。
+
+そのため、Repositoryでは `String` を受け取り、
+
+Service側で
+
+```java
+difficulty.name()
+```
+
+を渡すように修正した。
+
+`difficulty.name()` は
+
+- `BEGINNER`
+- `INTERMEDIATE`
+- `ADVANCED`
+
+というEnum名の文字列を返すため、DBのVARCHAR列と一致する。
+
+---
+
+## 修正
+
+### commit
+
+```bash
+git commit -m "fix: use difficulty parameter in question queries"
+```
+
+---
+
+### QuestionRepository.java
+
+#### 修正前
+
+```java
+@Query(value = """
+        SELECT *
+        FROM question
+        WHERE difficulty = 'BEGINNER'
+        ORDER BY question_id
+        LIMIT 100 OFFSET :offset
+        """, nativeQuery = true)
+List<Question> getQuestions(
+        @Param("difficulty") Difficulty difficulty,
+        @Param("offset") int offset
+);
+```
+
+#### 修正後
+
+```java
+@Query(value = """
+        SELECT *
+        FROM question
+        WHERE difficulty = :difficulty
+        ORDER BY question_id
+        LIMIT 100 OFFSET :offset
+        """, nativeQuery = true)
+List<Question> getQuestions(
+        @Param("difficulty") String difficulty,
+        @Param("offset") int offset
+);
+```
+
+---
+
+### StudyService#getQuestions()
+
+#### 修正前
+
+```java
+List<Question> extractedQuestions = questionRepository.getQuestions(
+        difficulty,
+        offset
+);
+```
+
+#### 修正後
+
+```java
+List<Question> extractedQuestions = questionRepository.getQuestions(
+        difficulty.name(),
+        offset
+);
+```
+
+---
+
+## 学んだこと
+
+- SQLの条件を固定値のまま残してしまうと、ControllerやServiceで正しい値を渡していても期待通りの検索結果にならない。
+- `nativeQuery` を使用する場合は、Enum型が期待通りに文字列へ変換されないケースがあるため注意が必要。
+- `EnumType.STRING` を使用していても、ネイティブSQLでは `difficulty.name()` を渡す方が安全である。
+- SQLだけでなく、Controller・Service・Repositoryまで含めてデータの受け渡しを確認することが重要である。
+
+---
+
 # 所感
 
 今回の実装では、以前作成した通常学習機能をそのまま流用するのではなく、Review機能の設計を参考にしながら大幅に整理した。
