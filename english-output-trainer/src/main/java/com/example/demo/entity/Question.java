@@ -39,5 +39,6 @@ public class Question {
     private Difficulty difficulty;
 
     @OneToMany(mappedBy = "question")
+    //@ToString.Exclude
     private List<Favorites> favorites;
 }

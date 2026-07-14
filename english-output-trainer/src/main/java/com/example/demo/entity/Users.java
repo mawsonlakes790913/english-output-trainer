@@ -26,5 +26,6 @@ public class Users {
     private String role;
 
     @OneToMany(mappedBy = "user")
+    //@ToString.Exclude
     private List<Favorites> favorites;
 }
