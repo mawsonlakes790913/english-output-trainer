@@ -16,12 +16,12 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 	@Query(value = """
 			SELECT *
 			FROM question
-			WHERE difficulty = 'BEGINNER'
+			WHERE difficulty = :difficulty
 			ORDER BY question_id
 			LIMIT 100 OFFSET :offset
 			""", nativeQuery = true)
 			List<Question> getQuestions(
-					@Param("difficulty") Difficulty difficulty,
+					@Param("difficulty") String difficulty,
 					@Param("offset") int offset
 					);
 	

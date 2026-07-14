@@ -35,7 +35,10 @@ public class StudyServiceImpl implements StudyService {
 		
 		int offset = start - 1;
 		
-		List<Question> extractedQuestions = questionRepository.getQuestions(difficulty, offset);
+		List<Question> extractedQuestions = questionRepository.getQuestions(
+		        difficulty.name(),
+		        offset
+		);
 		
 		// シャッフルする
 		if (random) {
