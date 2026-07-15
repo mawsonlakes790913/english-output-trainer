@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Difficulty;
 import com.example.demo.entity.Evaluation;
+import com.example.demo.entity.FavoriteCondition;
 import com.example.demo.entity.Question;
 import com.example.demo.repository.StudyHistoryRepository;
 
@@ -28,13 +29,17 @@ public class ReviewService {
     }
 	
 	//復習出題数取得
-	public long countReviewQuestions(Long userId, List<Evaluation> evaluations, List<Difficulty> difficulties) {
+	public long countReviewQuestions(Long userId, List<Evaluation> evaluations, 
+												  List<Difficulty> difficulties,
+												  FavoriteCondition favoriteCondition) {
 		
 	    return studyHistoryRepository.countQuestions(
 	            userId,
 	            convertEvaluation(evaluations),
-	            convertDifficulty(difficulties));
+	            convertDifficulty(difficulties),
+	            convertFavoriteCondition(favoriteCondition));
 	}
+	
 
 	//問題取得
 	public List<Question> getQuestion(Long userId, 
@@ -104,6 +109,24 @@ public class ReviewService {
 	    
 	    return difficultyList;
 	    
+	}
+	
+	public String convertFavoriteCondition(FavoriteCondition favoriteCondition) {
+		
+		String convertedFavoriteCondition;
+		
+		if (favoriteCondition == null) {
+			
+			convertedFavoriteCondition = FavoriteCondition.ALL.name();
+			
+		} else {
+			
+			convertedFavoriteCondition = favoriteCondition.name();
+					
+		}
+		
+		return convertedFavoriteCondition;
+		
 	}
 	
 
