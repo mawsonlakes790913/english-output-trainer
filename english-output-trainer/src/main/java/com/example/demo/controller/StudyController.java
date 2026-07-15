@@ -183,7 +183,7 @@ public class StudyController {
 		    return "redirect:/study/complete";
 		}
 		
-		return "redirect:/study?page=" + (page + 1);
+		return "redirect:/study/question?page=" + (page + 1);
 	}
 	
 }
