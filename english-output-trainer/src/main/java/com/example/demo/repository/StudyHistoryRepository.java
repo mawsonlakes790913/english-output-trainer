@@ -68,6 +68,7 @@ public interface StudyHistoryRepository extends JpaRepository<StudyHistory, Stud
 			        AND f.question_id IS NOT NULL)
 				OR (:favoriteCondition = 'NOT_FAVORITED'
 			        AND f.question_id IS NULL)
+			)
 			""", nativeQuery = true)
 			long countQuestions(
 				    @Param("userId") Long userId,
