@@ -20,20 +20,21 @@ public interface StudyHistoryRepository extends JpaRepository<StudyHistory, Stud
 	        Long userId,
 	        Evaluation evaluation);
 	
-	@Query(value = """
-			SELECT COUNT(*)
-			FROM study_history sh
-			JOIN question q
-			  ON sh.question_id = q.question_id
-			WHERE sh.user_id = :userId
-			  AND sh.evaluation IN (:evaluations)
-			  AND q.difficulty IN (:difficulties)
-			""", nativeQuery = true)
-			long countQuestions(
-				    @Param("userId") Long userId,
-				    @Param("evaluations") List<String> evaluations,
-				    @Param("difficulties") List<String> difficulties
-				);
+//	@Query(value = """
+//			SELECT COUNT(*)
+//			FROM study_history sh
+//			JOIN question q
+//			  ON sh.question_id = q.question_id
+//			WHERE sh.user_id = :userId
+//			  AND sh.evaluation IN (:evaluations)
+//			  AND q.difficulty IN (:difficulties)
+//			""", nativeQuery = true)
+//			long countQuestions(
+//				    @Param("userId") Long userId,
+//				    @Param("evaluations") List<String> evaluations,
+//				    @Param("difficulties") List<String> difficulties
+//				);
+	
 	
 	@Query(value = """
 			SELECT q.*
@@ -50,4 +51,70 @@ public interface StudyHistoryRepository extends JpaRepository<StudyHistory, Stud
 					    @Param("evaluations") List<String> evaluations,
 					    @Param("difficulties") List<String> difficulties
 					);
+	
+	// ======================================
+	// ① お気に入り登録された問題のみ
+	// ======================================
+	@Query(value = """
+	        SELECT COUNT(*)
+	        FROM study_history sh
+	        JOIN question q
+	          ON sh.question_id = q.question_id
+	        LEFT JOIN favorites f
+	          ON sh.user_id = f.user_id
+	         AND sh.question_id = f.question_id
+	        WHERE sh.user_id = :userId
+	          AND sh.evaluation IN (:evaluations)
+	          AND q.difficulty IN (:difficulties)
+	          AND f.question_id IS NOT NULL
+	        """, nativeQuery = true)
+	long countFavoritedQuestions(
+	        @Param("userId") Long userId,
+	        @Param("evaluations") List<String> evaluations,
+	        @Param("difficulties") List<String> difficulties
+	);
+	
+	// ======================================
+	// ② お気に入り登録されていない問題のみ
+	// ======================================
+	@Query(value = """
+	        SELECT COUNT(*)
+	        FROM study_history sh
+	        JOIN question q
+	          ON sh.question_id = q.question_id
+	        LEFT JOIN favorites f
+	          ON sh.user_id = f.user_id
+	         AND sh.question_id = f.question_id
+	        WHERE sh.user_id = :userId
+	          AND sh.evaluation IN (:evaluations)
+	          AND q.difficulty IN (:difficulties)
+	          AND f.question_id IS NULL
+	        """, nativeQuery = true)
+	long countNonFavoritedQuestions(
+	        @Param("userId") Long userId,
+	        @Param("evaluations") List<String> evaluations,
+	        @Param("difficulties") List<String> difficulties
+	);
+	
+	// ======================================
+	// ③ お気に入り登録に関係なく取得
+	// ======================================
+	@Query(value = """
+	        SELECT COUNT(*)
+	        FROM study_history sh
+	        JOIN question q
+	          ON sh.question_id = q.question_id
+	        LEFT JOIN favorites f
+	          ON sh.user_id = f.user_id
+	         AND sh.question_id = f.question_id
+	        WHERE sh.user_id = :userId
+	          AND sh.evaluation IN (:evaluations)
+	          AND q.difficulty IN (:difficulties)
+	        """, nativeQuery = true)
+	long countQuestions(
+	        @Param("userId") Long userId,
+	        @Param("evaluations") List<String> evaluations,
+	        @Param("difficulties") List<String> difficulties
+	);
+	
 }
