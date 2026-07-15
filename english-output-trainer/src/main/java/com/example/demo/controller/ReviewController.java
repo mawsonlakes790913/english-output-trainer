@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.entity.Difficulty;
 import com.example.demo.entity.Evaluation;
+import com.example.demo.entity.FavoriteCondition;
 import com.example.demo.entity.Question;
 import com.example.demo.entity.Users;
 import com.example.demo.service.EvaluationService;
@@ -46,7 +47,9 @@ public class ReviewController {
 									List<Evaluation> evaluations,
 								@RequestParam(name = "difficulties", required = false) 
 									List<Difficulty> difficulties,
-								Model model) {
+								@RequestParam(name = "favoriteCondition", required = false)
+									FavoriteCondition favoriteCondition
+								) {
 		
 	    // user_id(文字列)からUsersを取得
 	    Users user = userServiceImpl.getUserOne(loginUser.getUsername());
@@ -56,7 +59,8 @@ public class ReviewController {
 	    return reviewService.countReviewQuestions(
 	            userId,
 	            evaluations,
-	            difficulties);
+	            difficulties,
+	            favoriteCondition);
 	}
 	
 	@GetMapping("/review/question")
