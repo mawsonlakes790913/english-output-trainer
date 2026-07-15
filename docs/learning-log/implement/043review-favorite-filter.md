@@ -1017,6 +1017,70 @@ row
 
 ---
 
+# 【追記】評価ボタン押下時のリダイレクト先修正
+
+## 問題
+
+今回の実装の挙動を確かめるため(問題数の表示がうまくいくか確かめるため)の準備としていくつかの問題に対し、
+
+- 一部の問題は、お気に入り登録して評価ボタンを押してDBに保存
+- その他の問題は、お気に入り未登録のまま評価ボタンを押してDBに保存
+
+を試みた。
+
+しかし `study/question.html` で評価ボタン（Hard / Good / Easy）のいずれを押しても、エラーページへ遷移してしまった。
+
+ブラウザの開発者ツール（F12）のコンソールを確認すると、以下のエラーが発生していた。
+
+```text
+GET http://localhost:8080/study?page=2
+404 (Not Found)
+```
+
+## 原因
+
+`StudyController` の `postEvaluation()` メソッドで、評価登録後のリダイレクト先が古いURLのままになっていた。
+
+学習画面のURLは
+
+```text
+/study/question
+```
+
+へ変更済みだったが、`postEvaluation()` は以前の
+
+```text
+/study
+```
+
+へリダイレクトしていたため、存在しないURLへアクセスして404エラーとなっていた。
+
+## 修正
+
+### StudyController の postEvaluation を修正
+
+**Commit**
+
+```text
+fix: correct redirect URL after study evaluation
+```
+
+**修正前**
+
+```java
+return "redirect:/study?page=" + (page + 1);
+```
+
+**修正後**
+
+```java
+return "redirect:/study/question?page=" + (page + 1);
+```
+
+これにより、評価登録後に正しい学習画面へ遷移するようになった。
+
+---
+
 # 実行
 
 レイアウトが改善され、
