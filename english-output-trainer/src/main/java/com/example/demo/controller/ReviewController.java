@@ -121,6 +121,8 @@ public class ReviewController {
 									List<Evaluation> evaluations,
 							 @RequestParam(name = "difficulties", required = false) 
 									List<Difficulty> difficulties,
+						     @RequestParam(name = "favoriteCondition", required = false)
+									FavoriteCondition favoriteCondition,
 							 @RequestParam(name = "random", required = false)
 									boolean random
 							 ) {
@@ -136,7 +138,7 @@ public class ReviewController {
 	    Long userId = user.getId();
 	    
 	    // 新しい問題セットを作成
-	    questions = reviewService.getQuestion(userId, evaluations, difficulties, random);
+	    questions = reviewService.getQuestion(userId, evaluations, difficulties, favoriteCondition, random);
 
 		session.setAttribute("reviewQuestions", questions);
 	    session.setAttribute("reviewCurrentPage", 0);
