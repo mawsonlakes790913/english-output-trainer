@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.NewStudyCountDto;
 import com.example.demo.dto.Range;
 import com.example.demo.dto.StudyMenuDto;
 import com.example.demo.entity.Difficulty;
@@ -86,6 +87,23 @@ public class StudyServiceImpl implements StudyService {
 	    
 	    return count;
 
+
+	}
+	
+	public NewStudyCountDto countNewStudyQuestions(Long userId) {
+		
+		NewStudyCountDto count = new NewStudyCountDto();
+		
+	    long beginnerCount = questionRepository.countNewQuestions(userId, Difficulty.BEGINNER.name());
+	    count.setBeginnerCount(beginnerCount);	    
+	    
+	    long intermediateCount = questionRepository.countNewQuestions(userId, Difficulty.INTERMEDIATE.name());
+	    count.setIntermediateCount(intermediateCount);
+
+	    long advancedCount = questionRepository.countNewQuestions(userId, Difficulty.ADVANCED.name());
+	    count.setAdvancedCount(advancedCount);
+		
+		return count;
 	}
 	
 	private List<Range> createRanges(long count) {
