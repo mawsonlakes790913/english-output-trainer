@@ -214,6 +214,60 @@
         </button>
 
     </form>
+    
+	    <!-- 未学習トレーニング（ログインユーザーのみ） -->
+	<div sec:authorize="isAuthenticated()" class="mt-5">
+	
+	    <h3>未学習トレーニング</h3>
+	
+	    <form th:action="@{/study/new/start}" method="get">
+	
+	        <div class="form-check">
+	            <input class="form-check-input"
+	                   type="checkbox"
+	                   id="newBeginner"
+	                   name="difficulties"
+	                   value="BEGINNER">
+	
+	            <label class="form-check-label" for="newBeginner">
+	                初級
+	                (<span th:text="${newQuestioncount.beginnerCount}">0</span>問)
+	            </label>
+	        </div>
+	
+	        <div class="form-check">
+	            <input class="form-check-input"
+	                   type="checkbox"
+	                   id="newIntermediate"
+	                   name="difficulties"
+	                   value="INTERMEDIATE">
+	
+	            <label class="form-check-label" for="newIntermediate">
+	                中級
+	                (<span th:text="${newQuestioncount.intermediateCount}">0</span>問)
+	            </label>
+	        </div>
+	
+	        <div class="form-check">
+	            <input class="form-check-input"
+	                   type="checkbox"
+	                   id="newAdvanced"
+	                   name="difficulties"
+	                   value="ADVANCED">
+	
+	            <label class="form-check-label" for="newAdvanced">
+	                上級
+	                (<span th:text="${newQuestioncount.advancedCount}">0</span>問)
+	            </label>
+	        </div>
+	
+	        <button type="submit" class="btn btn-primary mt-3">
+	            出題開始
+	        </button>
+	
+	    </form>
+	
+	</div>
 
 </div>
 
