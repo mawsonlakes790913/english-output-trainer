@@ -13,13 +13,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.dto.NewStudyCountDto;
 import com.example.demo.dto.StudyMenuDto;
 import com.example.demo.entity.Difficulty;
 import com.example.demo.entity.Evaluation;
 import com.example.demo.entity.Question;
+import com.example.demo.entity.Users;
 import com.example.demo.service.EvaluationService;
 import com.example.demo.service.FavoritesService;
 import com.example.demo.service.StudyServiceImpl;
+import com.example.demo.service.UserServiceImpl;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -33,13 +36,20 @@ public class StudyController {
 	private final EvaluationService evaluationService;
 	private final QuestionModelUtil questionModelUtil;
 	private final FavoritesService favoritesService;	
+	private final UserServiceImpl userServiceImpl;
 
 	
 	@GetMapping("/study/menu")
-	public String getStudyMenu(Model model) {
+	public String getStudyMenu(Model model, @AuthenticationPrincipal UserDetails loginUser) {
 
 		StudyMenuDto menu = studyService.countStudyQuestions();
 	    model.addAttribute("studyMenu", menu);
+	    
+	    if (loginUser != null) {
+	    Users user = userServiceImpl.getUserOne(loginUser.getUsername());
+		NewStudyCountDto count = studyService.countNewStudyQuestions(user.getId());
+	    model.addAttribute("newQuestioncount", count);
+	    }
 
 	    return "study/menu";
 	}
