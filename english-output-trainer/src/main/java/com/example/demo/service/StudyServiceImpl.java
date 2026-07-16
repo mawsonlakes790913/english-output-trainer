@@ -24,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class StudyServiceImpl implements StudyService {
 	
 	private final QuestionRepository questionRepository;
+	private final ReviewService reviewService;
 	
 //	public List<Question> getQuestion(){
 //		List<Question> extractedQuestions = questionRepository.findAll();
@@ -131,5 +132,12 @@ public class StudyServiceImpl implements StudyService {
 		}
 		System.out.println();
 		return extractedQuestions;
+	}
+	
+	public List<Question> getNewQuestions(long userId, List<Difficulty> difficulty) {
+		
+		List<Question> extractedNewQuestions = questionRepository.getNewQuestions(userId, reviewService.convertDifficulty(difficulty));
+		
+		return extractedNewQuestions;
 	}
 }
