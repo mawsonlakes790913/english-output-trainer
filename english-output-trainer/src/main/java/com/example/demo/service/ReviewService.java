@@ -21,12 +21,12 @@ public class ReviewService {
 //	private final QuestionRepository questionRepository;
 	private final StudyHistoryRepository studyHistoryRepository;
 	
-	public long countEvaluation(Long userId, Evaluation evaluation) {
-        return studyHistoryRepository
-                .countByStudyHistoryKeyUserIdAndEvaluation(
-                        userId,
-                        evaluation);
-    }
+//	public long countEvaluation(Long userId, Evaluation evaluation) {
+//        return studyHistoryRepository
+//                .countByStudyHistoryKeyUserIdAndEvaluation(
+//                        userId,
+//                        evaluation);
+//    }
 	
 	//復習出題数取得
 	public long countReviewQuestions(Long userId, List<Evaluation> evaluations, 
@@ -45,10 +45,12 @@ public class ReviewService {
 	public List<Question> getQuestion(Long userId, 
 									  List<Evaluation> evaluations, 
 									  List<Difficulty> difficulties,
+									  FavoriteCondition favoriteCondition,
 									  boolean random){
 		List<Question> extractedQuestions = studyHistoryRepository.getQuestions(userId,
 				convertEvaluation(evaluations),
-				convertDifficulty(difficulties));
+				convertDifficulty(difficulties),
+				convertFavoriteCondition(favoriteCondition));
 		
 		// シャッフルする
 		if (random) {
