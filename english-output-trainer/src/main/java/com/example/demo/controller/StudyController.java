@@ -21,6 +21,7 @@ import com.example.demo.entity.Question;
 import com.example.demo.entity.Users;
 import com.example.demo.service.EvaluationService;
 import com.example.demo.service.FavoritesService;
+import com.example.demo.service.ReviewService;
 import com.example.demo.service.StudyServiceImpl;
 import com.example.demo.service.UserServiceImpl;
 
@@ -37,6 +38,7 @@ public class StudyController {
 	private final QuestionModelUtil questionModelUtil;
 	private final FavoritesService favoritesService;	
 	private final UserServiceImpl userServiceImpl;
+	private final ReviewService reviewService;
 
 	
 	@GetMapping("/study/menu")
@@ -95,6 +97,34 @@ public class StudyController {
 	    
 	    //問題セットを取得
 	    List<Question> questions = studyService.getQuestions(difficulty, start, random);
+
+		session.setAttribute("studyQuestions", questions);
+	    session.setAttribute("studyCurrentPage", 0);
+	    
+	    return "redirect:/study/question?page=0";	    
+	}
+	
+	@GetMapping("/study/new/start")
+	public String getStudyNewStart(
+	        HttpSession session,
+	        @AuthenticationPrincipal UserDetails loginUser,
+	        @RequestParam(name = "difficulties", required = false) 
+			List<Difficulty> difficulty
+	        ) {
+		
+	    // 既存の学習状態を破棄
+	    session.removeAttribute("studyQuestions");
+	    session.removeAttribute("studyCurrentPage");
+	    
+	    //先に宣言
+	    List<Question> questions;
+	    
+	    // user_id(文字列)からUsersを取得
+	    Users user = userServiceImpl.getUserOne(loginUser.getUsername());
+	    Long userId = user.getId();
+	    
+	    //問題セットを取得
+	    questions = studyService.getNewQuestions(userId, difficulty);
 
 		session.setAttribute("studyQuestions", questions);
 	    session.setAttribute("studyCurrentPage", 0);
