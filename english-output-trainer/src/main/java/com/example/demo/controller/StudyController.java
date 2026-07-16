@@ -89,8 +89,7 @@ public class StudyController {
 		session.setAttribute("studyQuestions", questions);
 	    session.setAttribute("studyCurrentPage", 0);
 	    
-	    return "redirect:/study/question";
-	    
+	    return "redirect:/study/question?page=0";	    
 	}
 	
 	@GetMapping("/study/question")

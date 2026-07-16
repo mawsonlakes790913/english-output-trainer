@@ -143,7 +143,7 @@ public class ReviewController {
 		session.setAttribute("reviewQuestions", questions);
 	    session.setAttribute("reviewCurrentPage", 0);
 	    
-	    return "redirect:/review/question";
+	    return "redirect:/review/question?page=0";
 	}
 
 	
