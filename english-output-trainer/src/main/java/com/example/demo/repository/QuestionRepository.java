@@ -25,6 +25,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 					@Param("offset") int offset
 					);
 	
+	
 	@Query(value = """
 			SELECT COUNT(*)
 			FROM question q
@@ -38,5 +39,21 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 				    @Param("userId") Long userId,
 				    @Param("difficulties") String difficulties					
 					);
+	
+	
+	@Query(value = """
+			SELECT q.*
+			FROM question q
+			LEFT JOIN study_history sh
+			  ON q.question_id = sh.question_id
+			 AND sh.user_id = :userId
+			WHERE q.difficulty IN (:difficulties)
+			  AND sh.question_id IS NULL
+			""", nativeQuery = true)
+			List<Question> getNewQuestions(
+				    @Param("userId") Long userId,
+				    @Param("difficulties") List<String> difficulties					
+					);
+	
 	
 }
