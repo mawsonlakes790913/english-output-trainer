@@ -36,20 +36,45 @@ public interface StudyHistoryRepository extends JpaRepository<StudyHistory, Stud
 //				);
 	
 	
+//	@Query(value = """
+//			SELECT q.*
+//			FROM study_history sh
+//			JOIN question q
+//			  ON sh.question_id = q.question_id
+//			WHERE sh.user_id = :userId
+//			  AND sh.evaluation IN (:evaluations)
+//			  AND q.difficulty IN (:difficulties)
+//			ORDER BY sh.evaluation_updated_at ASC
+//			""", nativeQuery = true)
+//			List<Question> getQuestions(
+//					    @Param("userId") Long userId,
+//					    @Param("evaluations") List<String> evaluations,
+//					    @Param("difficulties") List<String> difficulties
+//					);
+	
 	@Query(value = """
 			SELECT q.*
 			FROM study_history sh
 			JOIN question q
-			  ON sh.question_id = q.question_id
+			ON sh.question_id = q.question_id
+			LEFT JOIN favorites f
+			ON sh.user_id = f.user_id
+			AND sh.question_id = f.question_id
 			WHERE sh.user_id = :userId
-			  AND sh.evaluation IN (:evaluations)
-			  AND q.difficulty IN (:difficulties)
-			ORDER BY sh.evaluation_updated_at ASC
+			AND sh.evaluation IN (:evaluations)
+			AND q.difficulty IN (:difficulties)
+			AND (:favoriteCondition = 'ALL'
+				OR (:favoriteCondition = 'FAVORITED'
+			        AND f.question_id IS NOT NULL)
+				OR (:favoriteCondition = 'NOT_FAVORITED'
+			        AND f.question_id IS NULL)
+			)
 			""", nativeQuery = true)
 			List<Question> getQuestions(
-					    @Param("userId") Long userId,
-					    @Param("evaluations") List<String> evaluations,
-					    @Param("difficulties") List<String> difficulties
+				    @Param("userId") Long userId,
+				    @Param("evaluations") List<String> evaluations,
+				    @Param("difficulties") List<String> difficulties,
+				    @Param("favoriteCondition") String favoriteCondition
 					);
 	
 	@Query(value = """
