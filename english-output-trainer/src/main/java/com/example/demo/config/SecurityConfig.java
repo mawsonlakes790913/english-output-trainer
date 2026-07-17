@@ -47,7 +47,7 @@ public class SecurityConfig {
 				    .loginPage("/login")
 				    .usernameParameter("userId")
 				    .passwordParameter("password")
-				    .defaultSuccessUrl("/menu", true)
+				    .defaultSuccessUrl("/", false)
 				    .failureUrl("/login?error")
 				    .permitAll()
 			)
