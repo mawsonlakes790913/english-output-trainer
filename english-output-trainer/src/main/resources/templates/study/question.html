@@ -35,20 +35,21 @@
 		        th:text="${question.japaneseText}">
 		        日本語問題
 		    </h2>
-		
-		    <button id="favoriteButton"
-			        type="button"
-			        class="btn p-0 border-0 bg-transparent"
-			        th:data-question-id="${question.questionId}">
-		
-		        <i id="favoriteIcon"
-				   th:class="${isFavorite}
-				        ? 'bi bi-heart-fill fs-2 text-danger'
-				        : 'bi bi-heart fs-2 text-secondary'">
-				</i>
-		
-		    </button>
-		
+		    
+		    <div sec:authorize="isAuthenticated()">
+			    <button id="favoriteButton"
+				        type="button"
+				        class="btn p-0 border-0 bg-transparent"
+				        th:data-question-id="${question.questionId}">
+			
+			        <i id="favoriteIcon"
+					   th:class="${isFavorite}
+					        ? 'bi bi-heart-fill fs-2 text-danger'
+					        : 'bi bi-heart fs-2 text-secondary'">
+					</i>
+			
+			    </button>
+		    </div>
 		</div>
 
         <div style="min-height:40px;">
