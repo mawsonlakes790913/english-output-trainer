@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 </head>
 <body>
@@ -17,17 +18,24 @@
 				<span th:text="'こんにちは、' + ${loginUser} + 'さん'">
 	                ゲスト
 	            </span>
-	            <!-- ここまで追加 -->
-				<a class="btn btn-primary" href="/login">ログイン</a>
-			        <form method="post"
-			              th:action="@{/logout}"
-			              class="m-0">
-			            <button type="submit"
-			                    class="btn btn-outline-light btn-sm">
-			                ログアウト
-			            </button>
-			
-			        </form>
+				<!-- ログインしていないときだけ表示 -->
+				<a sec:authorize="isAnonymous()"
+				   class="btn btn-primary"
+				   href="/login">
+				    ログイン
+				</a>
+				<!-- ログインしているときだけ表示 -->
+				<form sec:authorize="isAuthenticated()"
+				      method="post"
+				      th:action="@{/logout}"
+				      class="m-0">
+				
+				    <button type="submit"
+				            class="btn btn-outline-light btn-sm">
+				        ログアウト
+				    </button>
+				
+				</form>
 	        </div>
 	
 	    </div>
