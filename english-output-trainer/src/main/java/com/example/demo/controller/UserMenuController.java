@@ -46,8 +46,8 @@ public class UserMenuController {
 
 	    Users user = userServiceImpl.getUserOne(loginUser.getUsername());
 	    
-	    System.out.println(loginUser.getUsername());
-	    System.out.println(user);
+//	    System.out.println(loginUser.getUsername());
+//	    System.out.println(user);
 
 	    model.addAttribute("user", user);
 
