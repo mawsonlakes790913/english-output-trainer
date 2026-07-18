@@ -340,3 +340,52 @@ sec:authorize="isAuthenticated()"
 ![](../../images/refactoring-note5.png)
 
 ---
+
+## 6. Headerのサービス名をクリックするとホーム画面へ戻れるようにする
+
+### 問題点
+
+大きな問題ではないが、多くのWebサイトではヘッダーに表示されているサービス名やロゴをクリックするとホーム画面へ戻れるようになっている。
+
+本アプリではその機能が実装されていなかったため、利便性向上のため追加することにした。
+
+---
+
+### 修正
+（git commit: `feat: add home link to header title`）
+
+#### 変更前
+
+```html
+<h1 class="h4 m-0">
+    English Output Trainer
+</h1>
+```
+
+#### 変更後
+
+```html
+<h1 class="h4 m-0">
+    <a th:href="@{/}"
+       class="text-white text-decoration-none">
+        English Output Trainer
+    </a>
+</h1>
+```
+
+サービス名全体をリンク化し、クリックするとホーム画面（`/`）へ遷移するようにした。
+
+また、
+
+- `text-white`
+- `text-decoration-none`
+
+を指定することで、従来と同じ見た目を維持している。
+
+---
+
+### 修正後
+
+サービス名をクリックするとホーム画面へ遷移することを確認した。
+
+これにより、どの画面からでもヘッダーのサービス名をクリックするだけでホーム画面へ戻れるようになり、操作性が向上した。
