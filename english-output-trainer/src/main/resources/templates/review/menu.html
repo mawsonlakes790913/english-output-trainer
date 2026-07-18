@@ -17,7 +17,7 @@
 <div layout:fragment="content">
 
     <div class="header border-bottom mb-4">
-        <h1 class="h2">復習メニュー</h1>
+        <h1 class="h2">復習</h1>
     </div>
 
     <form th:action="@{/review/start}" method="get">
@@ -69,7 +69,7 @@
 				<div class="card">
 	
 		            <div class="card-header">
-		                評価
+		                理解度
 		            </div>
 		
 		            <div class="card-body">
@@ -83,10 +83,12 @@
 		                                   type="checkbox"
 		                                   name="evaluations"
 		                                   value="HARD">
-		
-		                            <label class="form-check-label text-danger fw-bold">
-		                                Hard
-		                            </label>
+					    			<label class="form-check-label">
+			    						<span class="fw-bold text-danger">Hard</span><br>
+			    						<small class="text-danger">
+			        						難しい・わからない
+			    						</small>
+								    </label>		                            
 		                        </div>
 		
 		                    </div>
@@ -98,10 +100,12 @@
 		                                   type="checkbox"
 		                                   name="evaluations"
 		                                   value="GOOD">
-		
-		                            <label class="form-check-label text-primary fw-bold">
-		                                Good
-		                            </label>
+					    			<label class="form-check-label">
+			    						<span class="fw-bold text-primary">Hard</span><br>
+			    						<small class="text-primary">
+			        						少し考えた、一部正解だった
+			    						</small>
+								    </label>
 		                        </div>
 		
 		                    </div>
@@ -113,10 +117,13 @@
 		                                   type="checkbox"
 		                                   name="evaluations"
 		                                   value="EASY">
-		
-		                            <label class="form-check-label text-success fw-bold">
-		                                Easy
-		                            </label>
+
+					                <label class="form-check-label">
+			    						<span class="fw-bold text-success">Hard</span><br>
+			    						<small class="text-success">
+			        						簡単だった
+			    						</small>
+								    </label>
 		                        </div>
 		
 		                    </div>
@@ -130,52 +137,55 @@
 	        </div>
 	
 	        <!-- 問題難易度 -->
-	        <div class="col-md-6 mb-4">
-				
-				<div class="card">
-	
-		            <div class="card-header">
-		                問題難易度
-		            </div>
-		
-		            <div class="card-body">
-		
-		                <div class="form-check mb-2">
-		                    <input class="form-check-input"
-		                           type="checkbox"
-		                           name="difficulties"
-		                           value="BEGINNER">
-		
-		                    <label class="form-check-label">
-		                        初級
-		                    </label>
-		                </div>
-		
-		                <div class="form-check mb-2">
-		                    <input class="form-check-input"
-		                           type="checkbox"
-		                           name="difficulties"
-		                           value="INTERMEDIATE">
-		
-		                    <label class="form-check-label">
-		                        中級
-		                    </label>
-		                </div>
-		
-		                <div class="form-check">
-		                    <input class="form-check-input"
-		                           type="checkbox"
-		                           name="difficulties"
-		                           value="ADVANCED">
-		
-		                    <label class="form-check-label">
-		                        上級
-		                    </label>
-		                </div>
-		
-		            </div>
-				</div>
-	        </div>
+			<div class="col-md-6 mb-4">
+			
+			    <div class="card">
+			
+			        <div class="card-header">
+			            問題難易度
+			        </div>
+			
+			        <div class="card-body">
+			
+			            <div class="d-flex gap-3">
+			
+			                <label class="bg-danger-subtle rounded px-3 py-2">
+			                    <input class="form-check-input me-2"
+			                           type="checkbox"
+			                           name="difficulties"
+			                           value="BEGINNER">
+			                    <span class="fw-bold text-danger">
+			                        初級
+			                    </span>
+			                </label>
+			
+			                <label class="bg-primary-subtle rounded px-3 py-2">
+			                    <input class="form-check-input me-2"
+			                           type="checkbox"
+			                           name="difficulties"
+			                           value="INTERMEDIATE">
+			                    <span class="fw-bold text-primary">
+			                        中級
+			                    </span>
+			                </label>
+			
+			                <label class="bg-success-subtle rounded px-3 py-2">
+			                    <input class="form-check-input me-2"
+			                           type="checkbox"
+			                           name="difficulties"
+			                           value="ADVANCED">
+			                    <span class="fw-bold text-success">
+			                        上級
+			                    </span>
+			                </label>
+			
+			            </div>
+			
+			        </div>
+			
+			    </div>
+			
+			</div>
 			<!-- お気に入り -->
 			<div class="col-md-6 mb-4">
 				
@@ -191,11 +201,10 @@
 				            <input class="form-check-input"
 				                   type="radio"
 				                   name="favoriteCondition"
-				                   value="ALL"
-				                   checked>
+				                   value="FAVORITED">
 				
 				            <label class="form-check-label">
-				                すべて
+				                お気に入り登録した問題のみ出題
 				            </label>
 				        </div>
 				
@@ -203,21 +212,22 @@
 				            <input class="form-check-input"
 				                   type="radio"
 				                   name="favoriteCondition"
-				                   value="FAVORITED">
+				                   value="NOT_FAVORITED">
 				
 				            <label class="form-check-label">
-				                お気に入り登録した問題のみ
+				                お気に入り登録していない問題のみ出題
 				            </label>
 				        </div>
-				
+				        
 				        <div class="form-check">
 				            <input class="form-check-input"
 				                   type="radio"
 				                   name="favoriteCondition"
-				                   value="NOT_FAVORITED">
+				                   value="ALL"
+				                   checked>
 				
 				            <label class="form-check-label">
-				                お気に入り登録していない問題のみ
+				                どちらも出題する
 				            </label>
 				        </div>
 				
@@ -242,10 +252,12 @@
         </div>
 
         <!-- 出題開始 -->
-        <button type="submit"
-                class="btn btn-primary btn-lg w-100">
-            出題開始
-        </button>
+		<div class="text-center mt-4">
+		    <button type="submit"
+		            class="btn btn-primary btn-lg px-5">
+		        出題開始
+		    </button>
+		</div>
 
     </form>
 
