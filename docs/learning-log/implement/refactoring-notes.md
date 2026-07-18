@@ -389,3 +389,141 @@ sec:authorize="isAuthenticated()"
 サービス名をクリックするとホーム画面へ遷移することを確認した。
 
 これにより、どの画面からでもヘッダーのサービス名をクリックするだけでホーム画面へ戻れるようになり、操作性が向上した。
+
+---
+
+## ログアウト後、ログイン画面ではなくHome画面へ戻す
+
+### 問題点
+
+ログアウトボタンを押すと、ユーザーIDとパスワードを入力するログイン画面へ遷移していた。
+
+しかし、ログアウト直後に再びログインを試みるケースは少なく、多くのWebサイトではトップページやHome画面へ戻るようになっている。
+
+そのため、本アプリでもログアウト後はHome画面へ戻す仕様に変更することにした。
+
+![](../../images/refactoring-note6-1.png)
+
+---
+
+## 修正
+（git commit: `fix: redirect users to home after logout`）
+
+### `SecurityConfig.java`
+
+ログアウト成功後のリダイレクト先を変更した。
+
+#### 変更前
+
+```java
+.logoutSuccessUrl("/login?logout")
+```
+
+#### 変更後
+
+```java
+.logoutSuccessUrl("/?logout")
+```
+
+これにより、ログアウト後はログイン画面ではなく、Home画面へリダイレクトされるようになった。
+
+---
+
+### `home.html`
+
+ログアウト後のみメッセージを表示するようにした。
+
+```html
+<div th:if="${param.logout}"
+     class="text-danger">
+    ログアウトしました
+</div>
+```
+
+---
+
+## 修正後
+
+ログアウトボタンを押すとHome画面へ戻り、「ログアウトしました」というメッセージが表示されるようになった。
+
+これにより、ログアウト後もそのまま
+
+- 通常学習
+- ログイン
+- 新規登録
+
+などの操作へスムーズに移れるようになった。
+
+![](../../images/refactoring-note6-2.png)
+
+---
+
+## HomeControllerを修正しない理由
+
+`SecurityConfig`で
+
+```java
+.logout(logout -> logout
+    .logoutSuccessUrl("/?logout")
+)
+```
+
+と設定すると、ログアウト後は
+
+```text
+/
+```
+
+ではなく
+
+```text
+/?logout
+```
+
+へリダイレクトされる。
+
+そのため、
+
+```java
+@GetMapping("/")
+public String home(
+        @RequestParam(required = false)
+        String logout) {
+    return "home";
+}
+```
+
+のように、`logout`パラメータをControllerで受け取る必要があるようにも思える。
+
+しかし、実際には
+
+```java
+@GetMapping("/")
+public String home() {
+    return "home";
+}
+```
+
+のままでも問題なく動作する。
+
+その理由は、**`?logout`はURLのクエリパラメータであり、Thymeleafから直接参照できるため**である。
+
+Thymeleafにはリクエストパラメータを取得するための`param`オブジェクトが用意されており、
+
+```html
+<div th:if="${param.logout}"
+     class="text-danger">
+    ログアウトしました
+</div>
+```
+
+と記述するだけで、
+
+- `/?logout` の場合はメッセージを表示
+- `/` の場合は表示しない
+
+という制御を行うことができる。
+
+そのため、`logout`パラメータをControllerで受け取って`Model`へ渡す必要はない。
+
+このように、**画面表示だけに利用するリクエストパラメータは、Thymeleafから直接参照した方がシンプルな実装となる。**
