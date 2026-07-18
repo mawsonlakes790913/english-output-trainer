@@ -392,7 +392,7 @@ sec:authorize="isAuthenticated()"
 
 ---
 
-## ログアウト後、ログイン画面ではなくHome画面へ戻す
+## 7. ログアウト後、ログイン画面ではなくHome画面へ戻す
 
 ### 問題点
 
@@ -402,7 +402,7 @@ sec:authorize="isAuthenticated()"
 
 そのため、本アプリでもログアウト後はHome画面へ戻す仕様に変更することにした。
 
-![](../../images/refactoring-note6-1.png)
+![](../../images/refactoring-note7-1.png)
 
 ---
 
@@ -454,7 +454,7 @@ sec:authorize="isAuthenticated()"
 
 などの操作へスムーズに移れるようになった。
 
-![](../../images/refactoring-note6-2.png)
+![](../../images/refactoring-note7-2.png)
 
 ---
 
@@ -527,3 +527,242 @@ Thymeleafにはリクエストパラメータを取得するための`param`オ�
 そのため、`logout`パラメータをControllerで受け取って`Model`へ渡す必要はない。
 
 このように、**画面表示だけに利用するリクエストパラメータは、Thymeleafから直接参照した方がシンプルな実装となる。**
+
+---
+
+## 8. `/user/profile`アクセス時のエラーを解消する
+
+### 問題点
+
+ログインメニューから「会員情報確認・編集」をクリックして
+`/user/profile`へ遷移しようとすると、**500 Internal Server Error** が発生した。
+
+---
+
+### 原因
+
+スタックトレースを見ると、`Users.toString()` と `Favorites.toString()` が互いに呼び出され続け、最終的に `StackOverflowError` が発生していた。
+
+```
+Users.toString()
+    ↓
+favorites(List<Favorites>)
+    ↓
+Favorites.toString()
+    ↓
+user
+    ↓
+Users.toString()
+    ↓
+・・・
+```
+
+原因を調査するため、`UserMenuController` の `getUserProfile()` メソッドを確認すると、デバッグ用のコードが残ったままになっていた。
+
+```java
+System.out.println(loginUser.getUsername());
+System.out.println(user);
+```
+
+問題は後者の
+
+```java
+System.out.println(user);
+```
+
+である。
+
+`user` は `Users` エンティティであり、`@Data` が付与されている。
+
+```java
+@Data
+@Entity
+public class Users {
+
+    @OneToMany(mappedBy = "user")
+    private List<Favorites> favorites;
+}
+```
+
+一方、`Favorites` エンティティも `Users` を保持している。
+
+```java
+@Data
+@Entity
+public class Favorites {
+
+    @ManyToOne
+    private Users user;
+}
+```
+
+つまり、
+
+- `Users` は `Favorites` を持つ
+- `Favorites` は `Users` を持つ
+
+という**双方向関連**になっている。
+
+さらに、Lombok の `@Data` は `toString()` を自動生成するため、
+
+```java
+System.out.println(user);
+```
+
+を実行すると、
+
+```java
+user.toString();
+```
+
+が呼び出される。
+
+---
+
+#### ① `Users.toString()`
+
+自動生成される `toString()` は概ね次のような内容になる。
+
+```java
+public String toString() {
+    return "Users("
+        + id
+        + ", "
+        + userId
+        + ", "
+        + favorites
+        + ")";
+}
+```
+
+つまり、
+
+```
+Users
+├ id = 1
+├ userId = "abc"
+└ favorites ← これも表示しよう
+```
+
+となる。
+
+---
+
+#### ② `favorites` を表示する
+
+`favorites` は
+
+```java
+List<Favorites>
+```
+
+である。
+
+Java は List の中身も文字列化しようとするため、
+
+```java
+Favorites.toString();
+```
+
+を呼び出す。
+
+---
+
+#### ③ `Favorites.toString()`
+
+こちらも `@Data` により自動生成されるため、
+
+```java
+public String toString() {
+    return "Favorites("
+        + question
+        + ", "
+        + user
+        + ")";
+}
+```
+
+のようになる。
+
+つまり、
+
+```
+Favorites
+├ question = ...
+└ user ← これも表示しよう
+```
+
+となる。
+
+---
+
+#### ④ `user` を表示する
+
+しかし `user` は再び `Users` オブジェクトである。
+
+そのため、
+
+```java
+Users.toString();
+```
+
+が再び呼び出され、
+
+```
+Users.toString()
+    ↓
+Favorites.toString()
+    ↓
+Users.toString()
+    ↓
+Favorites.toString()
+    ↓
+・・・
+```
+
+と永遠に繰り返され、最終的に `StackOverflowError` が発生していた。
+
+---
+
+### 修正（`refactor: remove temporary debug output`）
+
+デバッグ用の出力は不要だったため削除した。
+
+```java
+System.out.println(loginUser.getUsername());
+System.out.println(user);
+```
+
+#### 削除した理由
+
+- `System.out.println()` は開発中の一時的なデバッグ用途である。
+- 本番環境では標準出力ではなく、必要に応じて `log.info()` や `log.debug()` を使用する。
+- 今回は `Users` オブジェクト全体を出力する必要がないため、ログ自体が不要である。
+
+---
+
+### デバッグする場合
+
+エンティティ全体ではなく、必要な項目だけを出力する。
+
+```java
+log.debug("userId={}", user.getUserId());
+```
+
+または
+
+```java
+log.debug(
+    "id={}, role={}",
+    user.getId(),
+    user.getRole()
+);
+```
+
+このように個別のプロパティだけを出力すれば、`toString()` の再帰呼び出しを防ぐことができる。
+
+---
+
+### 修正後
+
+不要なデバッグコードを削除したことで、`/user/profile` に正常にアクセスできるようになり、会員情報確認画面が正しく表示されるようになった。
