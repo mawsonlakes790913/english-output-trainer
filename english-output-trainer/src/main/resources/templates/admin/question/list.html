@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<head>
+    <title>問題管理</title>
+</head>
+
+<body>
+
+<div layout:fragment="content">
+
+    <div class="container mt-4">
+
+        <!-- タイトル・追加ボタン -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <h2 class="mb-0">
+                <i class="bi bi-list-ul"></i>
+                問題管理
+            </h2>
+
+            <a th:href="@{/admin/question/add}"
+               class="btn btn-success">
+
+                <i class="bi bi-plus-circle"></i>
+                問題追加
+
+            </a>
+
+        </div>
+
+        <!-- 後で問題一覧を表示 -->
+        <div class="card">
+
+            <div class="card-body text-center text-muted">
+
+                問題一覧は今後実装予定です。
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
