@@ -38,6 +38,11 @@
                             rows="3"
                             required>
                         </textarea>
+                        
+                        <div class="text-danger mt-1"
+						     th:if="${#fields.hasErrors('japaneseText')}"
+						     th:errors="*{japaneseText}">
+						</div>
                     </div>
 
                     <!-- 英語 -->
@@ -52,6 +57,11 @@
                             rows="3"
                             required>
                         </textarea>
+                        
+						<div class="text-danger mt-1"
+						     th:if="${#fields.hasErrors('englishText')}"
+						     th:errors="*{englishText}">
+						</div>                        
                     </div>
 
                     <!-- 別解 -->
@@ -65,6 +75,10 @@
                             class="form-control"
                             rows="2">
                         </textarea>
+						<div class="text-danger mt-1"
+						     th:if="${#fields.hasErrors('alternativeAnswer')}"
+						     th:errors="*{alternativeAnswer}">
+						</div>                        
                     </div>
 
                     <!-- 条件 -->
@@ -77,6 +91,10 @@
                             type="text"
                             th:field="*{condition}"
                             class="form-control">
+						<div class="text-danger mt-1"
+						     th:if="${#fields.hasErrors('condition')}"
+						     th:errors="*{condition}">
+						</div>                        
                     </div>
 
                     <!-- 難易度 -->
@@ -101,6 +119,10 @@
                             </option>
 
                         </select>
+						<div class="text-danger mt-1"
+						     th:if="${#fields.hasErrors('difficulty')}"
+						     th:errors="*{difficulty}">
+						</div>                        
 
                     </div>
 
