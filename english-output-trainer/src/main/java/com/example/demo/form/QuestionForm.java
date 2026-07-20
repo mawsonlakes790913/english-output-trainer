@@ -19,13 +19,13 @@ public class QuestionForm {
 	@NotBlank
 	@Length(max = 200)
     @Pattern(
-            regexp = "^[a-zA-Z0-9 .,!?:;'\"()/-]+$"
+    		regexp = "^[a-zA-Z0-9 .,!?:;'\"()/%$&+-]+$"
         )
     private String englishText;
 	
 	@Length(max = 200)
     @Pattern(
-            regexp = "^[a-zA-Z0-9 .,!?:;'\"()/-]*$"
+    		regexp = "^[a-zA-Z0-9 .,!?:;'\"()/%$&+-]*$"
         )
     private String alternativeAnswer;
 
