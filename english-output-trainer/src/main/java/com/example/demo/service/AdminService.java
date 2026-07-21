@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.dto.PaginationDto;
+import com.example.demo.dto.QuestionDto;
 import com.example.demo.entity.Difficulty;
 import com.example.demo.entity.Question;
 import com.example.demo.form.QuestionForm;
@@ -136,5 +137,39 @@ public class AdminService {
 	public List<String> getAllConditions() {
 	    return questionRepository.findDistinctConditions();
 	}
+	
+	public void updateOneQuestion(long questionId, QuestionForm form) {
+		
+		Question question = questionRepository.findById(questionId)
+		        .orElseThrow(() ->
+		                new IllegalArgumentException("Question not found."));
+
+		question.setJapaneseText(form.getJapaneseText());
+		question.setEnglishText(form.getEnglishText());
+		question.setAlternativeAnswer(form.getAlternativeAnswer());
+		question.setDifficulty(form.getDifficulty());
+		question.setCondition(form.getCondition());
+
+		questionRepository.save(question);
+	}
+	
+	public QuestionDto getOneQuestion(long questionId) {
+
+		Question question = questionRepository.findById(questionId)
+		        .orElseThrow(() ->
+		                new IllegalArgumentException("Question not found."));
+		
+	    QuestionDto dto = new QuestionDto();
+
+	    dto.setJapaneseText(question.getJapaneseText());
+	    dto.setEnglishText(question.getEnglishText());
+	    dto.setAlternativeAnswer(question.getAlternativeAnswer());
+	    dto.setDifficulty(question.getDifficulty().name());
+	    dto.setCondition(question.getCondition());
+		
+		return dto;
+		
+	}
+
 		
 }
