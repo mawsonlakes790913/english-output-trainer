@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.dto.PaginationDto;
+import com.example.demo.dto.QuestionDto;
 import com.example.demo.entity.Difficulty;
 import com.example.demo.entity.Question;
 import com.example.demo.entity.Users;
@@ -133,6 +134,18 @@ public class AdminController {
 		model.addAttribute("keyword", keyword);
 		
 		return "/admin/question/list";
+		
+	}
+	
+	@GetMapping("/admin/question/edit")
+	public String getAdminQuestionEdit(@RequestParam long questionId,
+									    Model model) {
+		
+		QuestionDto question = adminService.getOneQuestion(questionId);
+
+		model.addAttribute("question", question);
+		
+		return "/admin/question/edit";
 		
 	}
 	
