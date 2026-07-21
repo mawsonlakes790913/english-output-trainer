@@ -1,11 +1,14 @@
 package com.example.demo.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.dto.PaginationDto;
+import com.example.demo.entity.Difficulty;
 import com.example.demo.entity.Question;
 import com.example.demo.form.QuestionForm;
 import com.example.demo.repository.QuestionRepository;
@@ -20,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AdminService {
 	private final UserRepository userRepository;
 	private final QuestionRepository questionRepository;
+	private final ReviewService reviewService;
 	
 	@Transactional
 	public void deleteOneUser(String userId) {
@@ -103,6 +107,21 @@ public class AdminService {
 	    pagination.setShowLastEllipsis(showLastEllipsis);
 
 	    return pagination;
+	}
+	
+	public List<Question> getFilteredQuestions(
+	        List<Difficulty> difficulties,
+	        List<String> conditions,
+	        String keyword) {
+
+	    if (conditions == null || conditions.isEmpty()) {
+	        conditions = getAllConditions();
+	    }
+
+	    return questionRepository.findFilteredQuestions(
+	            reviewService.convertDifficulty(difficulties),
+	            conditions,
+	            keyword);
 	}
 		
 }
