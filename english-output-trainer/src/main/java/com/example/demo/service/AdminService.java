@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +39,12 @@ public class AdminService {
     	
     	log.info("問題登録完了 questionId={}", savedQuestion.getQuestionId());
 		
+	}
+	
+	// 問題一覧取得(全件)
+	public Page<Question> getAllQuestions(Pageable pageable) {
+		Page<Question> questionList = questionRepository.findAll(pageable);
+	    return questionList;
 	}
 		
 }
