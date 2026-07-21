@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>問題編集</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/study.css}">
+</head>
+
+<body>
+
+<div layout:fragment="content">
+
+    <div class="container mt-4" style="max-width: 900px;">
+
+        <h2 class="mb-4">
+            問題編集
+        </h2>
+
+        <form th:action="@{/admin/question/edit}"
+              method="post"
+              th:object="${question}">
+
+            <!-- 日本語 -->
+            <div class="mb-3">
+
+                <label class="form-label fw-bold">
+                    日本語
+                </label>
+
+                <textarea class="form-control"
+                          rows="3"
+                          th:field="*{japaneseText}">
+                </textarea>
+
+            </div>
+
+            <!-- 英語 -->
+            <div class="mb-3">
+
+                <label class="form-label fw-bold">
+                    英語
+                </label>
+
+                <textarea class="form-control"
+                          rows="3"
+                          th:field="*{englishText}">
+                </textarea>
+
+            </div>
+
+            <!-- 別解 -->
+            <div class="mb-3">
+
+                <label class="form-label fw-bold">
+                    別解
+                </label>
+
+                <textarea class="form-control"
+                          rows="3"
+                          th:field="*{alternativeAnswer}">
+                </textarea>
+
+            </div>
+
+            <!-- Condition -->
+            <div class="mb-3">
+
+                <label class="form-label fw-bold">
+                    Condition
+                </label>
+
+                <input class="form-control"
+                       type="text"
+                       th:field="*{condition}">
+
+            </div>
+
+            <!-- 難易度 -->
+            <div class="mb-4">
+
+                <label class="form-label fw-bold">
+                    難易度
+                </label>
+
+                <select class="form-select"
+                        th:field="*{difficulty}">
+
+                    <option value="BEGINNER">
+                        初級
+                    </option>
+
+                    <option value="INTERMEDIATE">
+                        中級
+                    </option>
+
+                    <option value="ADVANCED">
+                        上級
+                    </option>
+
+                </select>
+
+            </div>
+
+            <!-- ボタン -->
+			<div class="d-flex justify-content-center gap-3 mt-4">
+			
+			    <a th:href="@{/admin/question/list}"
+			       class="btn btn-secondary">
+			        戻る
+			    </a>
+			
+			    <button type="submit"
+			            class="btn btn-primary">
+			        更新する
+			    </button>
+			
+			</div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>
