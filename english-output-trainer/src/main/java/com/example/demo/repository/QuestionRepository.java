@@ -59,5 +59,15 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 	
 	Page<Question> findAllByOrderByQuestionIdDesc(Pageable pageable);
 	
+	@Query(value = """
+			SELECT DISTINCT q.condition
+			FROM Question q
+			WHERE q.condition IS NOT NULL
+			ORDER BY q.condition
+			""")
+			List<String> findDistinctConditions();
+	
+
+	
 	
 }
