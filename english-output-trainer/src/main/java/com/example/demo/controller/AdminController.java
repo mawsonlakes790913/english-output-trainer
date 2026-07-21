@@ -2,6 +2,9 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.entity.Question;
 import com.example.demo.entity.Users;
 import com.example.demo.form.QuestionForm;
 import com.example.demo.service.AdminService;
@@ -87,4 +91,17 @@ public class AdminController {
 		return "redirect:/admin/question/list";
 
 	}
+	
+	@GetMapping("/admin/question/list")
+	public String getAdminQuestionList(@PageableDefault(page = 0, size = 50) Pageable pageable,
+								       Model model) {
+
+		Page<Question> allQuestionList = adminService.getAllQuestions(pageable);
+		
+		model.addAttribute("questionList", allQuestionList.getContent());
+		model.addAttribute("page", allQuestionList);
+		return "/admin/question/list";
+	}
+	
+	
 }
