@@ -123,5 +123,9 @@ public class AdminService {
 	            conditions,
 	            keyword);
 	}
+	
+	public List<String> getAllConditions() {
+	    return questionRepository.findDistinctConditions();
+	}
 		
 }
