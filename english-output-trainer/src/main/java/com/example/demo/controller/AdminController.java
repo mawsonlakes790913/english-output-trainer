@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.dto.PaginationDto;
+import com.example.demo.entity.Difficulty;
 import com.example.demo.entity.Question;
 import com.example.demo.entity.Users;
 import com.example.demo.form.QuestionForm;
@@ -105,6 +106,27 @@ public class AdminController {
 		model.addAttribute("pagination", pagination);
 		
 		return "/admin/question/list";
+	}
+	
+	@GetMapping("/admin/question/search")
+	public String getAdminQuestionSearch(@PageableDefault(page = 0, size = 50) Pageable pageable,
+										 @RequestParam List<Difficulty> difficulties,
+										 @RequestParam List<String> conditions,
+										 @RequestParam String keyword,
+		       							 Model model) {
+
+		Page<Question> allFilteredQuestionList = adminService.getFilteredQuestions(difficulties,
+																				   conditions,
+																				   keyword,
+																				   pageable);
+		PaginationDto pagination = adminService.createPagination(allFilteredQuestionList);
+		
+		model.addAttribute("questionList", allFilteredQuestionList.getContent());
+		model.addAttribute("page", allFilteredQuestionList);
+		model.addAttribute("pagination", pagination);
+		
+		return "/admin/question/list";
+		
 	}
 	
 	
