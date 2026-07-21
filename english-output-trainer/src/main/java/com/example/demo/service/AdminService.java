@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -109,19 +110,27 @@ public class AdminService {
 	    return pagination;
 	}
 	
-	public List<Question> getFilteredQuestions(
+	public Page<Question> getFilteredQuestions(
 	        List<Difficulty> difficulties,
 	        List<String> conditions,
-	        String keyword) {
+	        String keyword,
+	        Pageable pageable) {
+		
+		if (difficulties == null || difficulties.isEmpty()) {
+		    difficulties = Arrays.asList(Difficulty.values());
+		}
 
 	    if (conditions == null || conditions.isEmpty()) {
 	        conditions = getAllConditions();
 	    }
 
-	    return questionRepository.findFilteredQuestions(
+	    Page<Question> questionList = questionRepository.findFilteredQuestions(
 	            reviewService.convertDifficulty(difficulties),
 	            conditions,
-	            keyword);
+	            keyword,
+	            pageable);
+	    
+	    return questionList;
 	}
 	
 	public List<String> getAllConditions() {
