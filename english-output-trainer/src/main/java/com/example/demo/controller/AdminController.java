@@ -126,6 +126,8 @@ public class AdminController {
 		model.addAttribute("questionList", allFilteredQuestionList.getContent());
 		model.addAttribute("page", allFilteredQuestionList);
 		model.addAttribute("pagination", pagination);
+		model.addAttribute("conditions",
+		        adminService.getAllConditions());
 		model.addAttribute("selectedDifficulties", difficulties);
 		model.addAttribute("selectedConditions", conditions);
 		model.addAttribute("keyword", keyword);
