@@ -138,20 +138,7 @@ public class AdminService {
 	    return questionRepository.findDistinctConditions();
 	}
 	
-	public void updateOneQuestion(long questionId, QuestionForm form) {
-		
-		Question question = questionRepository.findById(questionId)
-		        .orElseThrow(() ->
-		                new IllegalArgumentException("Question not found."));
 
-		question.setJapaneseText(form.getJapaneseText());
-		question.setEnglishText(form.getEnglishText());
-		question.setAlternativeAnswer(form.getAlternativeAnswer());
-		question.setDifficulty(form.getDifficulty());
-		question.setCondition(form.getCondition());
-
-		questionRepository.save(question);
-	}
 	
 	public QuestionDto getOneQuestion(long questionId) {
 
