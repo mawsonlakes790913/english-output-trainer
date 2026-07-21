@@ -35,6 +35,125 @@
             </a>
 
         </div>
+        
+		<!-- ========================= -->
+		<!-- 検索フォーム -->
+		<!-- ========================= -->
+		<form th:action="@{/admin/question/search}"
+		      method="get"
+		      class="card p-3 mb-3">
+		
+		    <div class="row g-3 align-items-end">
+		
+		        <!-- 難易度 -->
+		        <div class="col-md-4">
+		            <label class="form-label fw-bold">
+		                難易度
+		            </label>
+		
+		            <div class="d-flex gap-3">
+		
+		                <div class="form-check">
+		                    <input class="form-check-input"
+		                           type="checkbox"
+		                           name="difficulties"
+		                           value="BEGINNER"
+		                           id="beginner"
+		                           th:checked="${selectedDifficulties != null and selectedDifficulties.contains(T(com.example.demo.entity.Difficulty).BEGINNER)}">
+		
+		                    <label class="form-check-label"
+		                           for="beginner">
+		                        初級
+		                    </label>
+		                </div>
+		
+		                <div class="form-check">
+		                    <input class="form-check-input"
+		                           type="checkbox"
+		                           name="difficulties"
+		                           value="INTERMEDIATE"
+		                           id="intermediate"
+		                           th:checked="${selectedDifficulties != null and selectedDifficulties.contains(T(com.example.demo.entity.Difficulty).INTERMEDIATE)}">
+		
+		                    <label class="form-check-label"
+		                           for="intermediate">
+		                        中級
+		                    </label>
+		                </div>
+		
+		                <div class="form-check">
+		                    <input class="form-check-input"
+		                           type="checkbox"
+		                           name="difficulties"
+		                           value="ADVANCED"
+		                           id="advanced"
+		                           th:checked="${selectedDifficulties != null and selectedDifficulties.contains(T(com.example.demo.entity.Difficulty).ADVANCED)}">
+		
+		                    <label class="form-check-label"
+		                           for="advanced">
+		                        上級
+		                    </label>
+		                </div>
+		
+		            </div>
+		        </div>
+		
+		        <!-- Condition -->
+		        <div class="col-md-3">
+		
+		            <label class="form-label fw-bold">
+		                条件
+		            </label>
+		
+		            <select class="form-select"
+		                    name="conditions">
+		
+		                <option value="">
+		                    すべて
+		                </option>
+		
+		                <option th:each="condition : ${conditions}"
+		                        th:value="${condition}"
+		                        th:text="${condition}"
+		                        th:selected="${selectedConditions != null and selectedConditions.contains(condition)}">
+		                </option>
+		
+		            </select>
+		
+		        </div>
+		
+		        <!-- キーワード -->
+		        <div class="col-md-3">
+		
+		            <label class="form-label fw-bold">
+		                キーワード
+		            </label>
+		
+		            <input class="form-control"
+		                   type="text"
+		                   name="keyword"
+		                   placeholder="日本語・英語・別解"
+		                   th:value="${keyword}">
+		
+		        </div>
+		
+		        <!-- ボタン -->
+		        <div class="col-md-2 d-grid">
+		
+		            <button class="btn btn-primary"
+		                    type="submit">
+		
+		                <i class="bi bi-search"></i>
+		
+		                検索
+		
+		            </button>
+		
+		        </div>
+		
+		    </div>
+		
+		</form>
 
         <!-- 問題一覧 -->
 		<div class="card">
