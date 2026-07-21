@@ -81,10 +81,11 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 			)
 			ORDER BY q.question_id DESC
 			""", nativeQuery = true)
-			List<Question> findFilteredQuestions(
+			Page<Question> findFilteredQuestions(
 					@Param("difficulties") List<String> difficulties,
 					@Param("conditions") List<String> conditions,
-					@Param("keyword") String keyword);
+					@Param("keyword") String keyword,
+					Pageable pageable);
 	
 	
 }
