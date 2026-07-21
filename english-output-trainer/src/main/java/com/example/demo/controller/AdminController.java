@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.dto.PaginationDto;
 import com.example.demo.entity.Question;
 import com.example.demo.entity.Users;
 import com.example.demo.form.QuestionForm;
@@ -57,10 +58,10 @@ public class AdminController {
 		return "redirect:/admin/list";
 	}
 	
-	@GetMapping("/admin/question/list")
-	public String getQuestionList() {
-		return "admin/question/list";
-	}
+//	@GetMapping("/admin/question/list")
+//	public String getQuestionList() {
+//		return "admin/question/list";
+//	}
 	
 	@GetMapping("/admin/question/add")
 	public String getQuestionAdd(
@@ -97,9 +98,12 @@ public class AdminController {
 								       Model model) {
 
 		Page<Question> allQuestionList = adminService.getAllQuestions(pageable);
+		PaginationDto pagination = adminService.createPagination(allQuestionList);
 		
 		model.addAttribute("questionList", allQuestionList.getContent());
 		model.addAttribute("page", allQuestionList);
+		model.addAttribute("pagination", pagination);
+		
 		return "/admin/question/list";
 	}
 	
