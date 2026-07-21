@@ -71,7 +71,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 			SELECT q.*
 			FROM question q
 			WHERE q.difficulty IN (:difficulties)
-			AND q.condition IN (:condition)
+			AND q.condition IN (:conditions)
 			AND 
 			(LOWER(q.japanese_text) LIKE LOWER(CONCAT('%', :keyword, '%'))
 			OR
