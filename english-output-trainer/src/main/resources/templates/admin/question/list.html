@@ -4,7 +4,12 @@
       layout:decorate="~{layout/layout}">
 
 <head>
+	<meta charset="UTF-8">
     <title>問題管理</title>
+    <link rel="stylesheet" th:href="@{/css/study.css}">
+	<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+	<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 <body>
@@ -31,16 +36,171 @@
 
         </div>
 
-        <!-- 後で問題一覧を表示 -->
-        <div class="card">
+        <!-- 問題一覧 -->
+		<div class="card">
+		
+		    <div class="table-responsive">
+		
+		        <table class="table table-hover align-middle mb-0">
+		
+		            <thead class="table-dark">
+		
+		                <tr>
+		
+		                    <th style="width:70px;">ID</th>
+		
+		                    <th style="width:26%;">日本語</th>
+		
+		                    <th>英語</th>
+		
+		                    <th style="width:90px;">難易度</th>
+		
+		                    <th style="width:120px;">詳細/編集</th>
+		
+		                    <th style="width:90px;">削除</th>
+		
+		                </tr>
+		
+		            </thead>
+		
+		            <tbody>
+		
+		                <tr th:each="question : ${questionList}"
+		
+		                    th:classappend="
+		                        ${question.difficulty.name() == 'BEGINNER'} ? 'table-danger' :
+		                        (${question.difficulty.name() == 'INTERMEDIATE'} ? 'table-primary' :
+		                        'table-success')">
+		
+		                    <!-- ID -->
+		                    <td th:text="${question.questionId}"></td>
+		
+		                    <!-- 日本語 -->
+		                    <td>
+		
+		                        <span th:text="${
+		                            #strings.length(question.japaneseText) > 25 ?
+		                            #strings.substring(question.japaneseText,0,25) + '...' :
+		                            question.japaneseText
+		                        }"></span>
+		
+		                    </td>
+		
+		                    <!-- 英語 -->
+		                    <td>
+		
+		                        <span th:text="${
+		                            #strings.length(question.englishText) > 70 ?
+		                            #strings.substring(question.englishText,0,70) + '...' :
+		                            question.englishText
+		                        }"></span>
+		
+		                    </td>
+		
+		                    <!-- 難易度 -->
+		                    <td>
+		
+		                        <span
+		                            th:if="${question.difficulty.name()=='BEGINNER'}"
+		                            class="fw-bold text-danger">
+		                            初級
+		                        </span>
+		
+		                        <span
+		                            th:if="${question.difficulty.name()=='INTERMEDIATE'}"
+		                            class="fw-bold text-primary">
+		                            中級
+		                        </span>
+		
+		                        <span
+		                            th:if="${question.difficulty.name()=='ADVANCED'}"
+		                            class="fw-bold text-success">
+		                            上級
+		                        </span>
+		
+		                    </td>
+		
+		                    <!-- 詳細・編集 -->
+		                    <td>
+		
+		                        <a class="btn btn-outline-primary btn-sm"
+		                           th:href="@{/admin/question/edit(questionId=${question.questionId})}">
+		
+		                            <i class="bi bi-pencil-square"></i>
+		
+		                        </a>
+		
+		                    </td>
+		
+		                    <!-- 削除 -->
+		                    <td>
+		
+		                        <button
+		                            class="btn btn-danger btn-sm">
+		
+		                            <i class="bi bi-trash"></i>
+		
+		                        </button>
+		
+		                    </td>
+		
+		                </tr>
+		
+		            </tbody>
+		
+		        </table>
+		
+		    </div>
+		
+		</div>
 
-            <div class="card-body text-center text-muted">
+        <!-- ページネーション -->
+        <nav class="mt-4">
 
-                問題一覧は今後実装予定です。
+            <ul class="pagination justify-content-center">
 
-            </div>
+                <!-- 前へ -->
+                <li class="page-item"
+                    th:classappend="${page.first} ? ' disabled'">
 
-        </div>
+                    <a class="page-link"
+                       th:href="@{/admin/question/list(page=${page.number-1},size=${page.size})}">
+
+                        前へ
+
+                    </a>
+
+                </li>
+
+                <!-- ページ番号 -->
+                <li class="page-item"
+                    th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+                    th:classappend="${i == page.number} ? ' active'">
+
+                    <a class="page-link"
+                       th:href="@{/admin/question/list(page=${i},size=${page.size})}"
+                       th:text="${i + 1}">
+
+                    </a>
+
+                </li>
+
+                <!-- 次へ -->
+                <li class="page-item"
+                    th:classappend="${page.last} ? ' disabled'">
+
+                    <a class="page-link"
+                       th:href="@{/admin/question/list(page=${page.number+1},size=${page.size})}">
+
+                        次へ
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </nav>
 
     </div>
 
