@@ -143,7 +143,7 @@ public class AdminController {
 		
 		QuestionDto question = adminService.getOneQuestion(questionId);
 
-		model.addAttribute("question", question);
+		model.addAttribute("questionForm", question);
 		
 		return "/admin/question/edit";
 		
@@ -152,13 +152,13 @@ public class AdminController {
 	@PostMapping("/admin/question/edit")
 	public String postAdminQuestionEdit(		
 			@RequestParam long questionId,
-			@ModelAttribute @Validated QuestionForm form,
+			@ModelAttribute("questionForm") @Validated QuestionForm form,
 			BindingResult bindingResult,
 			Model model) {
 		
 		// 通常のバリデーションエラー確認
 	    if (bindingResult.hasErrors()) {
-	    	model.addAttribute("question", form);
+	    	model.addAttribute("questionForm", form);
 	        return "admin/question/edit";
 	    }
 
