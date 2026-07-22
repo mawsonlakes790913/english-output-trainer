@@ -24,6 +24,10 @@
         <form th:action="@{/admin/question/edit}"
               method="post"
               th:object="${question}">
+              
+           	<input type="hidden"
+		           name="questionId"
+		           th:value="${question.questionId}">
 
             <!-- 日本語 -->
             <div class="mb-3">
