@@ -148,6 +148,7 @@ public class AdminService {
 		
 	    QuestionDto dto = new QuestionDto();
 
+	    dto.setQuestionId(question.getQuestionId());
 	    dto.setJapaneseText(question.getJapaneseText());
 	    dto.setEnglishText(question.getEnglishText());
 	    dto.setAlternativeAnswer(question.getAlternativeAnswer());
@@ -156,6 +157,28 @@ public class AdminService {
 		
 		return dto;
 		
+	}
+	
+	public void updateOneQuestion(long questionId, QuestionForm form) {
+		
+		Question question = questionRepository.findById(questionId)
+		        .orElseThrow(() ->
+		                new IllegalArgumentException("Question not found."));
+		
+		//更新前のログ出力
+		log.info("Before: {}", question);
+		
+		//更新
+		question.setJapaneseText(form.getJapaneseText());
+		question.setEnglishText(form.getEnglishText());
+		question.setAlternativeAnswer(form.getAlternativeAnswer());
+		question.setDifficulty(form.getDifficulty());
+		question.setCondition(form.getCondition());
+		
+		questionRepository.save(question);
+		
+		// 更新後のログ出力
+		log.info("After : {}", question);
 	}
 
 		
