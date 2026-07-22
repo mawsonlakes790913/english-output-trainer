@@ -149,5 +149,24 @@ public class AdminController {
 		
 	}
 	
+	@PostMapping("/admin/question/edit")
+	public String postAdminQuestionEdit(		
+			@RequestParam long questionId,
+			@ModelAttribute @Validated QuestionForm form,
+			BindingResult bindingResult,
+			Model model) {
+		
+		// 通常のバリデーションエラー確認
+	    if (bindingResult.hasErrors()) {
+	    	model.addAttribute("question", form);
+	        return "admin/question/edit";
+	    }
+
+		adminService.updateOneQuestion(questionId, form);
+		
+		return "redirect:/admin/question/list";
+		
+	}
+	
 	
 }
