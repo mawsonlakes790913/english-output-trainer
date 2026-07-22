@@ -12,6 +12,8 @@ import lombok.Data;
 @Data
 public class QuestionForm {
 	
+	private Long questionId;
+	
 	@NotBlank
 	@Length(max = 100)
     private String japaneseText;
