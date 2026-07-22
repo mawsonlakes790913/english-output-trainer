@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class QuestionDto {
 	
-	private String questionId;
+	private long questionId;
 	
 	private String japaneseText;
 	
