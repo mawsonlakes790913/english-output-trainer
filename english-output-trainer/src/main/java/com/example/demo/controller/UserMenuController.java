@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.example.demo.dto.PaginationDto;
 import com.example.demo.dto.UserQuestionListDto;
 import com.example.demo.entity.Users;
 import com.example.demo.form.EditPasswordForm;
 import com.example.demo.form.EditUserIdForm;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.service.AdminService;
 import com.example.demo.service.UserServiceImpl;
 
 import jakarta.servlet.ServletException;
@@ -37,6 +39,7 @@ public class UserMenuController {
 	private final UserServiceImpl userServiceImpl;
 	private final UserRepository repository;
 	private final PasswordEncoder encoder;
+	private final AdminService adminService;
 	
 	@GetMapping("/menu")
 	public String getUserMenu() {
@@ -183,9 +186,12 @@ public class UserMenuController {
 		Long userId = user.getId();
 		
 		Page<UserQuestionListDto> userQuestionList = userServiceImpl.getUserQuestionList(userId, pageable);
+		PaginationDto pagination = adminService.createPagination(userQuestionList);
+
 		
 		model.addAttribute("questionList", userQuestionList.getContent());
 		model.addAttribute("page", userQuestionList);
+		model.addAttribute("pagination", pagination);
 		
 		return "/user/question/list";
 		
