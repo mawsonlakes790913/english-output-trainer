@@ -4,12 +4,16 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.demo.dto.UserQuestionListDto;
 import com.example.demo.entity.Users;
+import com.example.demo.repository.QuestionRepository;
 import com.example.demo.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -21,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 public class UserServiceImpl {
 	private final UserRepository repository;
 	private final PasswordEncoder passwordEncoder;
+	private final QuestionRepository questionRepository;
 	
 	public void signup(Users user) {
 		boolean isExists = repository.existsByUserId(user.getUserId());
@@ -132,6 +137,12 @@ public class UserServiceImpl {
 	    // 更新
 	    repository.save(user);
 
+	}
+	
+	public Page<UserQuestionListDto> getUserQuestionList(long userId,
+														 Pageable pageable) {
+	    
+	    return questionRepository.getUserQuestionList(userId, pageable);
 	}
 	
 	
