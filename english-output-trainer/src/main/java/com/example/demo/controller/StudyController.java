@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.dto.NewStudyCountDto;
 import com.example.demo.dto.StudyMenuDto;
@@ -223,6 +224,19 @@ public class StudyController {
 		}
 		
 		return "redirect:/study/question?page=" + (page + 1);
+	}
+	
+	@PostMapping("/evaluation/toggle")
+	@ResponseBody
+	public void toggleEvaluation(@AuthenticationPrincipal UserDetails loginUser,
+	        				   @RequestParam Long questionId,
+	        				   @RequestParam Evaluation evaluation) {
+		
+		evaluationService.updateEvaluation(
+		        loginUser.getUsername(),
+		        questionId,
+		        evaluation);
+		
 	}
 	
 }
