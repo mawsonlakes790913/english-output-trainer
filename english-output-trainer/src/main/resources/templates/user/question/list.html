@@ -9,6 +9,18 @@
 
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+	<script th:src="@{/js/user/question/list.js}"
+	        defer>
+	</script>
+	
+	<script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}">
+	</script>
+	
+	<meta name="_csrf"
+	      th:content="${_csrf.token}">
+	
+	<meta name="_csrf_header"
+	      th:content="${_csrf.headerName}">      
 </head>
 
 <body>
@@ -74,9 +86,15 @@
 	        <!-- 詳細 -->
 	        <td>
 	
-	            <button class="btn btn-outline-primary btn-sm">
-	                詳細
-	            </button>
+				<button type="button"
+				        class="detailButton btn btn-outline-primary btn-sm"
+				        data-bs-toggle="modal"
+				        data-bs-target="#questionDetailModal"
+				        th:data-japanese="${question.japaneseText}"
+				        th:data-english="${question.englishText}"
+				        th:data-alternative="${question.alternativeAnswer}">
+				    詳細
+				</button>
 	
 	        </td>
 	
@@ -90,28 +108,34 @@
 			    </span>
 			
 			    <!-- Hard -->
-			    <button th:if="${question.evaluation == T(com.example.demo.entity.Evaluation).HARD}"
-			            class="btn btn-sm btn-danger evaluationButton"
-			            th:data-question-id="${question.questionId}"
-			            data-evaluation="HARD">
-			        Hard
-			    </button>
+				<button
+				    th:if="${question.evaluation == T(com.example.demo.entity.Evaluation).HARD}"
+				    class="btn btn-sm btn-danger evaluationButton"
+				    th:data-question-id="${question.questionId}"
+				    data-bs-toggle="modal"
+				    data-bs-target="#evaluationModal">
+				    Hard
+				</button>
 			
 			    <!-- Good -->
-			    <button th:if="${question.evaluation == T(com.example.demo.entity.Evaluation).GOOD}"
-			            class="btn btn-sm btn-primary evaluationButton"
-			            th:data-question-id="${question.questionId}"
-			            data-evaluation="GOOD">
-			        Good
-			    </button>
+				<button
+				    th:if="${question.evaluation == T(com.example.demo.entity.Evaluation).GOOD}"
+				    class="btn btn-sm btn-primary evaluationButton"
+				    th:data-question-id="${question.questionId}"
+				    data-bs-toggle="modal"
+				    data-bs-target="#evaluationModal">
+				    Good
+				</button>
 			
 			    <!-- Easy -->
-			    <button th:if="${question.evaluation == T(com.example.demo.entity.Evaluation).EASY}"
-			            class="btn btn-sm btn-success evaluationButton"
-			            th:data-question-id="${question.questionId}"
-			            data-evaluation="EASY">
-			        Easy
-			    </button>
+				<button
+				    th:if="${question.evaluation == T(com.example.demo.entity.Evaluation).EASY}"
+				    class="btn btn-sm btn-success evaluationButton"
+				    th:data-question-id="${question.questionId}"
+				    data-bs-toggle="modal"
+				    data-bs-target="#evaluationModal">
+				    Good
+				</button>
 			
 			</td>
 	
@@ -229,8 +253,111 @@
 	    </ul>
 	
 	</nav>
+	
+	<!-- モーダル -->
+	<!-- 問題詳細モーダル -->
+	<div class="modal fade"
+	     id="questionDetailModal">
+	
+	    <div class="modal-dialog">
+	
+	        <div class="modal-content">
+	
+	            <div class="modal-header">
+	                <h5 class="modal-title">問題詳細</h5>
+	
+	                <button type="button"
+	                        class="btn-close"
+	                        data-bs-dismiss="modal">
+	                </button>
+	            </div>
+	
+	            <div class="modal-body">
+	
+	                <p>
+	                    <strong>日本語</strong><br>
+	                    <span id="modalJapanese"></span>
+	                </p>
+	
+	                <p>
+	                    <strong>英語</strong><br>
+	                    <span id="modalEnglish"></span>
+	                </p>
+	
+	                <p id="modalAlternativeArea">
+	                    <strong>別解</strong><br>
+	                    <span id="modalAlternative"></span>
+	                </p>
+	
+	            </div>
+	
+	            <div class="modal-footer">
+	
+	                <button type="button"
+	                        class="btn btn-secondary"
+	                        data-bs-dismiss="modal">
+	
+	                    閉じる
+	
+	                </button>
+	
+	            </div>
+	
+	        </div>
+	
+	    </div>
+	
+	</div>
+	
+	<!-- 理解度変更モーダル -->
+	<div class="modal fade"
+	     id="evaluationModal">
+	
+	    <div class="modal-dialog">
+	
+	        <div class="modal-content">
+	
+	            <div class="modal-header">
+	
+	                <h5 class="modal-title">
+	                    理解度変更
+	                </h5>
+	
+	                <button type="button"
+	                        class="btn-close"
+	                        data-bs-dismiss="modal">
+	                </button>
+	
+	            </div>
+	
+	            <div class="modal-body text-center">
+	
+	                <button class="btn btn-danger evaluationSelect"
+	                        data-evaluation="HARD">
+	                    Hard
+	                </button>
+	
+	                <button class="btn btn-primary evaluationSelect"
+	                        data-evaluation="GOOD">
+	                    Good
+	                </button>
+	
+	                <button class="btn btn-success evaluationSelect"
+	                        data-evaluation="EASY">
+	                    Easy
+	                </button>
+	
+	            </div>
+	
+	        </div>
+	
+	    </div>
+	
+	</div>
 
 </div>
+
+
 
 </body>
 
