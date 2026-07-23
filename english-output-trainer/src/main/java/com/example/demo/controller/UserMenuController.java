@@ -1,6 +1,9 @@
 package com.example.demo.controller;
 
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.example.demo.dto.UserQuestionListDto;
 import com.example.demo.entity.Users;
 import com.example.demo.form.EditPasswordForm;
 import com.example.demo.form.EditUserIdForm;
@@ -169,4 +173,23 @@ public class UserMenuController {
 
 	    return "redirect:/login";
 	}
+	
+	@GetMapping("/user/question/list")
+	public String getUserQuestionList(@AuthenticationPrincipal UserDetails loginUser,
+									  @PageableDefault(page = 0, size = 50) Pageable pageable,
+									  Model model) {
+		
+		Users user = userServiceImpl.getUserOne(loginUser.getUsername());
+		Long userId = user.getId();
+		
+		Page<UserQuestionListDto> userQuestionList = userServiceImpl.getUserQuestionList(userId, pageable);
+		
+		model.addAttribute("questionList", userQuestionList.getContent());
+		model.addAttribute("page", userQuestionList);
+		
+		return "/user/question/list";
+		
+	}
+	
+
 }
