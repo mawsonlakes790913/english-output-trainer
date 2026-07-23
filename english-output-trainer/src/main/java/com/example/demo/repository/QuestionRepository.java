@@ -110,7 +110,11 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 			ON (q.question_id = f.question_id
 					AND f.user_id = :userId)
 			ORDER BY q.question_id ASC
-			""", nativeQuery = true)
+			""", 
+			countQuery = """
+	        SELECT COUNT(*)
+	        FROM question q
+	        """,nativeQuery = true)
 			Page<UserQuestionListDto> getUserQuestionList(
 				    @Param("userId") Long userId,
 				    Pageable pageable
