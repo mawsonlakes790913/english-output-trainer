@@ -119,4 +119,79 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 				    @Param("userId") Long userId,
 				    Pageable pageable
 					);
+	
+	@Query(value = """
+			SELECT 
+			    q.question_id         AS questionId,
+			    q.japanese_text       AS japaneseText,
+			    q.english_text        AS englishText,
+			    q.alternative_answer  AS alternativeAnswer,
+			    q.condition           AS condition,
+			    q.difficulty          AS difficulty,
+			    sh.evaluation         AS evaluation,
+				CASE
+				    WHEN f.question_id IS NOT NULL THEN TRUE
+				    ELSE FALSE
+				END AS favorite
+			FROM question q
+			LEFT JOIN study_history sh
+			ON (q.question_id = sh.question_id
+				AND sh.user_id = :userId)
+			LEFT JOIN favorites f
+			ON (q.question_id = f.question_id
+					AND f.user_id = :userId)
+			WHERE q.difficulty IN (:difficulties)
+			AND (
+			    :studyCondition = 'UNLEARNED_ONLY'
+			    OR sh.evaluation IN (:evaluations)
+			)
+			AND ((:studyCondition = 'ALL') 
+				OR (:studyCondition = 'LEARNED_ONLY' AND sh.question_id IS NOT NULL)
+				OR (:studyCondition = 'UNLEARNED_ONLY' AND sh.question_id IS NULL))
+			AND (:favoriteCondition = 'ALL' OR (:favoriteCondition = 'FAVORITED' AND f.question_id IS NOT NULL)
+							OR (:favoriteCondition = 'NOT_FAVORITED' AND f.question_id IS NULL))
+			AND q.condition IN (:conditions)
+			AND (:keyword = ''
+				OR LOWER(q.japanese_text) LIKE LOWER(CONCAT('%', :keyword, '%'))
+				OR LOWER(q.english_text) LIKE LOWER(CONCAT('%', :keyword, '%'))
+				OR LOWER(q.alternative_answer) LIKE LOWER(CONCAT('%', :keyword, '%'))
+				)
+			ORDER BY q.question_id ASC
+			""", 
+			countQuery = """
+	        SELECT COUNT(*)
+			FROM question q
+			LEFT JOIN study_history sh
+			ON (q.question_id = sh.question_id
+				AND sh.user_id = :userId)
+			LEFT JOIN favorites f
+			ON (q.question_id = f.question_id
+					AND f.user_id = :userId)
+			WHERE q.difficulty IN (:difficulties)
+			AND (
+			    :studyCondition = 'UNLEARNED_ONLY'
+			    OR sh.evaluation IN (:evaluations)
+			)
+			AND ((:studyCondition = 'ALL') 
+				OR (:studyCondition = 'LEARNED_ONLY' AND sh.question_id IS NOT NULL)
+				OR (:studyCondition = 'UNLEARNED_ONLY' AND sh.question_id IS NULL))
+			AND (:favoriteCondition = 'ALL' OR (:favoriteCondition = 'FAVORITED' AND f.question_id IS NOT NULL)
+							OR (:favoriteCondition = 'NOT_FAVORITED' AND f.question_id IS NULL))
+			AND q.condition IN (:conditions)
+			AND (:keyword = ''
+				OR LOWER(q.japanese_text) LIKE LOWER(CONCAT('%', :keyword, '%'))
+				OR LOWER(q.english_text) LIKE LOWER(CONCAT('%', :keyword, '%'))
+				OR LOWER(q.alternative_answer) LIKE LOWER(CONCAT('%', :keyword, '%'))
+				)
+	        """,nativeQuery = true)
+			Page<UserQuestionListDto> getFilteredUserQuestionList(
+				    @Param("userId") long userId,
+					@Param("difficulties") List<String> difficulties,
+					@Param("evaluations") List<String> evaluations,
+					@Param("studyCondition") String studyCondition,
+					@Param("favoriteCondition") String favoriteCondition,
+					@Param("conditions") List<String> conditions,
+					@Param("keyword") String keyword,
+				    Pageable pageable
+					);
 }
