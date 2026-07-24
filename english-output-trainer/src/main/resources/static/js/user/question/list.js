@@ -225,4 +225,51 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
+
+    // ======================
+    // 検索条件制御
+    // ======================
+
+    const studyCondition =
+        document.getElementById("studyCondition");
+
+    const evaluations =
+        document.querySelectorAll(
+            "input[name='evaluations']"
+        );
+
+    if (studyCondition) {
+
+        function updateEvaluationState() {
+
+            const unlearned =
+                studyCondition.value ===
+                "UNLEARNED_ONLY";
+
+            evaluations.forEach(function (cb) {
+
+                if (unlearned) {
+
+                    cb.checked = false;
+                    cb.disabled = true;
+
+                } else {
+
+                    cb.disabled = false;
+
+                }
+
+            });
+
+        }
+
+        studyCondition.addEventListener(
+            "change",
+            updateEvaluationState
+        );
+
+        updateEvaluationState();
+
+    }
+
 });
