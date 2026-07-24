@@ -12,6 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.dto.UserQuestionListDto;
+import com.example.demo.entity.Difficulty;
+import com.example.demo.entity.Evaluation;
+import com.example.demo.entity.FavoriteCondition;
+import com.example.demo.entity.StudyCondition;
 import com.example.demo.entity.Users;
 import com.example.demo.repository.QuestionRepository;
 import com.example.demo.repository.UserRepository;
@@ -26,6 +30,8 @@ public class UserServiceImpl {
 	private final UserRepository repository;
 	private final PasswordEncoder passwordEncoder;
 	private final QuestionRepository questionRepository;
+	private final ReviewService reviewService;
+	private final AdminService adminService;
 	
 	public void signup(Users user) {
 		boolean isExists = repository.existsByUserId(user.getUserId());
@@ -145,5 +151,35 @@ public class UserServiceImpl {
 	    return questionRepository.getUserQuestionList(userId, pageable);
 	}
 	
+	public Page<UserQuestionListDto> getFilteredUserQuestionList(long userId,
+																 List<Difficulty> difficulties,
+																 List<Evaluation> evaluations,
+																 StudyCondition studyCondition,
+																 FavoriteCondition favoriteCondition,
+																 List<String> conditions,
+																 String keyword,																 
+																 Pageable pageable) {
+		
+		List<String> convertedDifficulties = reviewService.convertDifficulty(difficulties);
+		List<String> convertedEvaluations = reviewService.convertEvaluation(evaluations);
+		String convertedStudyCondition = convertStudyCondition(studyCondition);
+		String convertedFavoriteCondition = reviewService.convertFavoriteCondition(favoriteCondition);
+		
+	    if (conditions == null || conditions.isEmpty()) {
+	        conditions = adminService.getAllConditions();
+	    }
+	    
+		return questionRepository.getFilteredUserQuestionList(userId,
+															  convertedDifficulties,
+															  convertedEvaluations,
+															  convertedStudyCondition,
+															  convertedFavoriteCondition,
+															  conditions,
+															  keyword,
+															  pageable);
+	}
+	
+
+
 	
 }
