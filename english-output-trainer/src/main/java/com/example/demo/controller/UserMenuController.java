@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,9 +17,14 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.dto.PaginationDto;
 import com.example.demo.dto.UserQuestionListDto;
+import com.example.demo.entity.Difficulty;
+import com.example.demo.entity.Evaluation;
+import com.example.demo.entity.FavoriteCondition;
+import com.example.demo.entity.StudyCondition;
 import com.example.demo.entity.Users;
 import com.example.demo.form.EditPasswordForm;
 import com.example.demo.form.EditUserIdForm;
@@ -192,6 +199,48 @@ public class UserMenuController {
 		model.addAttribute("questionList", userQuestionList.getContent());
 		model.addAttribute("page", userQuestionList);
 		model.addAttribute("pagination", pagination);
+		
+		return "/user/question/list";
+		
+	}
+	
+	@GetMapping("/user/question/search")
+	public String getUserQuestionSearch(@AuthenticationPrincipal UserDetails loginUser,
+										@PageableDefault(page = 0, size = 50) Pageable pageable,
+										 @RequestParam(required = false) List<Difficulty> difficulties,
+										 @RequestParam(required = false) List<Evaluation> evaluations,
+										 @RequestParam(required = false) StudyCondition studyCondition,
+										 @RequestParam(required = false) FavoriteCondition favoriteCondition,
+										 @RequestParam(required = false) List<String> conditions,
+										 @RequestParam(required = false) String keyword,
+		       							 Model model) {
+		
+		Users user = userServiceImpl.getUserOne(loginUser.getUsername());
+		Long userId = user.getId();
+
+		Page<UserQuestionListDto> FilteredQuestionList = userServiceImpl.getFilteredUserQuestionList(userId,
+																					difficulties,
+																					evaluations,
+																					studyCondition,
+																					favoriteCondition,
+																					conditions,
+																				    keyword,
+																				    pageable);
+		
+		PaginationDto pagination = adminService.createPagination(FilteredQuestionList);
+		
+		model.addAttribute("questionList", FilteredQuestionList.getContent());
+		model.addAttribute("page", FilteredQuestionList);
+		model.addAttribute("pagination", pagination);
+
+		model.addAttribute("conditions", adminService.getAllConditions());
+
+		model.addAttribute("selectedDifficulties", difficulties);
+		model.addAttribute("selectedEvaluations", evaluations);
+		model.addAttribute("selectedStudyCondition", studyCondition);
+		model.addAttribute("selectedFavoriteCondition", favoriteCondition);
+		model.addAttribute("selectedConditions", conditions);
+		model.addAttribute("keyword", keyword);
 		
 		return "/user/question/list";
 		
