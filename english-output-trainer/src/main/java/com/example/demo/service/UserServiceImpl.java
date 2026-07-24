@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -160,23 +161,51 @@ public class UserServiceImpl {
 																 String keyword,																 
 																 Pageable pageable) {
 		
-		List<String> convertedDifficulties = reviewService.convertDifficulty(difficulties);
-		List<String> convertedEvaluations = reviewService.convertEvaluation(evaluations);
-		String convertedStudyCondition = convertStudyCondition(studyCondition);
-		String convertedFavoriteCondition = reviewService.convertFavoriteCondition(favoriteCondition);
-		
+	    // 難易度
+	    if (difficulties == null || difficulties.isEmpty()) {
+	        difficulties = Arrays.asList(Difficulty.values());
+	    }
+
+	    // 理解度
+	    if (evaluations == null || evaluations.isEmpty()) {
+	        evaluations = Arrays.asList(Evaluation.values());
+	    }
+
+	    // 学習条件
+	    if (studyCondition == null) {
+	        studyCondition = StudyCondition.ALL;
+	    }
+
+	    // お気に入り条件
+	    if (favoriteCondition == null) {
+	        favoriteCondition = FavoriteCondition.ALL;
+	    }
+
+	    // 条件
 	    if (conditions == null || conditions.isEmpty()) {
 	        conditions = adminService.getAllConditions();
 	    }
-	    
-		return questionRepository.getFilteredUserQuestionList(userId,
-															  convertedDifficulties,
-															  convertedEvaluations,
-															  convertedStudyCondition,
-															  convertedFavoriteCondition,
-															  conditions,
-															  keyword,
-															  pageable);
+
+	    // キーワード
+	    if (keyword == null) {
+	        keyword = "";
+	    }
+		
+	    // ここで変換する
+	    List<String> convertedDifficulties = reviewService.convertDifficulty(difficulties);
+	    List<String> convertedEvaluations = reviewService.convertEvaluation(evaluations);
+	    String convertedStudyCondition = convertStudyCondition(studyCondition);
+	    String convertedFavoriteCondition = reviewService.convertFavoriteCondition(favoriteCondition);
+
+	    return questionRepository.getFilteredUserQuestionList(
+	            userId,
+	            convertedDifficulties,
+	            convertedEvaluations,
+	            convertedStudyCondition,
+	            convertedFavoriteCondition,
+	            conditions,
+	            keyword,
+	            pageable);
 	}
 	
 	public String convertStudyCondition(StudyCondition studyCondition) {
