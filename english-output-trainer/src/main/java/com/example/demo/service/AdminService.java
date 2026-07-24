@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -117,9 +116,9 @@ public class AdminService {
 	        String keyword,
 	        Pageable pageable) {
 		
-		if (difficulties == null || difficulties.isEmpty()) {
-		    difficulties = Arrays.asList(Difficulty.values());
-		}
+//		if (difficulties == null || difficulties.isEmpty()) {
+//		    difficulties = Arrays.asList(Difficulty.values());
+//		}
 
 	    if (conditions == null || conditions.isEmpty()) {
 	        conditions = getAllConditions();
