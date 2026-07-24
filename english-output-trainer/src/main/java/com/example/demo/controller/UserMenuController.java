@@ -184,66 +184,73 @@ public class UserMenuController {
 	    return "redirect:/login";
 	}
 	
-	@GetMapping("/user/question/list")
-	public String getUserQuestionList(@AuthenticationPrincipal UserDetails loginUser,
-									  @PageableDefault(page = 0, size = 50) Pageable pageable,
-									  Model model) {
-		
-		Users user = userServiceImpl.getUserOne(loginUser.getUsername());
-		Long userId = user.getId();
-		
-		Page<UserQuestionListDto> userQuestionList = userServiceImpl.getUserQuestionList(userId, pageable);
-		PaginationDto pagination = adminService.createPagination(userQuestionList);
-
-		
-		model.addAttribute("questionList", userQuestionList.getContent());
-		model.addAttribute("page", userQuestionList);
-		model.addAttribute("pagination", pagination);
-		
-		return "/user/question/list";
-		
-	}
+//	@GetMapping("/user/question/list")
+//	public String getUserQuestionList(@AuthenticationPrincipal UserDetails loginUser,
+//									  @PageableDefault(page = 0, size = 50) Pageable pageable,
+//									  Model model) {
+//		
+//		Users user = userServiceImpl.getUserOne(loginUser.getUsername());
+//		Long userId = user.getId();
+//		
+//		Page<UserQuestionListDto> userQuestionList = userServiceImpl.getUserQuestionList(userId, pageable);
+//		PaginationDto pagination = adminService.createPagination(userQuestionList);
+//
+//		
+//		model.addAttribute("questionList", userQuestionList.getContent());
+//		model.addAttribute("page", userQuestionList);
+//		model.addAttribute("pagination", pagination);
+//		
+//		return "/user/question/list";
+//		
+//	}
 	
 	@GetMapping("/user/question/search")
-	public String getUserQuestionSearch(@AuthenticationPrincipal UserDetails loginUser,
-										@PageableDefault(page = 0, size = 50) Pageable pageable,
-										 @RequestParam(required = false) List<Difficulty> difficulties,
-										 @RequestParam(required = false) List<Evaluation> evaluations,
-										 @RequestParam(required = false) StudyCondition studyCondition,
-										 @RequestParam(required = false) FavoriteCondition favoriteCondition,
-										 @RequestParam(required = false) List<String> conditions,
-										 @RequestParam(required = false) String keyword,
-		       							 Model model) {
-		
-		Users user = userServiceImpl.getUserOne(loginUser.getUsername());
-		Long userId = user.getId();
+	public String getUserQuestionSearch(
+	        @AuthenticationPrincipal UserDetails loginUser,
+	        @PageableDefault(page = 0, size = 50) Pageable pageable,
+	        @RequestParam(required = false) List<Difficulty> difficulties,
+	        @RequestParam(required = false) List<Evaluation> evaluations,
+	        @RequestParam(required = false) StudyCondition studyCondition,
+	        @RequestParam(required = false) FavoriteCondition favoriteCondition,
+	        @RequestParam(required = false) List<String> conditions,
+	        @RequestParam(required = false, defaultValue = "") String keyword,
+	        Model model) {
 
-		Page<UserQuestionListDto> FilteredQuestionList = userServiceImpl.getFilteredUserQuestionList(userId,
-																					difficulties,
-																					evaluations,
-																					studyCondition,
-																					favoriteCondition,
-																					conditions,
-																				    keyword,
-																				    pageable);
-		
-		PaginationDto pagination = adminService.createPagination(FilteredQuestionList);
-		
-		model.addAttribute("questionList", FilteredQuestionList.getContent());
-		model.addAttribute("page", FilteredQuestionList);
-		model.addAttribute("pagination", pagination);
+	    Users user = userServiceImpl.getUserOne(loginUser.getUsername());
+	    Long userId = user.getId();
 
-		model.addAttribute("conditions", adminService.getAllConditions());
+	    // 検索（パラメータが未指定ならService側で全件扱い）
+	    Page<UserQuestionListDto> questionList =
+	            userServiceImpl.getFilteredUserQuestionList(
+	                    userId,
+	                    difficulties,
+	                    evaluations,
+	                    studyCondition,
+	                    favoriteCondition,
+	                    conditions,
+	                    keyword,
+	                    pageable);
 
-		model.addAttribute("selectedDifficulties", difficulties);
-		model.addAttribute("selectedEvaluations", evaluations);
-		model.addAttribute("selectedStudyCondition", studyCondition);
-		model.addAttribute("selectedFavoriteCondition", favoriteCondition);
-		model.addAttribute("selectedConditions", conditions);
-		model.addAttribute("keyword", keyword);
-		
-		return "/user/question/list";
-		
+	    PaginationDto pagination =
+	            adminService.createPagination(questionList);
+
+	    // 一覧
+	    model.addAttribute("questionList", questionList.getContent());
+	    model.addAttribute("page", questionList);
+	    model.addAttribute("pagination", pagination);
+
+	    // 条件一覧
+	    model.addAttribute("conditions", adminService.getAllConditions());
+
+	    // 検索条件を画面へ戻す
+	    model.addAttribute("selectedDifficulties", difficulties);
+	    model.addAttribute("selectedEvaluations", evaluations);
+	    model.addAttribute("selectedStudyCondition", studyCondition);
+	    model.addAttribute("selectedFavoriteCondition", favoriteCondition);
+	    model.addAttribute("selectedConditions", conditions);
+	    model.addAttribute("keyword", keyword);
+
+	    return "user/question/list";
 	}
 	
 
