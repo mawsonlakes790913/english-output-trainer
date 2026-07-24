@@ -413,7 +413,15 @@
 	            th:classappend="${page.first} ? ' disabled'">
 	
 	            <a class="page-link"
-	               th:href="@{/user/question/list(page=${page.number-1},size=${page.size})}">
+	               th:href="@{/user/question/search(
+	                    page=${page.number-1},
+	                    size=${page.size},
+	                    difficulties=${selectedDifficulties},
+	                    studyCondition=${selectedStudyCondition},
+	                    favoriteCondition=${selectedFavoriteCondition},
+	                    conditions=${selectedConditions},
+	                    keyword=${keyword}
+	               )}">
 	
 	                前へ
 	
@@ -426,7 +434,15 @@
 	            th:classappend="${page.number == 0} ? ' active'">
 	
 	            <a class="page-link"
-	               th:href="@{/user/question/list(page=0,size=${page.size})}">
+	               th:href="@{/user/question/search(
+	                    page=0,
+	                    size=${page.size},
+	                    difficulties=${selectedDifficulties},
+	                    studyCondition=${selectedStudyCondition},
+	                    favoriteCondition=${selectedFavoriteCondition},
+	                    conditions=${selectedConditions},
+	                    keyword=${keyword}
+	               )}">
 	
 	                1
 	
@@ -449,7 +465,15 @@
 	            th:classappend="${i == pagination.currentPage} ? ' active'">
 	
 	            <a class="page-link"
-	               th:href="@{/user/question/list(page=${i},size=${page.size})}"
+	               th:href="@{/user/question/search(
+	                    page=${i},
+	                    size=${page.size},
+	                    difficulties=${selectedDifficulties},
+	                    studyCondition=${selectedStudyCondition},
+	                    favoriteCondition=${selectedFavoriteCondition},
+	                    conditions=${selectedConditions},
+	                    keyword=${keyword}
+	               )}"
 	               th:text="${i + 1}">
 	
 	            </a>
@@ -470,7 +494,15 @@
 	            th:classappend="${page.last} ? ' active'">
 	
 	            <a class="page-link"
-	               th:href="@{/user/question/list(page=${page.totalPages-1},size=${page.size})}"
+	               th:href="@{/user/question/search(
+	                    page=${page.totalPages-1},
+	                    size=${page.size},
+	                    difficulties=${selectedDifficulties},
+	                    studyCondition=${selectedStudyCondition},
+	                    favoriteCondition=${selectedFavoriteCondition},
+	                    conditions=${selectedConditions},
+	                    keyword=${keyword}
+	               )}"
 	               th:text="${page.totalPages}">
 	
 	            </a>
@@ -482,7 +514,15 @@
 	            th:classappend="${page.last} ? ' disabled'">
 	
 	            <a class="page-link"
-	               th:href="@{/user/question/list(page=${page.number+1},size=${page.size})}">
+	               th:href="@{/user/question/search(
+	                    page=${page.number+1},
+	                    size=${page.size},
+	                    difficulties=${selectedDifficulties},
+	                    studyCondition=${selectedStudyCondition},
+	                    favoriteCondition=${selectedFavoriteCondition},
+	                    conditions=${selectedConditions},
+	                    keyword=${keyword}
+	               )}">
 	
 	                次へ
 	
