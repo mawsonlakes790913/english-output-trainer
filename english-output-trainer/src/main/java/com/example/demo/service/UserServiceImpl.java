@@ -179,7 +179,21 @@ public class UserServiceImpl {
 															  pageable);
 	}
 	
-
-
+	public String convertStudyCondition(StudyCondition studyCondition) {
+		
+		String convertedStudyCondition;
+		
+		if (studyCondition == null) {
+			
+			convertedStudyCondition = StudyCondition.ALL.name();
+			
+		} else {
+			
+			convertedStudyCondition = studyCondition.name();
+					
+		}
+		
+		return convertedStudyCondition;
+	}
 	
 }
