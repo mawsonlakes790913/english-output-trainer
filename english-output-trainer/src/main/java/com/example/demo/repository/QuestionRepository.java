@@ -142,15 +142,31 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 					AND f.user_id = :userId)
 			WHERE q.difficulty IN (:difficulties)
 			AND (
-			    :studyCondition = 'UNLEARNED_ONLY'
-			    OR sh.evaluation IN (:evaluations)
+			    (:studyCondition = 'ALL'
+			        AND (
+			            sh.question_id IS NULL
+			            OR (
+			                sh.question_id IS NOT NULL
+			                AND sh.evaluation IN (:evaluations)
+			            )
+			        )
+			    )
+			
+			    OR (:studyCondition = 'LEARNED_ONLY'
+			        AND sh.question_id IS NOT NULL
+			        AND sh.evaluation IN (:evaluations)
+			    )
+			
+			    OR (:studyCondition = 'UNLEARNED_ONLY'
+			        AND sh.question_id IS NULL
+			    )
 			)
-			AND ((:studyCondition = 'ALL') 
-				OR (:studyCondition = 'LEARNED_ONLY' AND sh.question_id IS NOT NULL)
-				OR (:studyCondition = 'UNLEARNED_ONLY' AND sh.question_id IS NULL))
 			AND (:favoriteCondition = 'ALL' OR (:favoriteCondition = 'FAVORITED' AND f.question_id IS NOT NULL)
 							OR (:favoriteCondition = 'NOT_FAVORITED' AND f.question_id IS NULL))
-			AND q.condition IN (:conditions)
+			AND (
+			    q.condition IS NULL
+			    OR q.condition IN (:conditions)
+			)
 			AND (:keyword = ''
 				OR LOWER(q.japanese_text) LIKE LOWER(CONCAT('%', :keyword, '%'))
 				OR LOWER(q.english_text) LIKE LOWER(CONCAT('%', :keyword, '%'))
@@ -169,15 +185,31 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 					AND f.user_id = :userId)
 			WHERE q.difficulty IN (:difficulties)
 			AND (
-			    :studyCondition = 'UNLEARNED_ONLY'
-			    OR sh.evaluation IN (:evaluations)
+			    (:studyCondition = 'ALL'
+			        AND (
+			            sh.question_id IS NULL
+			            OR (
+			                sh.question_id IS NOT NULL
+			                AND sh.evaluation IN (:evaluations)
+			            )
+			        )
+			    )
+			
+			    OR (:studyCondition = 'LEARNED_ONLY'
+			        AND sh.question_id IS NOT NULL
+			        AND sh.evaluation IN (:evaluations)
+			    )
+			
+			    OR (:studyCondition = 'UNLEARNED_ONLY'
+			        AND sh.question_id IS NULL
+			    )
 			)
-			AND ((:studyCondition = 'ALL') 
-				OR (:studyCondition = 'LEARNED_ONLY' AND sh.question_id IS NOT NULL)
-				OR (:studyCondition = 'UNLEARNED_ONLY' AND sh.question_id IS NULL))
 			AND (:favoriteCondition = 'ALL' OR (:favoriteCondition = 'FAVORITED' AND f.question_id IS NOT NULL)
 							OR (:favoriteCondition = 'NOT_FAVORITED' AND f.question_id IS NULL))
-			AND q.condition IN (:conditions)
+			AND (
+			    q.condition IS NULL
+			    OR q.condition IN (:conditions)
+			)
 			AND (:keyword = ''
 				OR LOWER(q.japanese_text) LIKE LOWER(CONCAT('%', :keyword, '%'))
 				OR LOWER(q.english_text) LIKE LOWER(CONCAT('%', :keyword, '%'))
@@ -194,4 +226,5 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 					@Param("keyword") String keyword,
 				    Pageable pageable
 					);
+	
 }
