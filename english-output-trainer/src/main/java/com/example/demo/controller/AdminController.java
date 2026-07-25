@@ -21,6 +21,7 @@ import com.example.demo.entity.Question;
 import com.example.demo.entity.Users;
 import com.example.demo.form.QuestionForm;
 import com.example.demo.service.AdminService;
+import com.example.demo.service.PaginationService;
 import com.example.demo.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,7 @@ public class AdminController {
 	
 	private final UserService userService;
 	private final AdminService adminService;
+	private final PaginationService paginationService;
 	
 	@GetMapping("/admin")
 	public String getAdmin() {
@@ -100,7 +102,7 @@ public class AdminController {
 								       Model model) {
 
 		Page<Question> allQuestionList = adminService.getAllQuestions(pageable);
-		PaginationDto pagination = adminService.createPagination(allQuestionList);
+		PaginationDto pagination = paginationService.createPagination(allQuestionList);
 		
 		model.addAttribute("questionList", allQuestionList.getContent());
 		model.addAttribute("page", allQuestionList);
@@ -122,7 +124,7 @@ public class AdminController {
 																				   conditions,
 																				   keyword,
 																				   pageable);
-		PaginationDto pagination = adminService.createPagination(allFilteredQuestionList);
+		PaginationDto pagination = paginationService.createPagination(allFilteredQuestionList);
 		
 		model.addAttribute("questionList", allFilteredQuestionList.getContent());
 		model.addAttribute("page", allFilteredQuestionList);

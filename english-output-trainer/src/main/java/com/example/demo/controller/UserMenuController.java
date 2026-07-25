@@ -30,6 +30,7 @@ import com.example.demo.form.EditPasswordForm;
 import com.example.demo.form.EditUserIdForm;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.AdminService;
+import com.example.demo.service.PaginationService;
 import com.example.demo.service.UserService;
 
 import jakarta.servlet.ServletException;
@@ -47,6 +48,7 @@ public class UserMenuController {
 	private final UserRepository repository;
 	private final PasswordEncoder encoder;
 	private final AdminService adminService;
+	private final PaginationService paginationService;
 	
 	@GetMapping("/menu")
 	public String getUserMenu() {
@@ -232,7 +234,7 @@ public class UserMenuController {
 	                    pageable);
 
 	    PaginationDto pagination =
-	            adminService.createPagination(questionList);
+	    		paginationService.createPagination(questionList);
 
 	    // 一覧
 	    model.addAttribute("questionList", questionList.getContent());
