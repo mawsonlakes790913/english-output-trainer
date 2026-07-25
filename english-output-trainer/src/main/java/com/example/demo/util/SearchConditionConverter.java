@@ -1,0 +1,99 @@
+package com.example.demo.util;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.example.demo.entity.Difficulty;
+import com.example.demo.entity.Evaluation;
+import com.example.demo.entity.FavoriteCondition;
+import com.example.demo.entity.StudyCondition;
+
+public class SearchConditionConverter {
+	
+	public List<String> convertEvaluation(List<Evaluation> evaluations) {
+		
+		List<String> evaluationList;
+		
+		if (evaluations == null || evaluations.isEmpty()) {
+
+	        evaluationList = List.of(
+	                Evaluation.HARD.name(),
+	                Evaluation.GOOD.name(),
+	                Evaluation.EASY.name());
+
+	    } else {
+
+	        evaluationList = new ArrayList<>();
+
+	        for (Evaluation evaluation : evaluations) {
+	            evaluationList.add(evaluation.name());
+	        }
+	   
+	    }
+	        
+		return evaluationList;
+		
+	}
+	
+	
+	//List<Difficulty>をList<String>に変換
+	public List<String> convertDifficulty(List<Difficulty> difficulties) {
+
+		List<String> difficultyList;
+		
+	    // 難易度
+	    if (difficulties == null || difficulties.isEmpty()) {
+
+	        difficultyList = List.of(
+	                Difficulty.BEGINNER.name(),
+	                Difficulty.INTERMEDIATE.name(),
+	                Difficulty.ADVANCED.name());
+
+	    } else {
+
+	        difficultyList = new ArrayList<>();
+
+	        for (Difficulty difficulty : difficulties) {
+	            difficultyList.add(difficulty.name());
+	        }
+	    }
+	    
+	    return difficultyList;
+	    
+	}
+	
+	public String convertFavoriteCondition(FavoriteCondition favoriteCondition) {
+		
+		String convertedFavoriteCondition;
+		
+		if (favoriteCondition == null) {
+			
+			convertedFavoriteCondition = FavoriteCondition.ALL.name();
+			
+		} else {
+			
+			convertedFavoriteCondition = favoriteCondition.name();
+					
+		}
+		
+		return convertedFavoriteCondition;
+		
+	}
+	
+	public String convertStudyCondition(StudyCondition studyCondition) {
+		
+		String convertedStudyCondition;
+		
+		if (studyCondition == null) {
+			
+			convertedStudyCondition = StudyCondition.ALL.name();
+			
+		} else {
+			
+			convertedStudyCondition = studyCondition.name();
+					
+		}
+		
+		return convertedStudyCondition;
+	}
+}
