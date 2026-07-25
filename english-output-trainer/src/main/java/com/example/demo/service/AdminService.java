@@ -24,6 +24,7 @@ public class AdminService {
 	private final UserRepository userRepository;
 	private final QuestionRepository questionRepository;
 	private final ReviewService reviewService;
+	private final QuestionService questionService;
 	
 	@Transactional
 	public void deleteOneUser(String userId) {
@@ -120,7 +121,7 @@ public class AdminService {
 //		}
 
 	    if (conditions == null || conditions.isEmpty()) {
-	        conditions = getAllConditions();
+	        conditions = questionService.getAllConditions();
 	    }
 
 	    Page<Question> questionList = questionRepository.findFilteredQuestions(
@@ -132,9 +133,9 @@ public class AdminService {
 	    return questionList;
 	}
 	
-	public List<String> getAllConditions() {
-	    return questionRepository.findDistinctConditions();
-	}
+//	public List<String> getAllConditions() {
+//	    return questionRepository.findDistinctConditions();
+//	}
 	
 
 	

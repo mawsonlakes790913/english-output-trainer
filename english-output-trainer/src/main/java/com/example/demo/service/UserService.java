@@ -33,6 +33,7 @@ public class UserService {
 	private final QuestionRepository questionRepository;
 	private final ReviewService reviewService;
 	private final AdminService adminService;
+	private final QuestionService questionService;
 	
 	public void signup(Users user) {
 		boolean isExists = repository.existsByUserId(user.getUserId());
@@ -183,7 +184,7 @@ public class UserService {
 
 	    // 条件
 	    if (conditions == null || conditions.isEmpty()) {
-	        conditions = adminService.getAllConditions();
+	        conditions = questionService.getAllConditions();
 	    }
 
 	    // キーワード
