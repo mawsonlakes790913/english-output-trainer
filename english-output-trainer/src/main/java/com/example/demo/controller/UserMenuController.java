@@ -31,6 +31,7 @@ import com.example.demo.form.EditUserIdForm;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.AdminService;
 import com.example.demo.service.PaginationService;
+import com.example.demo.service.QuestionService;
 import com.example.demo.service.UserService;
 
 import jakarta.servlet.ServletException;
@@ -49,6 +50,7 @@ public class UserMenuController {
 	private final PasswordEncoder encoder;
 	private final AdminService adminService;
 	private final PaginationService paginationService;
+	private final QuestionService questionService;
 	
 	@GetMapping("/menu")
 	public String getUserMenu() {
@@ -242,7 +244,7 @@ public class UserMenuController {
 	    model.addAttribute("pagination", pagination);
 
 	    // 条件一覧
-	    model.addAttribute("conditions", adminService.getAllConditions());
+	    model.addAttribute("conditions", questionService.getAllConditions());
 
 	    // 検索条件を画面へ戻す
 	    model.addAttribute("selectedDifficulties", difficulties);

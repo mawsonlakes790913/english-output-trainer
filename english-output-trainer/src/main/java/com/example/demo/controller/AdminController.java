@@ -22,6 +22,7 @@ import com.example.demo.entity.Users;
 import com.example.demo.form.QuestionForm;
 import com.example.demo.service.AdminService;
 import com.example.demo.service.PaginationService;
+import com.example.demo.service.QuestionService;
 import com.example.demo.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,7 @@ public class AdminController {
 	private final UserService userService;
 	private final AdminService adminService;
 	private final PaginationService paginationService;
+	private final QuestionService questionService;
 	
 	@GetMapping("/admin")
 	public String getAdmin() {
@@ -108,7 +110,7 @@ public class AdminController {
 		model.addAttribute("page", allQuestionList);
 		model.addAttribute("pagination", pagination);
 		model.addAttribute("conditions",
-		        adminService.getAllConditions());
+		        questionService.getAllConditions());
 		
 		return "/admin/question/list";
 	}
@@ -130,7 +132,7 @@ public class AdminController {
 		model.addAttribute("page", allFilteredQuestionList);
 		model.addAttribute("pagination", pagination);
 		model.addAttribute("conditions",
-		        adminService.getAllConditions());
+				questionService.getAllConditions());
 		model.addAttribute("selectedDifficulties", difficulties);
 		model.addAttribute("selectedConditions", conditions);
 		model.addAttribute("keyword", keyword);
