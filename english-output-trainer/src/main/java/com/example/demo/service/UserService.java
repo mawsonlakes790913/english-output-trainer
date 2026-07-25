@@ -20,6 +20,7 @@ import com.example.demo.entity.StudyCondition;
 import com.example.demo.entity.Users;
 import com.example.demo.repository.QuestionRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.util.SearchConditionConverter;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,7 @@ public class UserService {
 	private final ReviewService reviewService;
 	private final AdminService adminService;
 	private final QuestionService questionService;
+	private final SearchConditionConverter searchConditionConverter;
 	
 	public void signup(Users user) {
 		boolean isExists = repository.existsByUserId(user.getUserId());
@@ -193,10 +195,10 @@ public class UserService {
 	    }
 		
 	    // ここで変換する
-	    List<String> convertedDifficulties = reviewService.convertDifficulty(difficulties);
-	    List<String> convertedEvaluations = reviewService.convertEvaluation(evaluations);
-	    String convertedStudyCondition = convertStudyCondition(studyCondition);
-	    String convertedFavoriteCondition = reviewService.convertFavoriteCondition(favoriteCondition);
+	    List<String> convertedDifficulties = searchConditionConverter.convertDifficulty(difficulties);
+	    List<String> convertedEvaluations = searchConditionConverter.convertEvaluation(evaluations);
+	    String convertedStudyCondition = searchConditionConverter.convertStudyCondition(studyCondition);
+	    String convertedFavoriteCondition = searchConditionConverter.convertFavoriteCondition(favoriteCondition);
 
 	    return questionRepository.getFilteredUserQuestionList(
 	            userId,
@@ -209,21 +211,21 @@ public class UserService {
 	            pageable);
 	}
 	
-	public String convertStudyCondition(StudyCondition studyCondition) {
-		
-		String convertedStudyCondition;
-		
-		if (studyCondition == null) {
-			
-			convertedStudyCondition = StudyCondition.ALL.name();
-			
-		} else {
-			
-			convertedStudyCondition = studyCondition.name();
-					
-		}
-		
-		return convertedStudyCondition;
-	}
+//	public String convertStudyCondition(StudyCondition studyCondition) {
+//		
+//		String convertedStudyCondition;
+//		
+//		if (studyCondition == null) {
+//			
+//			convertedStudyCondition = StudyCondition.ALL.name();
+//			
+//		} else {
+//			
+//			convertedStudyCondition = studyCondition.name();
+//					
+//		}
+//		
+//		return convertedStudyCondition;
+//	}
 	
 }

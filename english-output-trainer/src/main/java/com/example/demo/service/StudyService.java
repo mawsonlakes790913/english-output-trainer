@@ -14,6 +14,7 @@ import com.example.demo.dto.StudyMenuDto;
 import com.example.demo.entity.Difficulty;
 import com.example.demo.entity.Question;
 import com.example.demo.repository.QuestionRepository;
+import com.example.demo.util.SearchConditionConverter;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class StudyService {
 	
 	private final QuestionRepository questionRepository;
-	private final ReviewService reviewService;
+	private final SearchConditionConverter searchConditionConverter;
 	
 //	public List<Question> getQuestion(){
 //		List<Question> extractedQuestions = questionRepository.findAll();
@@ -136,7 +137,7 @@ public class StudyService {
 	
 	public List<Question> getNewQuestions(long userId, List<Difficulty> difficulty) {
 		
-		List<Question> extractedNewQuestions = questionRepository.getNewQuestions(userId, reviewService.convertDifficulty(difficulty));
+		List<Question> extractedNewQuestions = questionRepository.getNewQuestions(userId, searchConditionConverter.convertDifficulty(difficulty));
 		
 		return extractedNewQuestions;
 	}

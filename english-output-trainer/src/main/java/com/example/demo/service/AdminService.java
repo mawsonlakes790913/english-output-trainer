@@ -13,6 +13,7 @@ import com.example.demo.entity.Question;
 import com.example.demo.form.QuestionForm;
 import com.example.demo.repository.QuestionRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.util.SearchConditionConverter;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,8 +24,8 @@ import lombok.extern.slf4j.Slf4j;
 public class AdminService {
 	private final UserRepository userRepository;
 	private final QuestionRepository questionRepository;
-	private final ReviewService reviewService;
 	private final QuestionService questionService;
+	private final SearchConditionConverter searchConditionConverter;
 	
 	@Transactional
 	public void deleteOneUser(String userId) {
@@ -69,7 +70,7 @@ public class AdminService {
 	    }
 
 	    Page<Question> questionList = questionRepository.findFilteredQuestions(
-	            reviewService.convertDifficulty(difficulties),
+	    		searchConditionConverter.convertDifficulty(difficulties),
 	            conditions,
 	            keyword,
 	            pageable);
