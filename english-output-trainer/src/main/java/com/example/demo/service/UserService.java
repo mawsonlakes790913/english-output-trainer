@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class UserServiceImpl {
+public class UserService {
 	private final UserRepository repository;
 	private final PasswordEncoder passwordEncoder;
 	private final QuestionRepository questionRepository;
