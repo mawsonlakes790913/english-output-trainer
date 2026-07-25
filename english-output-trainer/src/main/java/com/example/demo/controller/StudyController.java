@@ -22,7 +22,6 @@ import com.example.demo.entity.Question;
 import com.example.demo.entity.Users;
 import com.example.demo.service.EvaluationService;
 import com.example.demo.service.FavoritesService;
-import com.example.demo.service.ReviewService;
 import com.example.demo.service.StudyService;
 import com.example.demo.service.UserService;
 
@@ -39,7 +38,6 @@ public class StudyController {
 	private final QuestionModelUtil questionModelUtil;
 	private final FavoritesService favoritesService;	
 	private final UserService userService;
-	private final ReviewService reviewService;
 
 	
 	@GetMapping("/study/menu")
@@ -155,7 +153,7 @@ public class StudyController {
 	    // ログインしている場合だけお気に入り判定
 	    if (loginUser != null) {
 	        boolean isFavorite = favoritesService.isFavorite(
-	                loginUser.getUsername(),
+	        		userService.getUserOne(loginUser.getUsername()),
 	                question.getQuestionId());
 
 	        model.addAttribute("isFavorite", isFavorite);

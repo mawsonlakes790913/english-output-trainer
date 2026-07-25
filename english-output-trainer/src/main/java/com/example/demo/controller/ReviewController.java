@@ -86,7 +86,7 @@ public class ReviewController {
 	    // ログインしている場合だけお気に入り判定
 	    if (loginUser != null) {
 	        boolean isFavorite = favoritesService.isFavorite(
-	                loginUser.getUsername(),
+	        		userService.getUserOne(loginUser.getUsername()),
 	                question.getQuestionId());
 
 	        model.addAttribute("isFavorite", isFavorite);
