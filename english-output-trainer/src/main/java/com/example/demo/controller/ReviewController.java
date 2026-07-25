@@ -19,7 +19,7 @@ import com.example.demo.entity.Users;
 import com.example.demo.service.EvaluationService;
 import com.example.demo.service.FavoritesService;
 import com.example.demo.service.ReviewService;
-import com.example.demo.service.UserServiceImpl;
+import com.example.demo.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ReviewController {
 	
-	private final UserServiceImpl userServiceImpl;
+	private final UserService userService;
 	private final ReviewService reviewService;
 	private final EvaluationService evaluationService;
 	private final QuestionModelUtil questionModelUtil;
@@ -52,7 +52,7 @@ public class ReviewController {
 								) {
 		
 	    // user_id(文字列)からUsersを取得
-	    Users user = userServiceImpl.getUserOne(loginUser.getUsername());
+	    Users user = userService.getUserOne(loginUser.getUsername());
 	    Long userId = user.getId();
 	    
 	    // 出題数を返す
@@ -134,7 +134,7 @@ public class ReviewController {
 	    List<Question> questions;
 	    
 	    // user_id(文字列)からUsersを取得
-	    Users user = userServiceImpl.getUserOne(loginUser.getUsername());
+	    Users user = userService.getUserOne(loginUser.getUsername());
 	    Long userId = user.getId();
 	    
 	    // 新しい問題セットを作成

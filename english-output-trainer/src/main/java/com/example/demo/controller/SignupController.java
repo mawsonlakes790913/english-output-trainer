@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.demo.entity.Users;
 import com.example.demo.form.SignupForm;
-import com.example.demo.service.UserServiceImpl;
+import com.example.demo.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class SignupController {
 	
-	private final UserServiceImpl userServiceImpl;
+	private final UserService userService;
 	private final ModelMapper modelMapper;
 	
 	@GetMapping("/signup/signup")
@@ -55,7 +55,7 @@ public class SignupController {
 	    	users.setPassword(form.getPassword());
 	    	
 	        // ② Serviceの業務処理
-	        userServiceImpl.signup(users);
+	        userService.signup(users);
 
 	    } catch (DuplicateKeyException e) {
 

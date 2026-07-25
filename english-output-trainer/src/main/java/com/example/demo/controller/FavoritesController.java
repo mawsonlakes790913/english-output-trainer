@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.example.demo.entity.Question;
 import com.example.demo.entity.Users;
 import com.example.demo.service.FavoritesService;
-import com.example.demo.service.UserServiceImpl;
+import com.example.demo.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class FavoritesController {
 	
 	private final FavoritesService favoritesService;
-	private final UserServiceImpl userServiceImpl;
+	private final UserService userService;
 	
 	@PostMapping("/favorite/toggle")
 	@ResponseBody
@@ -42,7 +42,7 @@ public class FavoritesController {
 								   @PageableDefault(page = 0, size = 50) Pageable pageable,
 								   Model model) {
 		Users user =
-		        userServiceImpl.getUserOne(loginUser.getUsername());
+		        userService.getUserOne(loginUser.getUsername());
 
 		Page<Question> favoritesList = favoritesService.getFavoritesList(user.getId(), pageable);
 		

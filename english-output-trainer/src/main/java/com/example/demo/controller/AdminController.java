@@ -21,7 +21,7 @@ import com.example.demo.entity.Question;
 import com.example.demo.entity.Users;
 import com.example.demo.form.QuestionForm;
 import com.example.demo.service.AdminService;
-import com.example.demo.service.UserServiceImpl;
+import com.example.demo.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AdminController {
 	
-	private final UserServiceImpl userServiceImpl;
+	private final UserService userService;
 	private final AdminService adminService;
 	
 	@GetMapping("/admin")
@@ -46,7 +46,7 @@ public class AdminController {
 	
 	@GetMapping("/admin/list")
 	public String getUserList(Model model) {
-		List<Users> userList = userServiceImpl.getUsers();
+		List<Users> userList = userService.getUsers();
 		
 		model.addAttribute("userList", userList);
 		return "userList";
@@ -56,7 +56,7 @@ public class AdminController {
 	@PostMapping("/admin/delete")
 	public String deleteUser(@RequestParam String userId,
 							 Model model){
-		userServiceImpl.deleteUserOne(userId);
+		userService.deleteUserOne(userId);
 		return "redirect:/admin/list";
 	}
 	

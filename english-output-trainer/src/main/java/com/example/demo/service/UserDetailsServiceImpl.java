@@ -19,14 +19,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 	
-	private final UserServiceImpl service;
+	private final UserService userService;
 	
 	@Override
 	public UserDetails loadUserByUsername(String userId)
 			throws UsernameNotFoundException {
 		
 		// ユーザー情報取得
-        Users loginUser = service.getUserOne(userId);
+        Users loginUser = userService.getUserOne(userId);
         
         // ユーザーが存在しない場合
         if (loginUser == null) {

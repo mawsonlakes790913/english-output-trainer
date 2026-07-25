@@ -30,7 +30,7 @@ import com.example.demo.form.EditPasswordForm;
 import com.example.demo.form.EditUserIdForm;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.AdminService;
-import com.example.demo.service.UserServiceImpl;
+import com.example.demo.service.UserService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -43,7 +43,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class UserMenuController {
 	
-	private final UserServiceImpl userServiceImpl;
+	private final UserService userService;
 	private final UserRepository repository;
 	private final PasswordEncoder encoder;
 	private final AdminService adminService;
@@ -58,7 +58,7 @@ public class UserMenuController {
 	        @AuthenticationPrincipal UserDetails loginUser,
 	        Model model) {
 
-	    Users user = userServiceImpl.getUserOne(loginUser.getUsername());
+	    Users user = userService.getUserOne(loginUser.getUsername());
 	    
 //	    System.out.println(loginUser.getUsername());
 //	    System.out.println(user);
@@ -75,7 +75,7 @@ public class UserMenuController {
 	        @ModelAttribute EditUserIdForm form) {
 
 	    if (form.getUserId() == null) {
-	        Users user = userServiceImpl.getUserOne(loginUser.getUsername());
+	        Users user = userService.getUserOne(loginUser.getUsername());
 	        form.setUserId(user.getUserId());
 	    }
 
@@ -95,7 +95,7 @@ public class UserMenuController {
 	    }
 
 	    try {
-	        userServiceImpl.updateUserId(
+	        userService.updateUserId(
 	                loginUser.getUsername(),
 	                form.getUserId());
 
@@ -123,7 +123,7 @@ public class UserMenuController {
 	        HttpServletRequest request)
 	        throws ServletException {
 
-	    userServiceImpl.cancelMembership(loginUser.getUsername());
+	    userService.cancelMembership(loginUser.getUsername());
 
 	    request.logout();
 
@@ -161,7 +161,7 @@ public class UserMenuController {
 	    	log.info(form.toString());
 	    	
 	        // ② Serviceの業務処理
-	        userServiceImpl.updateUserPassword(
+	        userService.updateUserPassword(
 	                loginUser.getUsername(),
 	                form.getCurrentPassword(),
 	                form.getNewPassword());
@@ -216,12 +216,12 @@ public class UserMenuController {
 	        @RequestParam(required = false, defaultValue = "") String keyword,
 	        Model model) {
 
-	    Users user = userServiceImpl.getUserOne(loginUser.getUsername());
+	    Users user = userService.getUserOne(loginUser.getUsername());
 	    Long userId = user.getId();
 
 	    // 検索（パラメータが未指定ならService側で全件扱い）
 	    Page<UserQuestionListDto> questionList =
-	            userServiceImpl.getFilteredUserQuestionList(
+	            userService.getFilteredUserQuestionList(
 	                    userId,
 	                    difficulties,
 	                    evaluations,

@@ -21,12 +21,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FavoritesService {
 	
-	private final UserServiceImpl userServiceImpl;
+	private final UserService userService;
 	private final FavoritesRepository favoritesRepository;
 	
 	public boolean toggleFavorite(String loginUser, long questionId) {
 		
-	    Users user = userServiceImpl.getUserOne(loginUser);
+	    Users user = userService.getUserOne(loginUser);
 		
 		FavoritesKey key = createFavoritesKey(loginUser, questionId);
 		
@@ -66,7 +66,7 @@ public class FavoritesService {
 	private FavoritesKey createFavoritesKey(String loginUser, long questionId) {
 		
 		// ユーザー情報を取得
-		Users user = userServiceImpl.getUserOne(loginUser);
+		Users user = userService.getUserOne(loginUser);
 		
 		// 複合キー情報を取得
 		FavoritesKey key = new FavoritesKey();

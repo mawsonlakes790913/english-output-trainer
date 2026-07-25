@@ -23,8 +23,8 @@ import com.example.demo.entity.Users;
 import com.example.demo.service.EvaluationService;
 import com.example.demo.service.FavoritesService;
 import com.example.demo.service.ReviewService;
-import com.example.demo.service.StudyServiceImpl;
-import com.example.demo.service.UserServiceImpl;
+import com.example.demo.service.StudyService;
+import com.example.demo.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -33,12 +33,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class StudyController {
 	
-	private final StudyServiceImpl studyService;
+	private final StudyService studyService;
 	//private List<Question> questions;
 	private final EvaluationService evaluationService;
 	private final QuestionModelUtil questionModelUtil;
 	private final FavoritesService favoritesService;	
-	private final UserServiceImpl userServiceImpl;
+	private final UserService userService;
 	private final ReviewService reviewService;
 
 	
@@ -49,7 +49,7 @@ public class StudyController {
 	    model.addAttribute("studyMenu", menu);
 	    
 	    if (loginUser != null) {
-	    Users user = userServiceImpl.getUserOne(loginUser.getUsername());
+	    Users user = userService.getUserOne(loginUser.getUsername());
 		NewStudyCountDto count = studyService.countNewStudyQuestions(user.getId());
 	    model.addAttribute("newQuestioncount", count);
 	    }
@@ -121,7 +121,7 @@ public class StudyController {
 	    List<Question> questions;
 	    
 	    // user_id(文字列)からUsersを取得
-	    Users user = userServiceImpl.getUserOne(loginUser.getUsername());
+	    Users user = userService.getUserOne(loginUser.getUsername());
 	    Long userId = user.getId();
 	    
 	    //問題セットを取得
