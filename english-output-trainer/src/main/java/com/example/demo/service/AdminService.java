@@ -36,11 +36,7 @@ public class AdminService {
 		
     	Question question = new Question();
 
-    	question.setJapaneseText(form.getJapaneseText());
-    	question.setEnglishText(form.getEnglishText());
-    	question.setAlternativeAnswer(form.getAlternativeAnswer());
-    	question.setCondition(form.getCondition());
-    	question.setDifficulty(form.getDifficulty());
+    	copyQuestionForm(question, form);
     	
     	Question savedQuestion = questionRepository.save(question);
     	
@@ -109,16 +105,20 @@ public class AdminService {
 		log.info("Before: {}", question);
 		
 		//更新
-		question.setJapaneseText(form.getJapaneseText());
-		question.setEnglishText(form.getEnglishText());
-		question.setAlternativeAnswer(form.getAlternativeAnswer());
-		question.setDifficulty(form.getDifficulty());
-		question.setCondition(form.getCondition());
+		copyQuestionForm(question, form);
 		
 		questionRepository.save(question);
 		
 		// 更新後のログ出力
 		log.info("After : {}", question);
+	}
+	
+	private void copyQuestionForm(Question question, QuestionForm form) {
+		question.setJapaneseText(form.getJapaneseText());
+		question.setEnglishText(form.getEnglishText());
+		question.setAlternativeAnswer(form.getAlternativeAnswer());
+		question.setDifficulty(form.getDifficulty());
+		question.setCondition(form.getCondition());
 	}
 
 		
