@@ -27,11 +27,6 @@ public class StudyService {
 	private final QuestionRepository questionRepository;
 	private final SearchConditionConverter searchConditionConverter;
 	
-//	public List<Question> getQuestion(){
-//		List<Question> extractedQuestions = questionRepository.findAll();
-//		return extractedQuestions;
-//	}
-	
 	public List<Question> getQuestions(Difficulty difficulty,
 									  int start,
 									  boolean random){
@@ -51,18 +46,6 @@ public class StudyService {
 		
 		return extractedQuestions;
 	}
-	
-//	public List<Question> getRandomQuestion(){
-//		
-//		List<Question> extractedQuestions = questionRepository.findAll(); 
-//		Collections.shuffle(extractedQuestions);
-//		// シャッフルが行われているかコンソールに出力して確認
-//		for (Question q : extractedQuestions) {
-//		    System.out.print(q.getQuestionId() + " ");
-//		}
-//		System.out.println();
-//		return extractedQuestions;
-//	}
 	
 	public StudyMenuDto countStudyQuestions() {
 		
@@ -121,18 +104,6 @@ public class StudyService {
 		}
 
 		return ranges;
-	}
-	
-	public List<Question> getRandomQuestion(){
-		
-		List<Question> extractedQuestions = questionRepository.findAll(); 
-		Collections.shuffle(extractedQuestions);
-		// シャッフルが行われているかコンソールに出力して確認
-		for (Question q : extractedQuestions) {
-		    System.out.print(q.getQuestionId() + " ");
-		}
-		System.out.println();
-		return extractedQuestions;
 	}
 	
 	public List<Question> getNewQuestions(long userId, List<Difficulty> difficulty) {
