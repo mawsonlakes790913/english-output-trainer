@@ -99,21 +99,6 @@ public class AdminController {
 
 	}
 	
-	@GetMapping("/admin/question/list")
-	public String getAdminQuestionList(@PageableDefault(page = 0, size = 50) Pageable pageable,
-								       Model model) {
-
-		Page<Question> allQuestionList = adminService.getAllQuestions(pageable);
-		PaginationDto pagination = paginationService.createPagination(allQuestionList);
-		
-		model.addAttribute("questionList", allQuestionList.getContent());
-		model.addAttribute("page", allQuestionList);
-		model.addAttribute("pagination", pagination);
-		model.addAttribute("conditions",
-		        questionService.getAllConditions());
-		
-		return "/admin/question/list";
-	}
 	
 	@GetMapping("/admin/question/search")
 	public String getAdminQuestionSearch(@PageableDefault(page = 0, size = 50) Pageable pageable,

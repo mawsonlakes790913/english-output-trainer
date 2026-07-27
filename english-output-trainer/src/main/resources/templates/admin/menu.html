@@ -15,6 +15,10 @@
 	<div layout:fragment="content" class="container pt-3">
     <h2>アドミン専用メニュー</h2>
 	    <div class="list-group mt-3">
+	        <a th:href="@{/admin/question/search}" class="list-group-item list-group-item-action">
+				<i class="bi bi-list-ul me-2"></i>
+	            問題一覧
+	        </a>			
 	        <a th:href="@{/admin/list}" class="list-group-item list-group-item-action">
 				<i class="bi bi-person-fill me-2"></i>
 	            ユーザー一覧
