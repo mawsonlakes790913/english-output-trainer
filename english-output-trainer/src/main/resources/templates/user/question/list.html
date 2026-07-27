@@ -349,7 +349,7 @@
 			
 			    <!-- Hard -->
 				<button
-				    th:if="${question.evaluation == T(com.example.demo.entity.Evaluation).HARD}"
+				    th:if="${question.evaluation?.name() == 'HARD'}"
 				    class="btn btn-sm btn-danger evaluationButton"
 				    th:data-question-id="${question.questionId}"
 				    data-bs-toggle="modal"
@@ -359,7 +359,7 @@
 			
 			    <!-- Good -->
 				<button
-				    th:if="${question.evaluation == T(com.example.demo.entity.Evaluation).GOOD}"
+				    th:if="${question.evaluation?.name() == 'GOOD'}"
 				    class="btn btn-sm btn-primary evaluationButton"
 				    th:data-question-id="${question.questionId}"
 				    data-bs-toggle="modal"
@@ -369,7 +369,7 @@
 			
 			    <!-- Easy -->
 				<button
-				    th:if="${question.evaluation == T(com.example.demo.entity.Evaluation).EASY}"
+				    th:if="${question.evaluation?.name() == 'EASY'}"
 				    class="btn btn-sm btn-success evaluationButton"
 				    th:data-question-id="${question.questionId}"
 				    data-bs-toggle="modal"
