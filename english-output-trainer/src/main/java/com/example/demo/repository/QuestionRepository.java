@@ -68,25 +68,44 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 			""")
 			List<String> findDistinctConditions();
 	
-	@Query(value = """
-			SELECT q.*
-			FROM question q
-			WHERE q.difficulty IN (:difficulties)
-			AND q.condition IN (:conditions)
-			AND 
-			(LOWER(q.japanese_text) LIKE LOWER(CONCAT('%', :keyword, '%'))
-			OR
-			LOWER(q.english_text) LIKE LOWER(CONCAT('%', :keyword, '%'))
-			OR
-			LOWER(q.alternative_answer) LIKE LOWER(CONCAT('%', :keyword, '%'))
-			)
-			ORDER BY q.question_id DESC
-			""", nativeQuery = true)
-			Page<Question> findFilteredQuestions(
-					@Param("difficulties") List<String> difficulties,
-					@Param("conditions") List<String> conditions,
-					@Param("keyword") String keyword,
-					Pageable pageable);
+	@Query(
+		    value = """
+		        SELECT q.*
+		        FROM question q
+		        WHERE q.difficulty IN (:difficulties)
+		          AND (
+		                :includeAllConditions = true
+		                OR q.condition = :condition
+		          )
+		          AND (
+		                LOWER(q.japanese_text) LIKE LOWER(CONCAT('%', :keyword, '%'))
+		             OR LOWER(q.english_text) LIKE LOWER(CONCAT('%', :keyword, '%'))
+		             OR LOWER(q.alternative_answer) LIKE LOWER(CONCAT('%', :keyword, '%'))
+		          )
+		        ORDER BY q.question_id DESC
+		        """,
+		    countQuery = """
+		        SELECT COUNT(*)
+		        FROM question q
+		        WHERE q.difficulty IN (:difficulties)
+		          AND (
+		                :includeAllConditions = true
+		                OR q.condition = :condition
+		          )
+		          AND (
+		                LOWER(q.japanese_text) LIKE LOWER(CONCAT('%', :keyword, '%'))
+		             OR LOWER(q.english_text) LIKE LOWER(CONCAT('%', :keyword, '%'))
+		             OR LOWER(q.alternative_answer) LIKE LOWER(CONCAT('%', :keyword, '%'))
+		          )
+		        """,
+		    nativeQuery = true
+		)
+		Page<Question> findFilteredQuestions(
+		        @Param("difficulties") List<String> difficulties,
+		        @Param("condition") String condition,
+		        @Param("includeAllConditions") boolean includeAllConditions,
+		        @Param("keyword") String keyword,
+		        Pageable pageable);
 
 	
 	@Query(value = """

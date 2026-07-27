@@ -115,7 +115,7 @@
 		                <option th:each="condition : ${conditions}"
 		                        th:value="${condition}"
 		                        th:text="${condition}"
-		                        th:selected="${selectedConditions != null and selectedConditions.contains(condition)}">
+		                        th:selected="${condition == selectedConditions}">
 		                </option>
 		
 		            </select>

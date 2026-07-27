@@ -103,12 +103,12 @@ public class AdminController {
 	@GetMapping("/admin/question/search")
 	public String getAdminQuestionSearch(@PageableDefault(page = 0, size = 50) Pageable pageable,
 										 @RequestParam(required = false) List<Difficulty> difficulties,
-										 @RequestParam(required = false) List<String> conditions,
+										 @RequestParam(required = false) String condition,
 										 @RequestParam(required = false) String keyword,
 		       							 Model model) {
 
 		Page<Question> allFilteredQuestionList = adminService.getFilteredQuestions(difficulties,
-																				   conditions,
+																				   condition,
 																				   keyword,
 																				   pageable);
 		PaginationDto pagination = paginationService.createPagination(allFilteredQuestionList);
@@ -119,7 +119,7 @@ public class AdminController {
 		model.addAttribute("conditions",
 				questionService.getAllConditions());
 		model.addAttribute("selectedDifficulties", difficulties);
-		model.addAttribute("selectedConditions", conditions);
+		model.addAttribute("selectedConditions", condition);
 		model.addAttribute("keyword", keyword);
 		
 		return "/admin/question/list";
