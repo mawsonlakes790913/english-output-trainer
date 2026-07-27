@@ -24,6 +24,7 @@ import com.example.demo.service.EvaluationService;
 import com.example.demo.service.FavoritesService;
 import com.example.demo.service.StudyService;
 import com.example.demo.service.UserService;
+import com.example.demo.util.QuestionModelUtil;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
