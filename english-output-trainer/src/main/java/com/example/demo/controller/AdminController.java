@@ -36,11 +36,6 @@ public class AdminController {
 	private final PaginationService paginationService;
 	private final QuestionService questionService;
 	
-	@GetMapping("/admin")
-	public String getAdmin() {
-		return "admin/admin";
-	}
-	
 	@GetMapping("/admin/menu")
 	public String getAdminMenu() {
 		return "admin/menu";
