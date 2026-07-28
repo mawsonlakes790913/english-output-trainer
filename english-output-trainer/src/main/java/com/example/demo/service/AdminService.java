@@ -25,7 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 public class AdminService {
 	private final UserRepository userRepository;
 	private final QuestionRepository questionRepository;
-	private final QuestionService questionService;
 	private final SearchConditionConverter searchConditionConverter;
 	
 	@Transactional

@@ -32,8 +32,6 @@ public class UserService {
 	private final UserRepository repository;
 	private final PasswordEncoder passwordEncoder;
 	private final QuestionRepository questionRepository;
-	private final ReviewService reviewService;
-	private final AdminService adminService;
 	private final QuestionService questionService;
 	private final SearchConditionConverter searchConditionConverter;
 	
