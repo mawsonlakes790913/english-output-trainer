@@ -47,7 +47,7 @@ public class StudyController {
 	    model.addAttribute("studyMenu", menu);
 	    
 	    if (loginUser != null) {
-	    Users user = userAccountService.getUserOne(loginUser.getUsername());
+	    Users user = getLoginUser(loginUser);
 		NewStudyCountDto count = studyService.countNewStudyQuestions(user.getId());
 	    model.addAttribute("newQuestioncount", count);
 	    }
@@ -91,8 +91,7 @@ public class StudyController {
 	    }
 		
 	    // 既存の学習状態を破棄
-	    session.removeAttribute("studyQuestions");
-	    session.removeAttribute("studyCurrentPage");
+	    clearStudySession(session);
 	    
 	    //問題セットを取得
 	    List<Question> questions = studyService.getQuestions(difficulty, start, random);
@@ -112,14 +111,13 @@ public class StudyController {
 	        ) {
 		
 	    // 既存の学習状態を破棄
-	    session.removeAttribute("studyQuestions");
-	    session.removeAttribute("studyCurrentPage");
+		clearStudySession(session);
 	    
 	    //先に宣言
 	    List<Question> questions;
 	    
 	    // user_id(文字列)からUsersを取得
-	    Users user = userAccountService.getUserOne(loginUser.getUsername());
+	    Users user = getLoginUser(loginUser);
 	    Long userId = user.getId();
 	    
 	    //問題セットを取得
@@ -153,7 +151,7 @@ public class StudyController {
 	    // ログインしている場合だけお気に入り判定
 	    if (loginUser != null) {
 	        boolean isFavorite = favoritesService.isFavorite(
-	        		userAccountService.getUserOne(loginUser.getUsername()),
+	        		getLoginUser(loginUser),
 	                question.getQuestionId());
 
 	        model.addAttribute("isFavorite", isFavorite);
@@ -181,8 +179,7 @@ public class StudyController {
 	
 	@GetMapping("/study/complete")
 	public String getStudyComplete(HttpSession session) {
-		session.removeAttribute("studyQuestions");
-		session.removeAttribute("studyCurrentPage");
+		clearStudySession(session);
 		//System.out.print("complete");
 		return "redirect:/complete";
 	}
@@ -191,15 +188,12 @@ public class StudyController {
 	public String getStudySuspend(@RequestParam int page,
 							    HttpSession session) {
 		session.setAttribute("studyCurrentPage", page);
-		//System.out.print("suspend");
 		return "redirect:/";
 	}	
 	
 	@GetMapping("/study/quit")
 	public String getStudyQuit(HttpSession session) {
-		session.removeAttribute("studyQuestions");
-		session.removeAttribute("studyCurrentPage");
-		//System.out.print("quit");
+		clearStudySession(session);
 		return "redirect:/";
 	}	
 	
@@ -211,7 +205,7 @@ public class StudyController {
 	        				   HttpSession session) {
 		
 		// ユーザー情報を取得
-		Users user = userAccountService.getUserOne(loginUser.getUsername());
+		Users user = getLoginUser(loginUser);
 	
 		evaluationService.updateEvaluation(
 		        user,
@@ -235,13 +229,22 @@ public class StudyController {
 	        				   @RequestParam Evaluation evaluation) {
 		
 		// ユーザー情報を取得
-		Users user = userAccountService.getUserOne(loginUser.getUsername());
+		Users user = getLoginUser(loginUser);
 		
 		evaluationService.updateEvaluation(
 		        user,
 		        questionId,
 		        evaluation);
 		
+	}
+	
+	private Users getLoginUser(UserDetails loginUser) {
+		return userAccountService.getUserOne(loginUser.getUsername());
+	}
+
+	private void clearStudySession(HttpSession session) {
+	    session.removeAttribute("studyQuestions");
+	    session.removeAttribute("studyCurrentPage");
 	}
 	
 }
