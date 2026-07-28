@@ -194,8 +194,12 @@ public class ReviewController {
 	        				   @RequestParam Evaluation evaluation,
 	        				   @RequestParam Integer page,
 	        				   HttpSession session) {
+		
+		// ユーザー情報を取得
+		Users user = userService.getUserOne(loginUser.getUsername());
+		
 		evaluationService.updateEvaluation(
-		        loginUser.getUsername(),
+		        user,
 		        questionId,
 		        evaluation);
 		

@@ -210,8 +210,12 @@ public class StudyController {
 	        				   @RequestParam Evaluation evaluation,
 	        				   @RequestParam Integer page,
 	        				   HttpSession session) {
+		
+		// ユーザー情報を取得
+		Users user = userService.getUserOne(loginUser.getUsername());
+	
 		evaluationService.updateEvaluation(
-		        loginUser.getUsername(),
+		        user,
 		        questionId,
 		        evaluation);
 		
@@ -231,8 +235,11 @@ public class StudyController {
 	        				   @RequestParam Long questionId,
 	        				   @RequestParam Evaluation evaluation) {
 		
+		// ユーザー情報を取得
+		Users user = userService.getUserOne(loginUser.getUsername());
+		
 		evaluationService.updateEvaluation(
-		        loginUser.getUsername(),
+		        user,
 		        questionId,
 		        evaluation);
 		

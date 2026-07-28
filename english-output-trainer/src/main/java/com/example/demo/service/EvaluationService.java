@@ -19,12 +19,8 @@ import lombok.RequiredArgsConstructor;
 public class EvaluationService {
 	
 	private final StudyHistoryRepository studyHistoryRepository;
-	private final UserService userService;
 	
-	public void updateEvaluation(String loginUser, Long questionId, Evaluation evaluation) {
-		
-		// ユーザー情報を取得
-		Users user = userService.getUserOne(loginUser);
+	public void updateEvaluation(Users user, Long questionId, Evaluation evaluation) {
 		
 		// 複合キー情報を取得
 		StudyHistoryKey key = new StudyHistoryKey();
