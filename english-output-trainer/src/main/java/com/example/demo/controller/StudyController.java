@@ -23,6 +23,7 @@ import com.example.demo.entity.Users;
 import com.example.demo.service.EvaluationService;
 import com.example.demo.service.FavoritesService;
 import com.example.demo.service.StudyService;
+import com.example.demo.service.UserAccountService;
 import com.example.demo.service.UserService;
 import com.example.demo.util.QuestionModelUtil;
 
@@ -39,6 +40,7 @@ public class StudyController {
 	private final QuestionModelUtil questionModelUtil;
 	private final FavoritesService favoritesService;	
 	private final UserService userService;
+	private final UserAccountService userAccountService;
 
 	
 	@GetMapping("/study/menu")
@@ -48,7 +50,7 @@ public class StudyController {
 	    model.addAttribute("studyMenu", menu);
 	    
 	    if (loginUser != null) {
-	    Users user = userService.getUserOne(loginUser.getUsername());
+	    Users user = userAccountService.getUserOne(loginUser.getUsername());
 		NewStudyCountDto count = studyService.countNewStudyQuestions(user.getId());
 	    model.addAttribute("newQuestioncount", count);
 	    }
@@ -120,7 +122,7 @@ public class StudyController {
 	    List<Question> questions;
 	    
 	    // user_id(文字列)からUsersを取得
-	    Users user = userService.getUserOne(loginUser.getUsername());
+	    Users user = userAccountService.getUserOne(loginUser.getUsername());
 	    Long userId = user.getId();
 	    
 	    //問題セットを取得
@@ -154,7 +156,7 @@ public class StudyController {
 	    // ログインしている場合だけお気に入り判定
 	    if (loginUser != null) {
 	        boolean isFavorite = favoritesService.isFavorite(
-	        		userService.getUserOne(loginUser.getUsername()),
+	        		userAccountService.getUserOne(loginUser.getUsername()),
 	                question.getQuestionId());
 
 	        model.addAttribute("isFavorite", isFavorite);
@@ -212,7 +214,7 @@ public class StudyController {
 	        				   HttpSession session) {
 		
 		// ユーザー情報を取得
-		Users user = userService.getUserOne(loginUser.getUsername());
+		Users user = userAccountService.getUserOne(loginUser.getUsername());
 	
 		evaluationService.updateEvaluation(
 		        user,
@@ -236,7 +238,7 @@ public class StudyController {
 	        				   @RequestParam Evaluation evaluation) {
 		
 		// ユーザー情報を取得
-		Users user = userService.getUserOne(loginUser.getUsername());
+		Users user = userAccountService.getUserOne(loginUser.getUsername());
 		
 		evaluationService.updateEvaluation(
 		        user,

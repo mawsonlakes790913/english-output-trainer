@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.entity.Users;
 import com.example.demo.service.FavoritesService;
+import com.example.demo.service.UserAccountService;
 import com.example.demo.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ public class FavoritesController {
 	
 	private final FavoritesService favoritesService;
 	private final UserService userService;
+	private final UserAccountService userAccountService;
 	
 	@PostMapping("/favorite/toggle")
 	@ResponseBody
@@ -27,7 +29,7 @@ public class FavoritesController {
 	        @AuthenticationPrincipal UserDetails loginUser) {
 		
 		// ユーザー情報を取得
-		Users user = userService.getUserOne(loginUser.getUsername());
+		Users user = userAccountService.getUserOne(loginUser.getUsername());
 
 	    return favoritesService.toggleFavorite(
 	            user,

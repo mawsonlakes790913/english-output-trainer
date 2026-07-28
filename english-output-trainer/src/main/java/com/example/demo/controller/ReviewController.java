@@ -19,6 +19,7 @@ import com.example.demo.entity.Users;
 import com.example.demo.service.EvaluationService;
 import com.example.demo.service.FavoritesService;
 import com.example.demo.service.ReviewService;
+import com.example.demo.service.UserAccountService;
 import com.example.demo.service.UserService;
 import com.example.demo.util.QuestionModelUtil;
 
@@ -34,6 +35,7 @@ public class ReviewController {
 	private final EvaluationService evaluationService;
 	private final QuestionModelUtil questionModelUtil;
 	private final FavoritesService favoritesService;
+	private final UserAccountService userAccountService;
 	
 	@GetMapping("/review/menu")
 	public String getReviewMenu() {
@@ -53,7 +55,7 @@ public class ReviewController {
 								) {
 		
 	    // user_id(文字列)からUsersを取得
-	    Users user = userService.getUserOne(loginUser.getUsername());
+	    Users user = userAccountService.getUserOne(loginUser.getUsername());
 	    Long userId = user.getId();
 	    
 	    // 出題数を返す
@@ -87,7 +89,7 @@ public class ReviewController {
 	    // ログインしている場合だけお気に入り判定
 	    if (loginUser != null) {
 	        boolean isFavorite = favoritesService.isFavorite(
-	        		userService.getUserOne(loginUser.getUsername()),
+	        		userAccountService.getUserOne(loginUser.getUsername()),
 	                question.getQuestionId());
 
 	        model.addAttribute("isFavorite", isFavorite);
@@ -96,22 +98,6 @@ public class ReviewController {
 		// study.htmlを返す
 		return "review/question";	    
 	}
-	
-//	private void setReviewQuestionModel(
-//	        Model model,
-//	        List<Question> questions,
-//	        int page) {
-//
-//	    Question question = questions.get(page);
-//
-//	    model.addAttribute("question", question);
-//	    model.addAttribute("nextPageIndex", page + 1);
-//	    model.addAttribute("totalPages", questions.size());
-//	    model.addAttribute("hasPrevious", page > 0);
-//	    model.addAttribute(
-//	            "hasNext",
-//	            page < questions.size() - 1);
-//	}
 
 	
 	@GetMapping("/review/start")
@@ -135,7 +121,7 @@ public class ReviewController {
 	    List<Question> questions;
 	    
 	    // user_id(文字列)からUsersを取得
-	    Users user = userService.getUserOne(loginUser.getUsername());
+	    Users user = userAccountService.getUserOne(loginUser.getUsername());
 	    Long userId = user.getId();
 	    
 	    // 新しい問題セットを作成
@@ -196,7 +182,7 @@ public class ReviewController {
 	        				   HttpSession session) {
 		
 		// ユーザー情報を取得
-		Users user = userService.getUserOne(loginUser.getUsername());
+		Users user = userAccountService.getUserOne(loginUser.getUsername());
 		
 		evaluationService.updateEvaluation(
 		        user,

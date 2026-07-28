@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
@@ -34,6 +33,7 @@ public class UserService {
 	private final QuestionRepository questionRepository;
 	private final QuestionService questionService;
 	private final SearchConditionConverter searchConditionConverter;
+	private final UserAccountService userAccountService;
 	
 	public void signup(Users user) {
 		boolean isExists = repository.existsByUserId(user.getUserId());
@@ -62,16 +62,16 @@ public class UserService {
 	//	return user;
 	//}
 	
-	public Users getUserOne(String userId) {
-	    System.out.println("検索するuserId=" + userId);
-
-	    Optional<Users> option = repository.findByUserId(userId);
-
-	    //System.out.println("検索結果=" + option);
-	    System.out.println("検索結果=" + option.orElse(null).getUserId());
-
-	    return option.orElse(null);
-	}
+//	public Users getUserOne(String userId) {
+//	    System.out.println("検索するuserId=" + userId);
+//
+//	    Optional<Users> option = repository.findByUserId(userId);
+//
+//	    //System.out.println("検索結果=" + option);
+//	    System.out.println("検索結果=" + option.orElse(null).getUserId());
+//
+//	    return option.orElse(null);
+//	}
 
 	
 	// ユーザー一覧取得
@@ -104,7 +104,7 @@ public class UserService {
 	        throw new DuplicateKeyException("既に存在するユーザーです");
 	    }
 	    // 現在のユーザーを取得
-	    Users user = getUserOne(currentUserId);
+	    Users user = userAccountService.getUserOne(currentUserId);
 	    if (user == null) {
 	        throw new IllegalArgumentException("ユーザーが存在しません");
 	    }
@@ -127,7 +127,7 @@ public class UserService {
 	    //}
 		
 	    // 現在のユーザーを取得
-	    Users user = getUserOne(userId);
+	    Users user = userAccountService.getUserOne(userId);
 	    if (user == null) {
 	        throw new IllegalArgumentException("ユーザーが存在しません");
 	    }

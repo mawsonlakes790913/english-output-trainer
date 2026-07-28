@@ -32,6 +32,7 @@ import com.example.demo.repository.UserRepository;
 import com.example.demo.service.AdminService;
 import com.example.demo.service.PaginationService;
 import com.example.demo.service.QuestionService;
+import com.example.demo.service.UserAccountService;
 import com.example.demo.service.UserService;
 
 import jakarta.servlet.ServletException;
@@ -51,6 +52,7 @@ public class UserMenuController {
 	private final AdminService adminService;
 	private final PaginationService paginationService;
 	private final QuestionService questionService;
+	private final UserAccountService userAccountService;
 	
 	@GetMapping("/menu")
 	public String getUserMenu() {
@@ -62,7 +64,7 @@ public class UserMenuController {
 	        @AuthenticationPrincipal UserDetails loginUser,
 	        Model model) {
 
-	    Users user = userService.getUserOne(loginUser.getUsername());
+	    Users user = userAccountService.getUserOne(loginUser.getUsername());
 	    
 //	    System.out.println(loginUser.getUsername());
 //	    System.out.println(user);
@@ -79,7 +81,7 @@ public class UserMenuController {
 	        @ModelAttribute EditUserIdForm form) {
 
 	    if (form.getUserId() == null) {
-	        Users user = userService.getUserOne(loginUser.getUsername());
+	        Users user = userAccountService.getUserOne(loginUser.getUsername());
 	        form.setUserId(user.getUserId());
 	    }
 
@@ -220,7 +222,7 @@ public class UserMenuController {
 	        @RequestParam(required = false, defaultValue = "") String keyword,
 	        Model model) {
 
-	    Users user = userService.getUserOne(loginUser.getUsername());
+	    Users user = userAccountService.getUserOne(loginUser.getUsername());
 	    Long userId = user.getId();
 
 	    // 検索（パラメータが未指定ならService側で全件扱い）
