@@ -53,7 +53,7 @@ public class ReviewController {
 								) {
 		
 	    // user_id(文字列)からUsersを取得
-	    Users user = userAccountService.getUserOne(loginUser.getUsername());
+	    Users user = getLoginUser(loginUser);
 	    Long userId = user.getId();
 	    
 	    // 出題数を返す
@@ -87,7 +87,7 @@ public class ReviewController {
 	    // ログインしている場合だけお気に入り判定
 	    if (loginUser != null) {
 	        boolean isFavorite = favoritesService.isFavorite(
-	        		userAccountService.getUserOne(loginUser.getUsername()),
+	        		getLoginUser(loginUser),
 	                question.getQuestionId());
 
 	        model.addAttribute("isFavorite", isFavorite);
@@ -99,7 +99,7 @@ public class ReviewController {
 
 	
 	@GetMapping("/review/start")
-	public String getReviewStart(Model model,
+	public String getReviewStart(
 							 HttpSession session,
 							 @AuthenticationPrincipal UserDetails loginUser,
 							 @RequestParam(name = "evaluations", required = false) 
@@ -112,14 +112,13 @@ public class ReviewController {
 									boolean random
 							 ) {
 	    // 既存の学習状態を破棄
-	    session.removeAttribute("reviewQuestions");
-	    session.removeAttribute("reviewCurrentPage");
+		clearStudySession(session);
 	    
 	    //先に宣言
 	    List<Question> questions;
 	    
 	    // user_id(文字列)からUsersを取得
-	    Users user = userAccountService.getUserOne(loginUser.getUsername());
+	    Users user = getLoginUser(loginUser);
 	    Long userId = user.getId();
 	    
 	    // 新しい問題セットを作成
@@ -133,7 +132,7 @@ public class ReviewController {
 
 	
 	@GetMapping("/review/resume")
-	public String getReviewResume(Model model,
+	public String getReviewResume(
 							  HttpSession session
 							  ) {
 		// 中断していないならmenuに戻す
@@ -150,9 +149,7 @@ public class ReviewController {
 	
 	@GetMapping("/review/complete")
 	public String completeReview(HttpSession session) {
-		session.removeAttribute("reviewQuestions");
-		session.removeAttribute("reviewCurrentPage");
-		//System.out.print("complete");
+		clearStudySession(session);
 		return "redirect:/complete";
 	}
 	
@@ -160,15 +157,12 @@ public class ReviewController {
 	public String suspendReview(@RequestParam int page,
 							    HttpSession session) {
 		session.setAttribute("reviewCurrentPage", page);
-		//System.out.print("suspend");
 		return "redirect:/";
 	}	
 	
 	@GetMapping("/review/quit")
 	public String quitReview(HttpSession session) {
-		session.removeAttribute("reviewQuestions");
-		session.removeAttribute("reviewCurrentPage");
-		//System.out.print("quit");
+		clearStudySession(session);
 		return "redirect:/";
 	}	
 	
@@ -180,7 +174,7 @@ public class ReviewController {
 	        				   HttpSession session) {
 		
 		// ユーザー情報を取得
-		Users user = userAccountService.getUserOne(loginUser.getUsername());
+		Users user = getLoginUser(loginUser);
 		
 		evaluationService.updateEvaluation(
 		        user,
@@ -195,5 +189,14 @@ public class ReviewController {
 		}
 		
 		return "redirect:/review/question?page=" + (page + 1);
+	}
+	
+	private Users getLoginUser(UserDetails loginUser) {
+		return userAccountService.getUserOne(loginUser.getUsername());
+	}
+
+	private void clearStudySession(HttpSession session) {
+	    session.removeAttribute("studyQuestions");
+	    session.removeAttribute("studyCurrentPage");
 	}
 }
