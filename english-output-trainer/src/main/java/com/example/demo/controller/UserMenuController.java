@@ -9,9 +9,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserMenuController {
 	
-	@GetMapping("/menu")
+	@GetMapping("/user/menu")
 	public String getUserMenu() {
-		return "userMenu";
+		return "/user/menu";
 	}
 	
 }
