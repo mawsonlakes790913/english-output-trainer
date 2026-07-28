@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,19 +73,19 @@ public class UserService {
 //	}
 
 	
-	// ユーザー一覧取得
-	public List<Users> getUsers(){
-		List<Users> users = repository.findAll();
-		return users;
-	}
-	
-	// 指定したユーザー削除(Admin用)
-	@Transactional
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public void deleteUserOne(String userId) {
-        repository.deleteByUserId(userId);
-        log.info("削除対象={}", userId);
-    }
+//	// ユーザー一覧取得
+//	public List<Users> getUsers(){
+//		List<Users> users = repository.findAll();
+//		return users;
+//	}
+//	
+//	// 指定したユーザー削除(Admin用)
+//	@Transactional
+//	@PreAuthorize("hasRole('ROLE_ADMIN')")
+//	public void deleteUserOne(String userId) {
+//        repository.deleteByUserId(userId);
+//        log.info("削除対象={}", userId);
+//    }
 
 	// 指定したユーザー削除(会員用)
 	@Transactional

@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.demo.dto.QuestionDto;
 import com.example.demo.entity.Difficulty;
 import com.example.demo.entity.Question;
+import com.example.demo.entity.Users;
 import com.example.demo.form.QuestionForm;
 import com.example.demo.repository.QuestionRepository;
 import com.example.demo.repository.UserRepository;
@@ -27,9 +28,16 @@ public class AdminService {
 	private final QuestionRepository questionRepository;
 	private final SearchConditionConverter searchConditionConverter;
 	
+	// 指定したユーザー削除(Admin用)
 	@Transactional
 	public void deleteOneUser(String userId) {
 		userRepository.deleteByUserId(userId);
+	}
+	
+	// ユーザー一覧取得
+	public List<Users> getUsers(){
+		List<Users> users = userRepository.findAll();
+		return users;
 	}
 	
 	public void addQuestion(QuestionForm form) {
