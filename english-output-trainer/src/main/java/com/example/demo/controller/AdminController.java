@@ -50,7 +50,7 @@ public class AdminController {
 	
 	@GetMapping("/admin/list")
 	public String getUserList(Model model) {
-		List<Users> userList = userService.getUsers();
+		List<Users> userList = adminService.getUsers();
 		
 		model.addAttribute("userList", userList);
 		return "userList";
@@ -60,7 +60,7 @@ public class AdminController {
 	@PostMapping("/admin/delete")
 	public String deleteUser(@RequestParam String userId,
 							 Model model){
-		userService.deleteUserOne(userId);
+		adminService.deleteOneUser(userId);
 		return "redirect:/admin/list";
 	}
 	
