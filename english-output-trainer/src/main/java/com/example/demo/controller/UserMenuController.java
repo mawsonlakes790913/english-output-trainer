@@ -103,7 +103,7 @@ public class UserMenuController {
 	    }
 
 	    try {
-	        userService.updateUserId(
+	    	userAccountService.updateUserId(
 	                loginUser.getUsername(),
 	                form.getUserId());
 
@@ -131,7 +131,7 @@ public class UserMenuController {
 	        HttpServletRequest request)
 	        throws ServletException {
 
-	    userService.cancelMembership(loginUser.getUsername());
+		userAccountService.cancelMembership(loginUser.getUsername());
 
 	    request.logout();
 
@@ -169,7 +169,7 @@ public class UserMenuController {
 	    	log.info(form.toString());
 	    	
 	        // ② Serviceの業務処理
-	        userService.updateUserPassword(
+	    	userAccountService.updateUserPassword(
 	                loginUser.getUsername(),
 	                form.getCurrentPassword(),
 	                form.getNewPassword());
