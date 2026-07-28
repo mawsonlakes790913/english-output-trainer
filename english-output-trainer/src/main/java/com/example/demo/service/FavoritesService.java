@@ -19,12 +19,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FavoritesService {
 	
-	private final UserService userService;
 	private final FavoritesRepository favoritesRepository;
 	
-	public boolean toggleFavorite(String loginUser, long questionId) {
-		
-	    Users user = userService.getUserOne(loginUser);
+	public boolean toggleFavorite(Users user, long questionId) {
 		
 		FavoritesKey key = createFavoritesKey(user, questionId);
 		
