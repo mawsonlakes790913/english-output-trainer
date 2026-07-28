@@ -9,7 +9,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,13 +27,10 @@ import com.example.demo.entity.StudyCondition;
 import com.example.demo.entity.Users;
 import com.example.demo.form.EditPasswordForm;
 import com.example.demo.form.EditUserIdForm;
-import com.example.demo.repository.UserRepository;
-import com.example.demo.service.AdminService;
 import com.example.demo.service.PaginationService;
 import com.example.demo.service.QuestionService;
 import com.example.demo.service.UserAccountService;
 import com.example.demo.service.UserQuestionService;
-import com.example.demo.service.UserService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -47,10 +43,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class UserMenuController {
 	
-	private final UserService userService;
-	private final UserRepository repository;
-	private final PasswordEncoder encoder;
-	private final AdminService adminService;
 	private final PaginationService paginationService;
 	private final QuestionService questionService;
 	private final UserAccountService userAccountService;

@@ -23,7 +23,6 @@ import com.example.demo.form.QuestionForm;
 import com.example.demo.service.AdminService;
 import com.example.demo.service.PaginationService;
 import com.example.demo.service.QuestionService;
-import com.example.demo.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +32,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AdminController {
 	
-	private final UserService userService;
 	private final AdminService adminService;
 	private final PaginationService paginationService;
 	private final QuestionService questionService;

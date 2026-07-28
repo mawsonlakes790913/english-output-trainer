@@ -20,7 +20,6 @@ import com.example.demo.service.EvaluationService;
 import com.example.demo.service.FavoritesService;
 import com.example.demo.service.ReviewService;
 import com.example.demo.service.UserAccountService;
-import com.example.demo.service.UserService;
 import com.example.demo.util.QuestionModelUtil;
 
 import jakarta.servlet.http.HttpSession;
@@ -30,7 +29,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ReviewController {
 	
-	private final UserService userService;
 	private final ReviewService reviewService;
 	private final EvaluationService evaluationService;
 	private final QuestionModelUtil questionModelUtil;

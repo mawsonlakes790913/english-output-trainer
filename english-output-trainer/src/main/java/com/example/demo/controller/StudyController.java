@@ -24,7 +24,6 @@ import com.example.demo.service.EvaluationService;
 import com.example.demo.service.FavoritesService;
 import com.example.demo.service.StudyService;
 import com.example.demo.service.UserAccountService;
-import com.example.demo.service.UserService;
 import com.example.demo.util.QuestionModelUtil;
 
 import jakarta.servlet.http.HttpSession;
@@ -35,11 +34,9 @@ import lombok.RequiredArgsConstructor;
 public class StudyController {
 	
 	private final StudyService studyService;
-	//private List<Question> questions;
 	private final EvaluationService evaluationService;
 	private final QuestionModelUtil questionModelUtil;
 	private final FavoritesService favoritesService;	
-	private final UserService userService;
 	private final UserAccountService userAccountService;
 
 	

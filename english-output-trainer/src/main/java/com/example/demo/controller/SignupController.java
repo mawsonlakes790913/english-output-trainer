@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.example.demo.entity.Users;
 import com.example.demo.form.SignupForm;
 import com.example.demo.service.SignupService;
-import com.example.demo.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class SignupController {
 	
-	private final UserService userService;
-	private final ModelMapper modelMapper;
 	private final SignupService signupService;
 	
 	@GetMapping("/signup/signup")

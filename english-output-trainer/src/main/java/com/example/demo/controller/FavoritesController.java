@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.example.demo.entity.Users;
 import com.example.demo.service.FavoritesService;
 import com.example.demo.service.UserAccountService;
-import com.example.demo.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 public class FavoritesController {
 	
 	private final FavoritesService favoritesService;
-	private final UserService userService;
 	private final UserAccountService userAccountService;
 	
 	@PostMapping("/favorite/toggle")
