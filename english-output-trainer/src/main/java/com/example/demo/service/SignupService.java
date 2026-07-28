@@ -5,9 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Users;
-import com.example.demo.repository.QuestionRepository;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.util.SearchConditionConverter;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,16 +13,13 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class UserService {
-	private final UserRepository repository;
+public class SignupService {
+	
+	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
-	private final QuestionRepository questionRepository;
-	private final QuestionService questionService;
-	private final SearchConditionConverter searchConditionConverter;
-	private final UserAccountService userAccountService;
 	
 	public void signup(Users user) {
-		boolean isExists = repository.existsByUserId(user.getUserId());
+		boolean isExists = userRepository.existsByUserId(user.getUserId());
         if (isExists) {
             throw new DuplicateKeyException("既に存在するユーザーです");
         }
@@ -37,10 +32,9 @@ public class UserService {
     
     System.out.println("id=" + user.getId());
         
-    Users savedUser = repository.save(user);
+    Users savedUser = userRepository.save(user);
 
     log.info("ユーザー登録完了 userId={}",
              savedUser.getUserId());
 	}
-	
 }
