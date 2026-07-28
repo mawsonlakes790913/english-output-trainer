@@ -33,6 +33,7 @@ import com.example.demo.service.AdminService;
 import com.example.demo.service.PaginationService;
 import com.example.demo.service.QuestionService;
 import com.example.demo.service.UserAccountService;
+import com.example.demo.service.UserQuestionService;
 import com.example.demo.service.UserService;
 
 import jakarta.servlet.ServletException;
@@ -53,6 +54,7 @@ public class UserMenuController {
 	private final PaginationService paginationService;
 	private final QuestionService questionService;
 	private final UserAccountService userAccountService;
+	private final UserQuestionService userQuestionService;
 	
 	@GetMapping("/menu")
 	public String getUserMenu() {
@@ -227,7 +229,7 @@ public class UserMenuController {
 
 	    // 検索（パラメータが未指定ならService側で全件扱い）
 	    Page<UserQuestionListDto> questionList =
-	            userService.getFilteredUserQuestionList(
+	    		userQuestionService.getFilteredUserQuestionList(
 	                    userId,
 	                    difficulties,
 	                    evaluations,

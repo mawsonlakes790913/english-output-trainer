@@ -24,12 +24,6 @@ public class UserQuestionService {
 	private final QuestionRepository questionRepository;
 	private final QuestionService questionService;
 	private final SearchConditionConverter searchConditionConverter;
-	
-	public Page<UserQuestionListDto> getUserQuestionList(long userId,
-			 Pageable pageable) {
-
-		return questionRepository.getUserQuestionList(userId, pageable);
-	}
 
 	public Page<UserQuestionListDto> getFilteredUserQuestionList(long userId,
 						 List<Difficulty> difficulties,
