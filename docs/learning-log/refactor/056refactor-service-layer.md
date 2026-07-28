@@ -1252,6 +1252,291 @@ Service同士の依存関係をさらに削減することができた。
 
 ---
 
+# 6. UserServiceの細分化
+
+## 背景
+
+これまでの`UserService`には、
+
+- ユーザー情報管理
+- 管理者用ユーザー管理
+- ユーザー問題一覧
+- サインアップ
+
+といった複数の責務が混在していた。
+
+単一責務の原則に沿って設計を見直すため、責務ごとにServiceを分割することにした。
+
+最終的な構成は以下のようにした。
+
+|Service|責務|
+|-------|----|
+|UserAccountService|ユーザー情報管理|
+|AdminService|管理者用ユーザー管理|
+|UserQuestionService|ユーザー問題一覧|
+|SignupService|サインアップ|
+
+---
+
+# ① ユーザー情報管理（UserAccountService）
+
+## UserAccountServiceの作成（refactor: extract UserAccountService from UserService）
+
+以下のメソッドを`UserService`からそのまま移行した。
+
+- getUserOne()
+- updateUserId()
+- updateUserPassword()
+- cancelMembership()
+
+これにより、ユーザー自身のアカウント管理に関する責務を`UserAccountService`へ集約した。
+
+---
+
+## 呼び出し側の修正（refactor: update UserAccountService references）
+
+### 対象
+
+- FavoritesController
+- ReviewController
+- StudyController
+- UserMenuController
+- UserDetailsServiceImpl
+- UserService（残りのメソッド）
+
+DI対象を以下のように変更した。
+
+変更前
+
+```java
+private final UserService userService;
+```
+
+変更後
+
+```java
+private final UserAccountService userAccountService;
+```
+
+---
+
+# ② 管理者用ユーザー管理（AdminService）
+
+## AdminServiceへ移行（refactor: move user management to AdminService）
+
+以下のメソッドを`AdminService`へ移行した。
+
+- deleteOneUser()
+- getUsers()
+
+管理者だけが利用するユーザー管理機能であるため、`AdminService`へまとめることにした。
+
+### 気づき・反省点
+
+実装中に確認したところ、`deleteOneUser()`は既に`AdminService`へ同じ内容で実装されていた。
+
+重複実装に気付かず進めていたため、この機会に不要な実装を整理した。
+
+---
+
+## 呼び出し側の修正（refactor: update AdminService references）
+
+### 対象
+
+- AdminController
+
+DI対象を以下のように変更した。
+
+変更前
+
+```java
+private final UserService userService;
+```
+
+変更後
+
+```java
+private final AdminService adminService;
+```
+
+---
+
+# ③ ユーザー問題一覧（UserQuestionService）
+
+## UserQuestionServiceの作成（refactor: extract UserQuestionService from UserService）
+
+以下のメソッドを`UserQuestionService`へ移行した。
+
+- getUserQuestionList()
+- getFilteredUserQuestionList()
+
+ユーザー問題一覧取得に関する責務を独立させた。
+
+---
+
+## 呼び出し側の修正（refactor: update UserQuestionService references and remove unused method）
+
+### 対象
+
+- UserMenuController
+
+DI対象を以下のように変更した。
+
+変更前
+
+```java
+private final UserService userService;
+```
+
+変更後
+
+```java
+private final UserQuestionService userQuestionService;
+```
+
+### 気づき・反省点
+
+`UserService`には以下のメソッドも残っていた。
+
+```java
+public Page<UserQuestionListDto> getUserQuestionList(
+        long userId,
+        Pageable pageable) {
+
+    return questionRepository.getUserQuestionList(
+            userId,
+            pageable);
+}
+```
+
+しかし、このメソッドは`/user/question/list.html`を使用しなくなった時点で既に利用されていなかった。
+
+今回のリファクタリングを機に不要メソッドとして削除した。
+
+---
+
+# ④ サインアップ（SignupService）
+
+## SignupServiceの作成（refactor: extract SignupService from UserService）
+
+`signup()`を`SignupService`へ移行した。
+
+サインアップは他のユーザー管理とは異なる責務であるため、専用Serviceとして独立させた。
+
+---
+
+## 呼び出し側の修正（refactor: update SignupService references）
+
+### 対象
+
+- SignupController
+
+DI対象を以下のように変更した。
+
+変更前
+
+```java
+private final UserService userService;
+```
+
+変更後
+
+```java
+private final SignupService signupService;
+```
+
+---
+
+# 各Controllerの不要なDIを削除
+
+## 不要な依存関係の整理（refactor: remove unused controller dependencies）
+
+Serviceの分割に伴い、不要になったDIを削除した。
+
+### 対象
+
+- AdminController
+- FavoritesController
+- ReviewController
+- SignupController
+- StudyController
+- UserMenuController
+- UserDetailsServiceImpl
+
+これにより、各Controllerが必要最小限のServiceだけに依存する構成となった。
+
+---
+
+# UserServiceの削除
+
+## UserServiceクラスの削除（refactor: remove obsolete UserService）
+
+すべてのメソッドを新しいServiceへ移行し、参照もすべて書き換えたことを確認した。
+
+役割を終えた`UserService`は不要となったため削除した。
+
+---
+
+# 修正後
+
+![](../../images/056-3.png)
+
+今回のUserServiceの細分化は、単にServiceの責務を明確にするだけではなく、その後に行うControllerのリファクタリングにも大きく役立った。
+
+以前の`UserService`には、
+
+- サインアップ
+- ユーザー情報管理
+- 管理者用ユーザー管理
+- ユーザー問題一覧
+
+など、複数の責務が混在していた。
+
+そのため、Controllerから
+
+```java
+userService.getUserOne(...);
+userService.getFilteredUserQuestionList(...);
+```
+
+のように呼び出していても、
+
+「なぜこのControllerがUserServiceを利用しているのか」
+
+が分かりにくい状態になっていた。
+
+一方、細分化後は、
+
+```text
+UserMenuController
+    ↓
+UserAccountService
+UserQuestionService
+QuestionService
+PaginationService
+```
+
+のように、Controllerが依存するServiceを見るだけで、それぞれの責務が明確に分かるようになった。
+
+例えば、
+
+```java
+Users user = userAccountService.getUserOne(...);
+```
+
+であれば、「会員情報取得」を担当していることがすぐに理解できる。
+
+また、今後Controllerをさらに分割する場合でも、
+
+- ProfileController → UserAccountService
+- QuestionController → UserQuestionService
+
+というように、どのControllerがどのServiceを利用すべきかを自然に判断できる。
+
+このように、今回のリファクタリングはService層の設計改善だけではなく、Controller層の設計を整理しやすくするための土台作りにもなった。
+
+---
+
 # 今回のリファクタリングを振り返って(反省点)
 
 今回の議論を通して感じたのは、
