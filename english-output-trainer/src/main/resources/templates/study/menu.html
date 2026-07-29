@@ -244,7 +244,11 @@
 				
 				</div>
 				
-				
+				<!-- エラーメッセージ -->
+				<p th:if="${errorMessage}"
+				   class="text-danger fw-bold mb-2 text-center"
+				   th:text="${errorMessage}">
+				</p>
 		
 				<!-- 出題開始 -->
 				<div class="text-center mt-2">

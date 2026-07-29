@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.dto.NewStudyCountDto;
 import com.example.demo.dto.StudyMenuDto;
@@ -82,7 +83,8 @@ public class StudyController {
 	        @RequestParam(required = false) Integer beginnerRange,
 	        @RequestParam(required = false) Integer intermediateRange,
 	        @RequestParam(required = false) Integer advancedRange,
-	        @RequestParam(name = "random") boolean random
+	        @RequestParam(name = "random") boolean random,
+	        RedirectAttributes redirectAttributes
 	        ) {
 		
 	    int selectedCount = 0;
@@ -90,9 +92,12 @@ public class StudyController {
 	    if (beginnerRange != null) selectedCount++;
 	    if (intermediateRange != null) selectedCount++;
 	    if (advancedRange != null) selectedCount++;
-
+	    
 	    if (selectedCount != 1) {
-	        throw new IllegalArgumentException("範囲は1つだけ選択してください");
+	        redirectAttributes.addFlashAttribute(
+	                "errorMessage",
+	                "出題範囲を1つ選択してください。");
+	        return "redirect:/study/menu";
 	    }
 		
 	    Difficulty difficulty;
