@@ -40,16 +40,38 @@ public class StudyController {
 
 	
 	@GetMapping("/study/menu")
-	public String getStudyMenu(Model model, @AuthenticationPrincipal UserDetails loginUser) {
-
+	public String getStudyMenu(@AuthenticationPrincipal UserDetails loginUser,
+							   HttpSession session,
+							   Model model) {
+		
+		// 通常問題数を取得
 		StudyMenuDto menu = studyService.countStudyQuestions();
-	    model.addAttribute("studyMenu", menu);
-	    
+		model.addAttribute("studyMenu", menu);
+		
+	    // 未学習問題数を取得
 	    if (loginUser != null) {
 	    Users user = getLoginUser(loginUser);
 		NewStudyCountDto count = studyService.countNewStudyQuestions(user.getId());
-	    model.addAttribute("newQuestioncount", count);
+		model.addAttribute("newQuestioncount", count);
 	    }
+	    
+	    // セッションから情報を取得
+	    List<Question> questions =
+	            (List<Question>) session.getAttribute("studyQuestions");
+
+	    Integer currentPage =
+	            (Integer) session.getAttribute("studyCurrentPage");
+	    
+	    // 中断したデータがあるか判定
+	    boolean canResume = questions != null && currentPage != null;
+	    
+	    // 中断したデータ情報を返す
+	    model.addAttribute("canResume", canResume);
+
+	    if (canResume) {
+		    model.addAttribute("currentPage", currentPage);
+		    model.addAttribute("totalCount", questions.size());
+	    } 
 
 	    return "study/menu";
 	}
