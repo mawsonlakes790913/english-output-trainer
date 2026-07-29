@@ -36,7 +36,26 @@ public class ReviewController {
 	private final UserAccountService userAccountService;
 	
 	@GetMapping("/review/menu")
-	public String getReviewMenu() {
+	public String getReviewMenu(HttpSession session,
+			   					Model model) {
+	    
+	    // セッションから情報を取得
+	    List<Question> questions =
+	            (List<Question>) session.getAttribute("reviewQuestions");
+
+	    Integer currentPage =
+	            (Integer) session.getAttribute("reviewCurrentPage");
+	    
+	    // 中断したデータがあるか判定
+	    boolean canResume = questions != null && currentPage != null;
+	    
+	    // 中断したデータ情報を返す
+	    model.addAttribute("canResume", canResume);
+
+	    if (canResume) {
+		    model.addAttribute("currentPage", currentPage);
+		    model.addAttribute("totalCount", questions.size());
+	    } 
 
 	    return "review/menu";
 	}
