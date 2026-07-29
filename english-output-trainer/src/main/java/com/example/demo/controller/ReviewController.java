@@ -148,20 +148,20 @@ public class ReviewController {
 	}
 	
 	@GetMapping("/review/complete")
-	public String completeReview(HttpSession session) {
+	public String getReviewComplete(HttpSession session) {
 		clearStudySession(session);
 		return "redirect:/complete";
 	}
 	
 	@GetMapping("/review/suspend")
-	public String suspendReview(@RequestParam int page,
+	public String getReviewSuspend(@RequestParam int page,
 							    HttpSession session) {
 		session.setAttribute("reviewCurrentPage", page);
 		return "redirect:/";
 	}	
 	
 	@GetMapping("/review/quit")
-	public String quitReview(HttpSession session) {
+	public String getReviewQuit(HttpSession session) {
 		clearStudySession(session);
 		return "redirect:/";
 	}	
