@@ -9,12 +9,12 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.NewStudyCountDto;
-import com.example.demo.dto.Range;
 import com.example.demo.dto.StudyMenuDto;
 import com.example.demo.entity.Difficulty;
 import com.example.demo.entity.Question;
 import com.example.demo.repository.QuestionRepository;
 import com.example.demo.util.SearchConditionConverter;
+import com.example.demo.value.Range;
 
 import lombok.RequiredArgsConstructor;
 
