@@ -23,7 +23,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 			ORDER BY question_id
 			LIMIT 100 OFFSET :offset
 			""", nativeQuery = true)
-			List<Question> getQuestions(
+			List<Question> findQuestionsByDifficulty(
 					@Param("difficulty") String difficulty,
 					@Param("offset") int offset
 					);
@@ -53,7 +53,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 			WHERE q.difficulty IN (:difficulties)
 			  AND sh.question_id IS NULL
 			""", nativeQuery = true)
-			List<Question> getNewQuestions(
+			List<Question> findUnlearnedQuestionsByUserIdAndDifficulty(
 				    @Param("userId") Long userId,
 				    @Param("difficulties") List<String> difficulties					
 					);
@@ -235,7 +235,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 				OR LOWER(q.alternative_answer) LIKE LOWER(CONCAT('%', :keyword, '%'))
 				)
 	        """,nativeQuery = true)
-			Page<UserQuestionListDto> getFilteredUserQuestionList(
+			Page<UserQuestionListDto> findFilteredUserQuestionList(
 				    @Param("userId") long userId,
 					@Param("difficulties") List<String> difficulties,
 					@Param("evaluations") List<String> evaluations,

@@ -33,7 +33,7 @@ public class StudyService {
 		
 		int offset = start - 1;
 		
-		List<Question> extractedQuestions = questionRepository.getQuestions(
+		List<Question> extractedQuestions = questionRepository.findQuestionsByDifficulty(
 		        difficulty.name(),
 		        offset
 		);
@@ -108,7 +108,7 @@ public class StudyService {
 	
 	public List<Question> getNewQuestions(long userId, List<Difficulty> difficulty) {
 		
-		List<Question> extractedNewQuestions = questionRepository.getNewQuestions(userId, searchConditionConverter.convertDifficulty(difficulty));
+		List<Question> extractedNewQuestions = questionRepository.findUnlearnedQuestionsByUserIdAndDifficulty(userId, searchConditionConverter.convertDifficulty(difficulty));
 		
 		return extractedNewQuestions;
 	}

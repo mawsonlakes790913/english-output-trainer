@@ -70,7 +70,7 @@ public class UserQuestionService {
 		String convertedStudyCondition = searchConditionConverter.convertStudyCondition(studyCondition);
 		String convertedFavoriteCondition = searchConditionConverter.convertFavoriteCondition(favoriteCondition);
 		
-		return questionRepository.getFilteredUserQuestionList(
+		return questionRepository.findFilteredUserQuestionList(
 		userId,
 		convertedDifficulties,
 		convertedEvaluations,
