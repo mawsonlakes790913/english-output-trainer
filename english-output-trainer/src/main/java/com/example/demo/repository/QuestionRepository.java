@@ -128,37 +128,6 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 			LEFT JOIN favorites f
 			ON (q.question_id = f.question_id
 					AND f.user_id = :userId)
-			ORDER BY q.question_id ASC
-			""", 
-			countQuery = """
-	        SELECT COUNT(*)
-	        FROM question q
-	        """,nativeQuery = true)
-			Page<UserQuestionListDto> getUserQuestionList(
-				    @Param("userId") Long userId,
-				    Pageable pageable
-					);
-	
-	@Query(value = """
-			SELECT 
-			    q.question_id         AS questionId,
-			    q.japanese_text       AS japaneseText,
-			    q.english_text        AS englishText,
-			    q.alternative_answer  AS alternativeAnswer,
-			    q.condition           AS condition,
-			    q.difficulty          AS difficulty,
-			    sh.evaluation         AS evaluation,
-				CASE
-				    WHEN f.question_id IS NOT NULL THEN TRUE
-				    ELSE FALSE
-				END AS favorite
-			FROM question q
-			LEFT JOIN study_history sh
-			ON (q.question_id = sh.question_id
-				AND sh.user_id = :userId)
-			LEFT JOIN favorites f
-			ON (q.question_id = f.question_id
-					AND f.user_id = :userId)
 			WHERE q.difficulty IN (:difficulties)
 			AND (
 			    (:studyCondition = 'ALL'
