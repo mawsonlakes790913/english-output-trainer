@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -26,6 +27,6 @@ public class Users {
     private String role;
 
     @OneToMany(mappedBy = "user")
-    //@ToString.Exclude
+    @ToString.Exclude
     private List<Favorites> favorites;
 }
