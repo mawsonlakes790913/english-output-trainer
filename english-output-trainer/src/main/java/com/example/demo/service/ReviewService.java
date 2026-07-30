@@ -34,7 +34,7 @@ public class ReviewService {
 												  List<Difficulty> difficulties,
 												  FavoriteCondition favoriteCondition) {
 		
-	    return studyHistoryRepository.countQuestions(
+	    return studyHistoryRepository.countReviewQuestions(
 	            userId,
 	            searchConditionConverter.convertEvaluation(evaluations),
 	            searchConditionConverter.convertDifficulty(difficulties),
@@ -48,7 +48,7 @@ public class ReviewService {
 									  List<Difficulty> difficulties,
 									  FavoriteCondition favoriteCondition,
 									  boolean random){
-		List<Question> extractedQuestions = studyHistoryRepository.getQuestions(userId,
+		List<Question> extractedQuestions = studyHistoryRepository.findReviewQuestions(userId,
 				searchConditionConverter.convertEvaluation(evaluations),
 				searchConditionConverter.convertDifficulty(difficulties),
 				searchConditionConverter.convertFavoriteCondition(favoriteCondition));

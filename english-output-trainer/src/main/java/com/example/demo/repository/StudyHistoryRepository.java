@@ -20,38 +20,6 @@ public interface StudyHistoryRepository extends JpaRepository<StudyHistory, Stud
 	        Long userId,
 	        Evaluation evaluation);
 	
-//	@Query(value = """
-//			SELECT COUNT(*)
-//			FROM study_history sh
-//			JOIN question q
-//			  ON sh.question_id = q.question_id
-//			WHERE sh.user_id = :userId
-//			  AND sh.evaluation IN (:evaluations)
-//			  AND q.difficulty IN (:difficulties)
-//			""", nativeQuery = true)
-//			long countQuestions(
-//				    @Param("userId") Long userId,
-//				    @Param("evaluations") List<String> evaluations,
-//				    @Param("difficulties") List<String> difficulties
-//				);
-	
-	
-//	@Query(value = """
-//			SELECT q.*
-//			FROM study_history sh
-//			JOIN question q
-//			  ON sh.question_id = q.question_id
-//			WHERE sh.user_id = :userId
-//			  AND sh.evaluation IN (:evaluations)
-//			  AND q.difficulty IN (:difficulties)
-//			ORDER BY sh.evaluation_updated_at ASC
-//			""", nativeQuery = true)
-//			List<Question> getQuestions(
-//					    @Param("userId") Long userId,
-//					    @Param("evaluations") List<String> evaluations,
-//					    @Param("difficulties") List<String> difficulties
-//					);
-	
 	@Query(value = """
 			SELECT q.*
 			FROM study_history sh
@@ -70,7 +38,7 @@ public interface StudyHistoryRepository extends JpaRepository<StudyHistory, Stud
 			        AND f.question_id IS NULL)
 			)
 			""", nativeQuery = true)
-			List<Question> getQuestions(
+			List<Question> findReviewQuestions(
 				    @Param("userId") Long userId,
 				    @Param("evaluations") List<String> evaluations,
 				    @Param("difficulties") List<String> difficulties,
@@ -95,7 +63,7 @@ public interface StudyHistoryRepository extends JpaRepository<StudyHistory, Stud
 			        AND f.question_id IS NULL)
 			)
 			""", nativeQuery = true)
-			long countQuestions(
+			long countReviewQuestions(
 				    @Param("userId") Long userId,
 				    @Param("evaluations") List<String> evaluations,
 				    @Param("difficulties") List<String> difficulties,
