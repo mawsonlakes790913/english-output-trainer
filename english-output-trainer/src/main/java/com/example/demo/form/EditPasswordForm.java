@@ -24,8 +24,6 @@ public class EditPasswordForm {
 	@Pattern( regexp = "^[a-zA-Z0-9]+$")
 	private String newPassword;
 	
-	//@NotBlank
-	//@Length(min = 12, max = 30)
-	//@Pattern( regexp = "^[a-zA-Z0-9]+$")	
+	@NotBlank
 	private String newPasswordConfirm;
 }
