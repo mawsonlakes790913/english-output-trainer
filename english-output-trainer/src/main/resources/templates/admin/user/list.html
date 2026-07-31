@@ -31,8 +31,11 @@
 						        <td th:text="${item.role}"></td>
 						        <td>
 						            <input type="hidden" name="userId" th:value="${item.userId}">
-						            <button type="submit"
-						            		class="btn btn-danger">削除</button>
+										<button type="submit"
+										        class="btn btn-danger"
+										        onclick="return confirm('ユーザーを削除しますか？');">
+										    削除
+										</button>
 						        </td>
 						    </form>
 						</tr>						
