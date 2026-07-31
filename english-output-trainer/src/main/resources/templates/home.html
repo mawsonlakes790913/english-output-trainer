@@ -19,9 +19,9 @@
 	        英作文トレーニングアプリへようこそ
 	    </p>
 	    
-	    <div th:if="${param.logout}"
-	         class="text-danger">
-		    ログアウトしました
+		<div class="text-danger"
+		     th:if="${successMessage}"
+		     th:text="${successMessage}">
 		</div>
 	
 	    <div class="d-grid gap-3 col-md-4 mx-auto mt-5">
