@@ -51,7 +51,8 @@ public class AdminQuestionController {
 	public String postQuestionAdd(
 			@ModelAttribute @Validated QuestionForm form,
 			BindingResult bindingResult,
-			Model model) {
+			Model model,
+			RedirectAttributes redirectAttributes) {
 		
 		//① 通常のバリデーションエラー確認
 	    if (bindingResult.hasErrors()) {
@@ -61,6 +62,10 @@ public class AdminQuestionController {
 		
 		log.info("問題登録 {}", form);  
 		adminService.addQuestion(form);
+		
+	    redirectAttributes.addFlashAttribute(
+	            "successMessage",
+	            "問題を追加しました。");
 		
 		return "redirect:/admin/question/search";
 

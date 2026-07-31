@@ -24,7 +24,7 @@
             <h2 class="mb-0">
                 <i class="bi bi-list-ul"></i>
                 問題一覧
-            </h2>
+            </h2>         
 
             <a th:href="@{/admin/question/add}"
                class="btn btn-success">
@@ -35,6 +35,11 @@
             </a>
 
         </div>
+        
+    	<div class="alert alert-success"
+		     th:if="${successMessage}"
+		     th:text="${successMessage}">
+		</div>   
         
 		<!-- ========================= -->
 		<!-- 検索フォーム -->
