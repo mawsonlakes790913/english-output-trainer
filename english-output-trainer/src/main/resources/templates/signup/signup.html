@@ -45,22 +45,22 @@
                     <!-- パスワード -->
 			        <div class="form-group">
 			            <label for="password" th:text="#{password}">パスワード</label>
-			            <input type="text" id="password" class="form-control"
+			            <input type="password" id="password" class="form-control"
 			                   th:field="*{password}"
 			                   th:errorclass="is-invalid">
 			            <div class="invalid-feedback"
 			                 th:errors="*{password}">
 			        </div>
-			        <!-- 登録ボタン -->
+					<!-- パスワード確認 -->
 			        <div class="form-group">
 			            <label for="confirm-password" th:text="#{confirm.password}">パスワード(確認)</label>
-			            <input type="text" id="confirm-password" class="form-control"
+			            <input type="password" id="confirm-password" class="form-control"
 			                   th:field="*{passwordConfirm}"
 			                   th:errorclass="is-invalid">
 			            <div class="invalid-feedback"
 			                 th:errors="*{passwordConfirm}">
 			        </div>	
-
+			        <!-- 登録ボタン -->
 			        <input type="submit" th:value="#{signup.btn}"
 			            class="btn btn-primary w-100 mt-4">
 			        <div class="text-center mt-2">
