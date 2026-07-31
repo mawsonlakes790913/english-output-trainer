@@ -182,6 +182,41 @@ getUserQuestionList()
 
 ---
 
+## 【追記】 未使用メソッドの削除
+
+```text
+refactor: remove unused getUserQuestionList method
+```
+
+AdminService内での
+
+GET /admin/question/listが
+
+GET /admin/question/searchに吸収される形で1本化したため、このメソッドは不要となった。
+
+```java
+	Page<Question> findAllByOrderByQuestionIdDesc(Pageable pageable);
+```
+---
+
+## 【追記】 対になるメソッドを揃える
+
+```
+refactor: rename findFilteredQuestions to findFilteredAdminQuestionList
+```
+
+
+```
+findFilteredQuestions → アドミン用問題一覧表示兼検索
+findFilteredUserQuestionList → ユーザー用問題一覧表示兼検索
+```
+
+でメソッド名に一貫性がないので、findFilteredQuestionsは
+
+findFilteredAdminQuestionListと改名した。
+
+それに伴い、findFilteredQuestionsを呼んでいたAdminServiceもその参照を修正した。
+
 ## StudyHistoryRepository
 
 Repositoryとしては
@@ -583,6 +618,16 @@ private Integer age;
 ```
 
 を削除した。
+
+#### 【追記】 signup.htmlの修正
+
+```text
+refactor: remove unused age field from SignupForm
+```
+
+使用しなくなったためhtml側のageを使用する部分(年齢入力欄)もタグごと消した。
+
+
 
 ---
 
