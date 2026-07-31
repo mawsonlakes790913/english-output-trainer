@@ -19,12 +19,12 @@ public class AdminUserController {
 	
 	private final AdminService adminService;
 	
-	@GetMapping("/admin/list")
+	@GetMapping("/admin/user/list")
 	public String getUserList(Model model) {
 		List<Users> userList = adminService.getUsers();
 		
 		model.addAttribute("userList", userList);
-		return "userList";
+		return "/admin/user/list";
 		
 	}
 	
