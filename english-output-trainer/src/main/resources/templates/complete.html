@@ -14,10 +14,25 @@
 		 layout:fragment="content">
 	    <h1>お疲れさまでした！</h1>
 	    <p>この調子でトレーニングを続けていきましょう</p>
-		<a th:href="@{/}"
-		   class="btn btn-secondary mt-3">
-		    Topに戻る
-		</a>
+		<div class="d-flex flex-column align-items-center gap-2 mt-3">
+		
+		    <a th:href="@{/}"
+		       class="btn btn-secondary">
+		        Topに戻る
+		    </a>
+		
+		    <a th:href="@{/study/menu}"
+		       class="btn btn-primary">
+		        通常学習メニューに戻る
+		    </a>
+		
+		    <a sec:authorize="isAuthenticated()"
+		       th:href="@{/review/menu}"
+		       class="btn btn-success">
+		        復習メニューに戻る
+		    </a>
+		
+		</div>
 	</div>
 </body>
 </html>
