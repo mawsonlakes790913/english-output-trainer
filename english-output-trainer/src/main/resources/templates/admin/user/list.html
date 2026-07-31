@@ -26,7 +26,7 @@
 					</thead>
 					<tbody>
 						<tr th:each="item : ${userList}">
-						    <form th:action="@{/admin/delete}" method="post">
+						    <form th:action="@{/admin/user/delete}" method="post">
 						        <td th:text="${item.userId}"></td>
 						        <td th:text="${item.role}"></td>
 						        <td>

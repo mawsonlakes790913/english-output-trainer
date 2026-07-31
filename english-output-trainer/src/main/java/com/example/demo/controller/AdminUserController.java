@@ -28,10 +28,10 @@ public class AdminUserController {
 		
 	}
 	
-	@PostMapping("/admin/delete")
-	public String deleteUser(@RequestParam String userId,
+	@PostMapping("/admin/user/delete")
+	public String getUserDelete(@RequestParam String userId,
 							 Model model){
 		adminService.deleteOneUser(userId);
-		return "redirect:/admin/list";
+		return "redirect:/admin/user/list";
 	}
 }
