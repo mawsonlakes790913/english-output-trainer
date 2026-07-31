@@ -154,7 +154,7 @@ public class UserProfileController {
 	    SecurityContextHolder.clearContext();
 	    session.invalidate();
 
-	    return "redirect:/login";
+	    return "redirect:/login?passwordChanged";
 	}
 	
 	private Users getLoginUser(UserDetails loginUser) {

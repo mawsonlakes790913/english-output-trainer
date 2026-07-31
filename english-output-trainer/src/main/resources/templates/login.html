@@ -25,7 +25,11 @@
 					<div class="alert alert-success"
 					     th:if="${param.userIdChanged}">
 					    ユーザーIDを変更しました。再度ログインしてください。
-					</div>					
+					</div>	
+					<div class="alert alert-success"
+					     th:if="${param.passwordChanged}">
+					    パスワードを変更しました。再度ログインしてください。
+					</div>									
 					<div class="text-danger"
 					     th:if="${loginErrorMessage}"
 					     th:text="${loginErrorMessage}">
@@ -61,6 +65,9 @@
 	    </div>
 	</div>
 	<script th:if="${param.userIdChanged}">
+	    history.replaceState({}, "", "/login");
+	</script>	
+	<script th:if="${param.passwordChanged}">
 	    history.replaceState({}, "", "/login");
 	</script>	
 </body>
