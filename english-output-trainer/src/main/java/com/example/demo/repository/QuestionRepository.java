@@ -99,7 +99,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 		        """,
 		    nativeQuery = true
 		)
-		Page<Question> findFilteredQuestions(
+		Page<Question> findFilteredAdminQuestionList(
 		        @Param("difficulties") List<String> difficulties,
 		        @Param("condition") String condition,
 		        @Param("includeAllConditions") boolean includeAllConditions,

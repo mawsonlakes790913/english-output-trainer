@@ -76,7 +76,7 @@ public class AdminService {
 	        keyword = "";
 	    }
 
-	    return questionRepository.findFilteredQuestions(
+	    return questionRepository.findFilteredAdminQuestionList(
 	    		searchConditionConverter.convertDifficulty(difficulties),
 	            condition,
 	            includeAllConditions,
@@ -129,6 +129,7 @@ public class AdminService {
 	    studyHistoryRepository.deleteByStudyHistoryKeyQuestionId(questionId);
 	    questionRepository.deleteById(questionId);
 	}
+	
 	
 	private void copyQuestionForm(Question question, QuestionForm form) {
 		question.setJapaneseText(form.getJapaneseText());
