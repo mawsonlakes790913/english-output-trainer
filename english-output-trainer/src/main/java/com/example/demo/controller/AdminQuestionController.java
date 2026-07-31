@@ -122,7 +122,8 @@ public class AdminQuestionController {
 			@RequestParam long questionId,
 			@ModelAttribute("questionForm") @Validated QuestionForm form,
 			BindingResult bindingResult,
-			Model model) {
+			Model model,
+			RedirectAttributes redirectAttributes) {
 		
 		// 通常のバリデーションエラー確認
 	    if (bindingResult.hasErrors()) {
@@ -131,6 +132,10 @@ public class AdminQuestionController {
 	    }
 
 		adminService.updateOneQuestion(questionId, form);
+		
+	    redirectAttributes.addFlashAttribute(
+	            "successMessage",
+	            "問題を編集しました。");
 		
 		return "redirect:/admin/question/search";
 		
