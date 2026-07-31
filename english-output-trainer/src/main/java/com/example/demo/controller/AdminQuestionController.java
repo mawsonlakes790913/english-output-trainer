@@ -80,6 +80,13 @@ public class AdminQuestionController {
 																				   pageable);
 		PaginationDto pagination = paginationService.createPagination(allFilteredQuestionList);
 		
+		long start = allFilteredQuestionList.getNumber() * allFilteredQuestionList.getSize() + 1;
+		long end = start + allFilteredQuestionList.getNumberOfElements() - 1;
+
+		model.addAttribute("start", start);
+		model.addAttribute("end", end);
+		model.addAttribute("total", allFilteredQuestionList.getTotalElements());
+		
 		model.addAttribute("questionList", allFilteredQuestionList.getContent());
 		model.addAttribute("page", allFilteredQuestionList);
 		model.addAttribute("pagination", pagination);
