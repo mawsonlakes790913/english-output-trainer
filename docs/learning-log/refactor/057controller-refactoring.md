@@ -396,6 +396,14 @@ if (keyword == null) {
 
 のすべてを同じServiceメソッドで処理できるようになった。
 
+#### 追記 不要なメソッドを削除
+
+一本化によりAdminServiceクラスのメソッドgetAllQuestionsは不要になったので削除する
+
+```
+refactor: remove unused getAllQuestions method from AdminService
+```
+
 ---
 
 ### admin/menu.html
