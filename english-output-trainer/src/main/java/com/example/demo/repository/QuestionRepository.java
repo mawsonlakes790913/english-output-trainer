@@ -58,7 +58,6 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 				    @Param("difficulties") List<String> difficulties					
 					);
 	
-	Page<Question> findAllByOrderByQuestionIdDesc(Pageable pageable);
 	
 	@Query(value = """
 			SELECT DISTINCT q.condition
@@ -106,8 +105,8 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 		        @Param("includeAllConditions") boolean includeAllConditions,
 		        @Param("keyword") String keyword,
 		        Pageable pageable);
-
 	
+
 	@Query(value = """
 			SELECT 
 			    q.question_id         AS questionId,
