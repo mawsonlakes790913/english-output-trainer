@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.dto.PaginationDto;
 import com.example.demo.dto.QuestionDto;
@@ -61,7 +62,7 @@ public class AdminQuestionController {
 		log.info("問題登録 {}", form);  
 		adminService.addQuestion(form);
 		
-		return "redirect:/admin/question/list";
+		return "redirect:/admin/question/search";
 
 	}
 	
@@ -119,8 +120,22 @@ public class AdminQuestionController {
 
 		adminService.updateOneQuestion(questionId, form);
 		
-		return "redirect:/admin/question/list";
+		return "redirect:/admin/question/search";
 		
+	}
+	
+	@PostMapping("/admin/question/delete")
+	public String postAdminQuestionDelete(
+			@RequestParam long questionId,
+			RedirectAttributes redirectAttributes) {
+		
+		adminService.deleteOneQuestion(questionId);
+		
+	    redirectAttributes.addFlashAttribute(
+	            "successMessage",
+	            "問題を削除しました。");
+	    
+		return "redirect:/admin/question/search";
 	}
 	
 }

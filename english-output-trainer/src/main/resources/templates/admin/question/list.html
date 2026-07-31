@@ -254,12 +254,18 @@
 		                    <!-- 削除 -->
 		                    <td>
 		
-		                        <button
-		                            class="btn btn-danger btn-sm">
-		
-		                            <i class="bi bi-trash"></i>
-		
-		                        </button>
+								<form th:action="@{/admin/question/delete}" method="post">
+								    <input type="hidden"
+								           name="questionId"
+								           th:value="${question.questionId}">
+								
+								    <button type="submit"
+								            class="btn btn-outline-danger btn-sm"
+								            title="削除"
+								            onclick="return confirm('この問題を削除しますか？');">
+								        <i class="bi bi-trash"></i>
+								    </button>
+								</form>
 		
 		                    </td>
 		

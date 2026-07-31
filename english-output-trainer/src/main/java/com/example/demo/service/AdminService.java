@@ -13,7 +13,9 @@ import com.example.demo.entity.Difficulty;
 import com.example.demo.entity.Question;
 import com.example.demo.entity.Users;
 import com.example.demo.form.QuestionForm;
+import com.example.demo.repository.FavoritesRepository;
 import com.example.demo.repository.QuestionRepository;
+import com.example.demo.repository.StudyHistoryRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.util.SearchConditionConverter;
 
@@ -27,6 +29,8 @@ public class AdminService {
 	private final UserRepository userRepository;
 	private final QuestionRepository questionRepository;
 	private final SearchConditionConverter searchConditionConverter;
+	private final FavoritesRepository favoritesRepository;
+	private final StudyHistoryRepository studyHistoryRepository;
 	
 	// 指定したユーザー削除(Admin用)
 	@Transactional
@@ -124,6 +128,13 @@ public class AdminService {
 		
 		// 更新後のログ出力
 		log.info("After : {}", question);
+	}
+	
+	@Transactional
+	public void deleteOneQuestion(Long questionId) {
+	    favoritesRepository.deleteByQuestionQuestionId(questionId);
+	    studyHistoryRepository.deleteByStudyHistoryKeyQuestionId(questionId);
+	    questionRepository.deleteById(questionId);
 	}
 	
 	private void copyQuestionForm(Question question, QuestionForm form) {
