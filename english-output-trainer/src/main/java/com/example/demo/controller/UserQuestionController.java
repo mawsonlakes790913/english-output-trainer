@@ -64,6 +64,13 @@ public class UserQuestionController {
 
 	    PaginationDto pagination =
 	    		paginationService.createPagination(questionList);
+	    
+		long start = questionList.getNumber() * questionList.getSize() + 1;
+		long end = start + questionList.getNumberOfElements() - 1;
+
+		model.addAttribute("start", start);
+		model.addAttribute("end", end);
+		model.addAttribute("total", questionList.getTotalElements());
 
 	    // 一覧
 	    model.addAttribute("questionList", questionList.getContent());

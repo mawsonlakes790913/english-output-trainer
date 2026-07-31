@@ -270,6 +270,16 @@
 	    </div>
 	
 	</form>
+	
+	<div class="text-center">
+	
+		<span th:text="${page.number * page.size + 1}"></span>
+		-
+		<span th:text="${page.number * page.size + page.numberOfElements}"></span>
+		/
+		全<span th:text="${page.totalElements}"></span>件	
+		
+	</div>		
 
 	<table class="table table-hover align-middle">
 	
