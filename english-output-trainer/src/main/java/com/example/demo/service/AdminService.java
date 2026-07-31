@@ -56,13 +56,6 @@ public class AdminService {
 		
 	}
 	
-	// 問題一覧取得(全件)
-	public Page<Question> getAllQuestions(Pageable pageable) {
-		Page<Question> questionList = questionRepository.findAllByOrderByQuestionIdDesc(pageable);
-	    return questionList;
-	}
-
-	
 	public Page<Question> getFilteredQuestions(
 	        List<Difficulty> difficulties,
 	        String condition,
