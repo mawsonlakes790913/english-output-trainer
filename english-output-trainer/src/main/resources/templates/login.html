@@ -22,11 +22,10 @@
 	                	 class="text-danger text-center">
 					    ログアウトしました
 					</div>
-	                <p th:if="${session.SPRING_SECURITY_LAST_EXCEPTION} != null"
-		               th:text="${session.SPRING_SECURITY_LAST_EXCEPTION.message}"
-		               class="text-danger">
-		               ログインエラーメッセージ
-		            </p>
+					<div class="text-danger"
+					     th:if="${loginErrorMessage}"
+					     th:text="${loginErrorMessage}">
+					</div>
 	                <div class="mb-3">
 	                    <input type="text"
 	                           class="form-control"

@@ -9,9 +9,11 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -51,14 +53,28 @@ public class SecurityConfig {
              )
 			
 		
-			.formLogin(login -> login
-				    .loginPage("/login")
-				    .usernameParameter("userId")
-				    .passwordParameter("password")
-				    .defaultSuccessUrl("/", false)
-				    .failureUrl("/login?error")
-				    .permitAll()
-			)
+     	.formLogin(login -> login
+     		    .loginPage("/login")
+     		    .usernameParameter("userId")
+     		    .passwordParameter("password")
+     		    .defaultSuccessUrl("/", false)
+     		    .failureHandler(new AuthenticationFailureHandler() {
+     		        @Override
+     		        public void onAuthenticationFailure(HttpServletRequest request,
+     		                                            HttpServletResponse response,
+     		                                            AuthenticationException exception)
+     		                throws IOException {
+
+     		            HttpSession session = request.getSession(true);
+     		            session.setAttribute(
+     		                    "loginErrorMessage",
+     		                    "ユーザ名かパスワードが正しくありません。");
+
+     		            response.sendRedirect("/login");
+     		        }
+     		    })
+     		    .permitAll()
+     		)
 			
 			.logout(logout -> logout
 				    .logoutUrl("/logout")
