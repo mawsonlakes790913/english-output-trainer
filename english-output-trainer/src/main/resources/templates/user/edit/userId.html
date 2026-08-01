@@ -10,7 +10,7 @@
 </head>
 <body>
 	<div layout:fragment="content">
-		<div class="header border-bottom">
+		<div class="header">
 			<h1 class="h2">会員情報編集</h1>
 			<!-- 一覧表示 -->
 			<div>
@@ -50,6 +50,12 @@
 				        </tbody>
 				
 				    </table>
+					<div class="text-center mt-3">
+					    <a th:href="@{/user/profile}"
+					       class="btn btn-secondary">
+					        戻る
+					    </a>
+					</div>					    
 				
 				</form>
 			</div>
