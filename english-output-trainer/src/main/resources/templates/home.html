@@ -24,7 +24,7 @@
 		     th:text="${successMessage}">
 		</div>
 	
-	    <div class="d-grid gap-3 col-md-4 mx-auto mt-5">
+	    <div class="d-grid gap-3 col-md-3 mx-auto mt-5">		
 	
 	        <!-- 通常学習 -->
 	        <a th:href="@{/study/menu}"
@@ -45,18 +45,24 @@
 	           class="btn btn-secondary btn-lg">
 	            メニュー
 	        </a>
+
+	        <!-- チュートリアル -->
+	        <a th:href="@{/tutorial}"
+	           class="btn btn-secondary">
+	             このアプリケーションについて
+	        </a>	
 	
 	        <!-- ログイン（未ログイン時のみ） -->
 	        <a sec:authorize="isAnonymous()"
 	           th:href="@{/login}"
-	           class="btn btn-outline-primary btn-lg">
+	           class="btn btn-outline-primary">
 	            ログイン
 	        </a>
 	
 	        <!-- 新規登録（未ログイン時のみ） -->
 	        <a sec:authorize="isAnonymous()"
 	           th:href="@{/signup/signup}"
-	           class="btn btn-outline-success btn-lg">
+	           class="btn btn-outline-success">
 	            新規登録
 	        </a>
 	
