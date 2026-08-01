@@ -26,4 +26,9 @@ public class HomeController {
 	    return "home";
 	}
 	
+    @GetMapping("/tutorial")
+    public String getTutorial() {
+        return "tutorial";
+    }
+	
 }
