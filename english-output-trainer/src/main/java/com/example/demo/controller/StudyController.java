@@ -119,8 +119,15 @@ public class StudyController {
 	    // 既存の学習状態を破棄
 	    clearStudySession(session);
 	    
+
+	    
 	    //問題セットを取得
 	    List<Question> questions = studyService.getQuestions(difficulty, start, random);
+	    
+		// 問題が存在しない場合
+	    if (questions.isEmpty()) {
+	        return "redirect:/study/menu";
+	    }
 
 		session.setAttribute("studyQuestions", questions);
 	    session.setAttribute("studyCurrentPage", 0);
