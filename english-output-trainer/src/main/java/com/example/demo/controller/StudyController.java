@@ -155,6 +155,10 @@ public class StudyController {
 	    
 	    //問題セットを取得
 	    questions = studyService.getNewQuestions(userId, difficulty);
+	    
+	    if (questions.isEmpty()) {
+	        return "redirect:/study/menu";
+	    }
 
 		session.setAttribute("studyQuestions", questions);
 	    session.setAttribute("studyCurrentPage", 0);
@@ -167,6 +171,7 @@ public class StudyController {
 								   HttpSession session,
 								   @RequestParam(defaultValue = "0") int page,
 								   @AuthenticationPrincipal UserDetails loginUser) {
+		
 		// Sessionからquestions取得
 		List<Question> questions = (List<Question>) session.getAttribute("studyQuestions");
 		
