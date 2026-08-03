@@ -97,6 +97,11 @@ public class ReviewController {
 	        return "redirect:review/menu";
 	    }
 	    
+	    // 範囲外のページへのアクセスを禁ずる
+	    if (page < 0 || page >= questions.size()) {
+	        return "redirect:/review/menu";
+	    }
+	    
 	    // 現在表示する問題を取得
 	    Question question = questions.get(page);
 	    
