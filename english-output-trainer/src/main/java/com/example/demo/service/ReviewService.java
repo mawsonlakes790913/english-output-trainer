@@ -48,6 +48,7 @@ public class ReviewService {
 									  List<Difficulty> difficulties,
 									  FavoriteCondition favoriteCondition,
 									  boolean random){
+		
 		List<Question> extractedQuestions = studyHistoryRepository.findReviewQuestions(userId,
 				searchConditionConverter.convertEvaluation(evaluations),
 				searchConditionConverter.convertDifficulty(difficulties),

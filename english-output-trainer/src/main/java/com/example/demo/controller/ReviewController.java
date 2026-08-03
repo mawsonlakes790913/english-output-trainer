@@ -148,6 +148,11 @@ public class ReviewController {
 	    // 新しい問題セットを作成
 	    questions = reviewService.getQuestion(userId, evaluations, difficulties, favoriteCondition, random);
 
+	    // 問題が1件もない場合は開始しない
+	    if (questions.isEmpty()) {
+	        return "redirect:/review/menu";
+	    }
+	    
 		session.setAttribute("reviewQuestions", questions);
 	    session.setAttribute("reviewCurrentPage", 0);
 	    
