@@ -23,12 +23,14 @@ public class UserAccountService {
 	
 	public Users getUserOne(String userId) {
 	    System.out.println("検索するuserId=" + userId);
-
 	    Optional<Users> option = userRepository.findByUserId(userId);
-
-	    //System.out.println("検索結果=" + option);
-	    System.out.println("検索結果=" + option.orElse(null).getUserId());
-
+	    
+	    if (option.isPresent()) {
+	        System.out.println("検索結果=" + option.get().getUserId());
+	    } else {
+	        System.out.println("検索結果=null");
+	    }
+	    
 	    return option.orElse(null);
 	}
 	
