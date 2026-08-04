@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <!-- 設定値 --> 
+    <!-- 設定値 -->
     <property name="charset" value="UTF-8" />
     <property name="format" value="%d{yyyy/MM/dd HH:mm:ss} %-5level [%thread] - %msg%n" />
+    <property name="file.path" value="./english-output-trainer.log" />
+    <property name="file.path.pattern" value="${file.path}-%d{yyyy-MM-dd}.log.zip" />
 
     <!-- コンソール出力 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -16,8 +18,25 @@
         </encoder>
     </appender>
 
+    <!-- ファイル出力 -->
+    <appender name="APP_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <!-- 出力先 -->
+        <file>${file.path}</file>
+
+        <!-- ローテーション設定 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${file.path.pattern}</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${format}</pattern>
+        </encoder>
+    </appender>
+
     <root level="INFO">
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="APP_LOG"/>
     </root>
 
 </configuration>
