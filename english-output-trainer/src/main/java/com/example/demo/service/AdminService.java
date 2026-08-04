@@ -35,7 +35,12 @@ public class AdminService {
 	// 指定したユーザー削除(Admin用)
 	@Transactional
 	public void deleteOneUser(String userId) {
-		userRepository.deleteByUserId(userId);
+
+	    log.info("ユーザー削除開始 userId={}", userId);
+
+	    userRepository.deleteByUserId(userId);
+
+	    log.info("ユーザー削除完了 userId={}", userId);
 	}
 	
 	// ユーザー一覧取得
@@ -111,23 +116,25 @@ public class AdminService {
 		        .orElseThrow(() ->
 		                new IllegalArgumentException("Question not found."));
 		
-		//更新前のログ出力
-		log.info("Before: {}", question);
-		
-		//更新
+		log.info("問題更新前 {}", question);
+
 		copyQuestionForm(question, form);
-		
+
 		questionRepository.save(question);
-		
-		// 更新後のログ出力
-		log.info("After : {}", question);
+
+		log.info("問題更新後 {}", question);
 	}
 	
 	@Transactional
 	public void deleteOneQuestion(Long questionId) {
+
+	    log.info("問題削除開始 questionId={}", questionId);
+
 	    favoritesRepository.deleteByQuestionQuestionId(questionId);
 	    studyHistoryRepository.deleteByStudyHistoryKeyQuestionId(questionId);
 	    questionRepository.deleteById(questionId);
+
+	    log.info("問題削除完了 questionId={}", questionId);
 	}
 	
 	
