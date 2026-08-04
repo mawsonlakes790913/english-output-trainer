@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- 設定値 --> 
+    <property name="charset" value="UTF-8" />
+    <property name="format" value="%d{yyyy/MM/dd HH:mm:ss} %-5level [%thread] - %msg%n" />
+
+    <!-- コンソール出力 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <target>System.out</target>
+    
+        <!-- 出力される文字列に関する設定箇所 -->
+        <encoder>
+            <charset>${charset}</charset>
+            <pattern>${format}</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+
+</configuration>
