@@ -44,8 +44,7 @@ public class SignupController {
 	    }
 
 	    try {
-	    	log.info(form.toString());
-	    	//Users users = modelMapper.map(form, Users.class);
+	    	log.debug("ユーザー登録開始 userId={}", form.getUserId());
 	    	
 	    	Users users = new Users();
 
