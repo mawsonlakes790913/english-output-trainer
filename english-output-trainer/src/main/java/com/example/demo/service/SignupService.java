@@ -29,8 +29,6 @@ public class SignupService {
     // パスワードのハッシュ化
     String rawPassword = user.getPassword();
     user.setPassword(passwordEncoder.encode(rawPassword));
-    
-    System.out.println("id=" + user.getId());
         
     Users savedUser = userRepository.save(user);
 
