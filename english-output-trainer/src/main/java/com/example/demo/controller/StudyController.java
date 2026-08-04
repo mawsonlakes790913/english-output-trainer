@@ -180,6 +180,11 @@ public class StudyController {
 	        return "redirect:study/menu";
 	    }
 	    
+	 // pageが範囲外の場合
+	    if (page < 0 || page >= questions.size()) {
+	        return "redirect:/study/menu";
+	    }
+	    
 	    // 現在表示する問題を取得
 	    Question question = questions.get(page);
 	    
