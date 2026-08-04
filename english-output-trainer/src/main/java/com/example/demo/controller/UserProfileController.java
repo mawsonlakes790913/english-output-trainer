@@ -132,7 +132,7 @@ public class UserProfileController {
 
 
 	    try {
-	        log.info(form.toString());
+	    	log.debug("パスワード変更開始 userId={}", loginUser.getUsername());
 
 	        // Serviceの業務処理
 	        userAccountService.updateUserPassword(
