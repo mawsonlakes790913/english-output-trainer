@@ -24,9 +24,11 @@ import com.example.demo.util.QuestionModelUtil;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class ReviewController {
 	
 	private final ReviewService reviewService;
@@ -184,16 +186,28 @@ public class ReviewController {
 	
 	@GetMapping("/review/suspend")
 	public String getReviewSuspend(@RequestParam int page,
-							    HttpSession session) {
-		session.setAttribute("reviewCurrentPage", page);
-		return "redirect:/";
-	}	
+	                               HttpSession session) {
+
+	    log.info("復習中断開始 page={}", page);
+
+	    session.setAttribute("reviewCurrentPage", page);
+
+	    log.info("復習中断完了 page={}", page);
+
+	    return "redirect:/";
+	}
 	
 	@GetMapping("/review/quit")
 	public String getReviewQuit(HttpSession session) {
-		clearStudySession(session);
-		return "redirect:/";
-	}	
+
+	    log.info("復習終了開始");
+
+	    clearStudySession(session);
+
+	    log.info("復習終了完了");
+
+	    return "redirect:/";
+	}
 	
 	@PostMapping("/review/evaluation")
 	public String postEvaluation(@AuthenticationPrincipal UserDetails loginUser,
