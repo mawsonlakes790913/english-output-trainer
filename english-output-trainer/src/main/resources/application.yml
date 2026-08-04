@@ -28,15 +28,15 @@ server:
       timeout: 30m
       
 # Log Level
-logging:
-  file:
-    path: ./
-    name: sample.log
-  logback:
-    rollingpolicy: 
-      max-file-size: 10KB
-      max-history: 7
-      file-name-pattern: ${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz
-  level:
-    '[com.example.demo]': debug
+#logging:
+#  file:
+#    path: ./
+#    name: sample.log
+#  logback:
+#    rollingpolicy: 
+#      max-file-size: 10KB
+#      max-history: 7
+#      file-name-pattern: ${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz
+#  level:
+#    '[com.example.demo]': debug
       

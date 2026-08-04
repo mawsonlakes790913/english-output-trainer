@@ -38,5 +38,18 @@
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="APP_LOG"/>
     </root>
+    
+    	<!-- ログ出力レベル設定 -->
+	<logger name="com.example.demo" level="debug"/>
+
+	<logger name="org.hibernate.SQL" level="debug"/>
+
+	<!-- 必要なときだけ有効化 -->
+	<!--
+	<logger name="org.hibernate.type.descriptor.sql.BasicBinder"
+        level="trace"/>
+	-->
+    
+    
 
 </configuration>
