@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.demo.entity.Users;
+import com.example.demo.exception.CurrentPasswordMismatchException;
 import com.example.demo.form.EditPasswordForm;
 import com.example.demo.form.EditUserIdForm;
 import com.example.demo.service.UserAccountService;
@@ -131,21 +132,20 @@ public class UserProfileController {
 
 
 	    try {
-	    	log.info(form.toString());
-	    	
-	        // ② Serviceの業務処理
-	    	userAccountService.updateUserPassword(
+	        log.info(form.toString());
+
+	        // Serviceの業務処理
+	        userAccountService.updateUserPassword(
 	                loginUser.getUsername(),
 	                form.getCurrentPassword(),
 	                form.getNewPassword());
 
-	    } catch (IllegalArgumentException e) {
+	    } catch (CurrentPasswordMismatchException e) {
 
-	        // ③ Serviceで発生した重複エラーをBindingResultへ追加
-	    	bindingResult.rejectValue(
-	    	        "currentPassword",
-	    	        "invalid",
-	    	        e.getMessage());
+	        bindingResult.rejectValue(
+	                "currentPassword",
+	                "invalid",
+	                e.getMessage());
 
 	        return getEditPassword(model, form);
 	    }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.entity.Users;
+import com.example.demo.exception.CurrentPasswordMismatchException;
 import com.example.demo.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -65,13 +66,10 @@ public class UserAccountService {
 	        throw new IllegalArgumentException("ユーザーが存在しません");
 	    }
 	    
-	    // 現在のパスワードが一致するか確認
-	    boolean isMatch =
-	            passwordEncoder.matches(currentPassword, user.getPassword());
-
-	    if (!isMatch) {
-	        throw new IllegalArgumentException("現在のパスワードが正しくありません");
+	    if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+	        throw new CurrentPasswordMismatchException("現在のパスワードが正しくありません");
 	    }
+	    
 	    // パスワードをハッシュ化して更新
 	    user.setPassword(passwordEncoder.encode(newPassword));
 
