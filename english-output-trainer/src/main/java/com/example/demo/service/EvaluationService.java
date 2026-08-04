@@ -12,15 +12,20 @@ import com.example.demo.entity.Users;
 import com.example.demo.repository.StudyHistoryRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class EvaluationService {
 	
 	private final StudyHistoryRepository studyHistoryRepository;
 	
 	public void updateEvaluation(Users user, Long questionId, Evaluation evaluation) {
+		
+	    log.info("評価更新開始 userId={}, questionId={}, evaluation={}",
+	             user.getId(), questionId, evaluation);
 		
 		// 複合キー情報を取得
 		StudyHistoryKey key = new StudyHistoryKey();
@@ -39,6 +44,9 @@ public class EvaluationService {
 
 		    studyHistoryRepository.save(studyHistory);
 		    
+		    log.info("評価更新完了(UPDATE) userId={}, questionId={}, evaluation={}",
+		            user.getId(), questionId, evaluation);
+		    
 		} else {
 			//ここでUPDATE
 		    // INSERT
@@ -48,6 +56,9 @@ public class EvaluationService {
 		    studyHistory.setEvaluationUpdatedAt(LocalDateTime.now());
 
 		    studyHistoryRepository.save(studyHistory);
+		    
+		    log.info("評価更新完了(INSERT) userId={}, questionId={}, evaluation={}",
+		            user.getId(), questionId, evaluation);
 		}
 		
 		// JPAはこれでいい
