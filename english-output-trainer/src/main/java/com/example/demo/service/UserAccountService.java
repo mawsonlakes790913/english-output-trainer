@@ -30,6 +30,9 @@ public class UserAccountService {
 	
 	@Transactional
 	public void updateUserId(String currentUserId, String newUserId) {
+		
+		log.info("ユーザーID変更開始 currentUserId={}, newUserId={}",
+		        currentUserId, newUserId);
 
 	    // 新しいユーザーIDが既に使われているか確認
 		boolean isExists = userRepository.existsByUserId(newUserId);
@@ -47,11 +50,16 @@ public class UserAccountService {
 
 	    // 更新
 	    userRepository.save(user);
+	    
+	    log.info("ユーザーID変更完了 currentUserId={}, newUserId={}",
+	            currentUserId, newUserId);
 
 	}
 	
 	@Transactional
 	public void updateUserPassword(String userId, String currentPassword, String newPassword) {
+		
+		log.info("パスワード変更開始 userId={}", userId);
 		
 	    // 現在のユーザーを取得
 	    Users user = getUserOne(userId);
@@ -69,12 +77,17 @@ public class UserAccountService {
 	    // 更新
 	    userRepository.save(user);
 
+		log.info("パスワード変更完了 userId={}", userId);
+
 	}
 	
 	// 指定したユーザー削除(会員用)
 	@Transactional
 	public void cancelMembership(String userId) {
+		log.info("退会開始 userId={}", userId);
+
 		userRepository.deleteByUserId(userId);
-        log.info("削除対象={}", userId);
+
+		log.info("退会完了 userId={}", userId);
     }
 }
