@@ -28,9 +28,11 @@ import com.example.demo.util.QuestionModelUtil;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class StudyController {
 	
 	private final StudyService studyService;
@@ -229,16 +231,28 @@ public class StudyController {
 	
 	@GetMapping("/study/suspend")
 	public String getStudySuspend(@RequestParam int page,
-							    HttpSession session) {
-		session.setAttribute("studyCurrentPage", page);
-		return "redirect:/";
-	}	
+	                              HttpSession session) {
+
+	    log.info("学習中断開始 page={}", page);
+
+	    session.setAttribute("studyCurrentPage", page);
+
+	    log.info("学習中断完了 page={}", page);
+
+	    return "redirect:/";
+	}
 	
 	@GetMapping("/study/quit")
 	public String getStudyQuit(HttpSession session) {
-		clearStudySession(session);
-		return "redirect:/";
-	}	
+
+	    log.info("学習終了開始");
+
+	    clearStudySession(session);
+
+	    log.info("学習終了完了");
+
+	    return "redirect:/";
+	}
 	
 	@PostMapping("/study/evaluation")
 	public String postEvaluation(@AuthenticationPrincipal UserDetails loginUser,
