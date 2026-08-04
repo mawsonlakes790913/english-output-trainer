@@ -1,7 +1,5 @@
 package com.example.demo.service;
 
-import java.util.Optional;
-
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,16 +21,11 @@ public class UserAccountService {
 	private final PasswordEncoder passwordEncoder;
 	
 	public Users getUserOne(String userId) {
-	    System.out.println("検索するuserId=" + userId);
-	    Optional<Users> option = userRepository.findByUserId(userId);
-	    
-	    if (option.isPresent()) {
-	        System.out.println("検索結果=" + option.get().getUserId());
-	    } else {
-	        System.out.println("検索結果=null");
-	    }
-	    
-	    return option.orElse(null);
+
+	    log.debug("ユーザー検索 userId={}", userId);
+
+	    return userRepository.findByUserId(userId)
+	            .orElse(null);
 	}
 	
 	@Transactional
