@@ -36,11 +36,9 @@ public class AdminService {
 	@Transactional
 	public void deleteOneUser(String userId) {
 
-	    log.info("ユーザー削除開始 userId={}", userId);
-
 	    userRepository.deleteByUserId(userId);
 
-	    log.info("ユーザー削除完了 userId={}", userId);
+	    log.info("ユーザー削除 userId={}", userId);
 	}
 	
 	// ユーザー一覧取得
@@ -128,13 +126,11 @@ public class AdminService {
 	@Transactional
 	public void deleteOneQuestion(Long questionId) {
 
-	    log.info("問題削除開始 questionId={}", questionId);
-
 	    favoritesRepository.deleteByQuestionQuestionId(questionId);
 	    studyHistoryRepository.deleteByStudyHistoryKeyQuestionId(questionId);
 	    questionRepository.deleteById(questionId);
 
-	    log.info("問題削除完了 questionId={}", questionId);
+	    log.info("問題削除 questionId={}", questionId);
 	}
 	
 	

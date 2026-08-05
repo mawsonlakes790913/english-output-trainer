@@ -24,9 +24,6 @@ public class EvaluationService {
 	
 	public void updateEvaluation(Users user, Long questionId, Evaluation evaluation) {
 		
-	    log.info("評価更新開始 userId={}, questionId={}, evaluation={}",
-	             user.getId(), questionId, evaluation);
-		
 		// 複合キー情報を取得
 		StudyHistoryKey key = new StudyHistoryKey();
 		key.setUserId(user.getId());
@@ -44,7 +41,7 @@ public class EvaluationService {
 
 		    studyHistoryRepository.save(studyHistory);
 		    
-		    log.info("評価更新完了(UPDATE) userId={}, questionId={}, evaluation={}",
+		    log.info("評価更新(UPDATE) userId={}, questionId={}, evaluation={}",
 		            user.getId(), questionId, evaluation);
 		    
 		} else {
@@ -57,7 +54,7 @@ public class EvaluationService {
 
 		    studyHistoryRepository.save(studyHistory);
 		    
-		    log.info("評価更新完了(INSERT) userId={}, questionId={}, evaluation={}",
+		    log.info("評価更新(INSERT) userId={}, questionId={}, evaluation={}",
 		            user.getId(), questionId, evaluation);
 		}
 		
