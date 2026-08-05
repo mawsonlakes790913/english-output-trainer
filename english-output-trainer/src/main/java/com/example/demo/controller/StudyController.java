@@ -233,11 +233,7 @@ public class StudyController {
 	public String getStudySuspend(@RequestParam int page,
 	                              HttpSession session) {
 
-	    log.info("学習中断開始 page={}", page);
-
 	    session.setAttribute("studyCurrentPage", page);
-
-	    log.info("学習中断完了 page={}", page);
 
 	    return "redirect:/";
 	}
@@ -245,11 +241,7 @@ public class StudyController {
 	@GetMapping("/study/quit")
 	public String getStudyQuit(HttpSession session) {
 
-	    log.info("学習終了開始");
-
 	    clearStudySession(session);
-
-	    log.info("学習終了完了");
 
 	    return "redirect:/";
 	}

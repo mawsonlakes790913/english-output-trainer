@@ -188,11 +188,7 @@ public class ReviewController {
 	public String getReviewSuspend(@RequestParam int page,
 	                               HttpSession session) {
 
-	    log.info("復習中断開始 page={}", page);
-
 	    session.setAttribute("reviewCurrentPage", page);
-
-	    log.info("復習中断完了 page={}", page);
 
 	    return "redirect:/";
 	}
@@ -200,11 +196,7 @@ public class ReviewController {
 	@GetMapping("/review/quit")
 	public String getReviewQuit(HttpSession session) {
 
-	    log.info("復習終了開始");
-
 	    clearStudySession(session);
-
-	    log.info("復習終了完了");
 
 	    return "redirect:/";
 	}
