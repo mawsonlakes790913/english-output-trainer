@@ -20,8 +20,12 @@ public class LogAspect {
 	@Pointcut("execution(* com.example.demo.service.*.*(..))")
 	public void serviceMethods(){}
 	
+	/** 対象：[Controller]をクラス名に含んでいること */
+	@Pointcut("execution(* com.example.demo.controller.*.*(..))")
+	public void controllerMethods() {}
+	
 	/** サービスの実行前にログ出力する */
-	@Before("serviceMethods()")
+	@Before("serviceMethods() || controllerMethods()")
 	public void startLog(JoinPoint jp) {
 		// 認証情報取得
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -34,7 +38,7 @@ public class LogAspect {
 		log.info("ユーザーID={}, メソッド開始(Service): {}", userId, jp.getSignature());
 	}
 	/** サービスの実行後にログ出力する */
-	@After("serviceMethods()")
+	@After("serviceMethods() || controllerMethods()")
 	public void endLog(JoinPoint jp) {
 		// 認証情報取得
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
