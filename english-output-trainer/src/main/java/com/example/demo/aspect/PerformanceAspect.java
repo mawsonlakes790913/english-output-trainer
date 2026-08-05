@@ -17,7 +17,11 @@ public class PerformanceAspect {
 	@Pointcut("execution(* com.example.demo.service.*.*(..))")
 	public void serviceMethods(){}
 	
-	@Around("serviceMethods()")
+	/** 対象：[Controller]をクラス名に含んでいること */
+	@Pointcut("execution(* com.example.demo.controller.*.*(..))")
+	public void controllerMethods() {}
+	
+	@Around("serviceMethods() || controllerMethods()")
 	public Object measure(ProceedingJoinPoint jp) throws Throwable {
         long start = System.currentTimeMillis();
 
@@ -25,7 +29,7 @@ public class PerformanceAspect {
 
         long end = System.currentTimeMillis();
 
-        log.info(
+        log.debug(
             "{} : {}ms",
             jp.getSignature().getName(),
             end - start
