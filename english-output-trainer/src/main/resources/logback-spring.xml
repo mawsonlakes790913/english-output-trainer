@@ -4,8 +4,11 @@
     <!-- 設定値 -->
     <property name="charset" value="UTF-8" />
     <property name="format" value="%d{yyyy/MM/dd HH:mm:ss} %-5level [%thread] - %msg%n" />
-    <property name="file.path" value="./english-output-trainer.log" />
-    <property name="file.path.pattern" value="${file.path}-%d{yyyy-MM-dd}.log.zip" />
+	<springProperty name="file.path"
+	                source="log.file.path"/>
+	
+	<springProperty name="file.path.pattern"
+	                source="log.file.pattern"/>
 
     <!-- コンソール出力 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">

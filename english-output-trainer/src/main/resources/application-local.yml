@@ -4,3 +4,8 @@ spring:
 
 app:
   environment: local
+  
+log:
+  file:
+    path: ${LOG_FILE_PATH:./english-output-trainer-local.log}
+    pattern: ./english-output-trainer-local.log-%d{yyyy-MM-dd}.log.zip  
