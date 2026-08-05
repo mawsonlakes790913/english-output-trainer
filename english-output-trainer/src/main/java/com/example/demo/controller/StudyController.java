@@ -179,7 +179,7 @@ public class StudyController {
 		
 		// /questionへの直接アクセスを禁ずる
 	    if (questions == null) {
-	        return "redirect:study/menu";
+	        return "redirect:/study/menu";
 	    }
 	    
 	 // pageが範囲外の場合
@@ -232,6 +232,8 @@ public class StudyController {
 	@GetMapping("/study/suspend")
 	public String getStudySuspend(@RequestParam int page,
 	                              HttpSession session) {
+		
+		log.info("getStudySuspend reached");
 
 	    session.setAttribute("studyCurrentPage", page);
 
