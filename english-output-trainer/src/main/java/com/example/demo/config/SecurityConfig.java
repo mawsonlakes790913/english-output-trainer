@@ -48,7 +48,8 @@ public class SecurityConfig {
                 .requestMatchers("/signup", "/signup/**").permitAll()
                 .requestMatchers("/complete").permitAll()
                 .requestMatchers("/user/canceled").permitAll()
-                .requestMatchers("/admin").hasAuthority("ROLE_ADMIN")
+                .requestMatchers("/tutorial").permitAll()
+                .requestMatchers("/admin", "/admin/**").hasAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated()
              )
 			
