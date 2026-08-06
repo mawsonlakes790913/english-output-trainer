@@ -766,3 +766,288 @@ log.debug(
 ### 修正後
 
 不要なデバッグコードを削除したことで、`/user/profile` に正常にアクセスできるようになり、会員情報確認画面が正しく表示されるようになった。
+
+
+---
+
+# 文法条件検索の見直し(git commit -m "fix: correct condition filtering in question search")
+
+## 背景
+
+問題一覧画面では、文法条件（condition）による絞り込み検索を実装している。
+
+しかし、特定の文法条件を選択して検索すると、本来その条件に該当する問題だけが表示されるべきところ、条件未設定（NULL）の問題まで検索結果に含まれてしまっていた。
+
+例えば、
+
+- 全件：751件
+- as...as：424件
+- enough to：420件
+
+となり、文法条件ごとの件数としては明らかに不自然な結果となっていた。
+
+---
+
+## 原因
+
+Repositoryの検索条件を確認したところ、以下のSQLとなっていた。
+
+```sql
+AND (
+    q.condition IS NULL
+    OR q.condition IN (:conditions)
+)
+```
+
+この条件では、
+
+- 選択した文法条件
+- condition が NULL の問題
+
+の両方が検索結果へ含まれてしまう。
+
+そのため、
+
+```
+NULL の問題 + 選択した文法条件
+```
+
+という件数になっていた。
+
+---
+
+## 改善方針
+
+管理者側の問題検索と同じ考え方を採用し、
+
+- 「すべて」の場合は条件検索を行わない
+- 文法条件を選択した場合のみ条件検索を行う
+
+という仕様へ変更した。
+
+---
+
+## Serviceの修正
+
+従来は、条件未指定の場合に全条件リストへ置き換えていた。
+
+```java
+if (conditions == null || conditions.isEmpty()) {
+    conditions = questionService.getAllConditions();
+}
+```
+
+これを以下のように変更した。
+
+```java
+boolean includeAllConditions =
+        (conditions == null || conditions.isEmpty());
+
+if (includeAllConditions) {
+    conditions = List.of("");
+}
+```
+
+これにより、
+
+- 条件未指定かどうか
+- 実際の検索条件
+
+を別々に管理できるようになった。
+
+---
+
+## Repositoryの修正
+
+Repositoryへ
+
+```java
+boolean includeAllConditions
+```
+
+を追加した。
+
+SQLも以下のように修正した。
+
+修正前
+
+```sql
+AND (
+    q.condition IS NULL
+    OR q.condition IN (:conditions)
+)
+```
+
+修正後
+
+```sql
+AND (
+    :includeAllConditions = true
+    OR q.condition IN (:conditions)
+)
+```
+
+これにより、
+
+- 「すべて」の場合は文法条件を無視
+- 条件選択時は選択した文法のみ検索
+
+という挙動になった。
+
+---
+
+## 動作確認
+
+以下のケースで動作を確認した。
+
+- 「すべて」で全751件表示されること
+- 各文法条件で対象の問題のみ表示されること
+- ページネーション後も検索条件が維持されること
+
+期待どおり、文法条件検索が正しく機能することを確認した。
+
+---
+
+## 学んだこと
+
+検索条件に「すべて」を持つ場合は、
+
+SQL側で
+
+- 検索を行う場合
+- 検索を行わない場合
+
+を明確に分岐させる設計が重要である。
+
+検索条件そのものを書き換えるのではなく、
+
+検索を有効にするかどうかを表すフラグ（`includeAllConditions`）を別途持たせることで、SQL・Serviceともに責務が明確になり、保守性も向上した。
+
+---
+
+# 管理者画面の文法条件検索の修正(git commit -m "fix: correct condition parameter in admin question search")
+
+## 背景
+
+管理者画面の問題検索では、文法条件を選択しても検索結果が常に全751件となり、条件による絞り込みが機能していなかった。
+
+「すべて」を選択した場合だけでなく、任意の文法条件を選択した場合も同じ結果となっていたため、検索条件がRepositoryまで正しく渡されていないことが考えられた。
+
+---
+
+## 原因
+
+Controllerでは文法条件を
+
+```java
+@RequestParam(required = false)
+String condition
+```
+
+として受け取っていた。
+
+一方、検索フォームでは
+
+```html
+<select name="conditions">
+```
+
+となっていた。
+
+パラメータ名が一致していなかったため、
+
+```
+conditions
+```
+
+という名前で送信された値をControllerが受け取ることができず、
+
+```java
+condition == null
+```
+
+となっていた。
+
+その結果、
+
+```java
+boolean includeAllConditions =
+        condition == null || condition.isBlank();
+```
+
+が常に `true` となり、Repositoryでは常に「すべて検索」として処理されていた。
+
+---
+
+## 修正内容
+
+### 検索フォーム
+
+以下のようにパラメータ名を修正した。
+
+修正前
+
+```html
+<select name="conditions">
+```
+
+修正後
+
+```html
+<select name="condition">
+```
+
+---
+
+### ページネーション
+
+ページ送り時も同じ誤りがあったため、検索条件の引き継ぎも修正した。
+
+修正前
+
+```html
+conditions=${selectedConditions}
+```
+
+修正後
+
+```html
+condition=${selectedConditions}
+```
+
+対象は以下のページリンクである。
+
+- 前へ
+- 1ページ目
+- 中央ページ
+- 最終ページ
+- 次へ
+
+---
+
+## 動作確認
+
+以下の内容を確認した。
+
+- 「すべて」で全751件表示されること
+- 任意の文法条件を選択すると、その条件に一致する問題のみ表示されること
+- ページ送り後も検索条件が保持されること
+
+期待どおり、管理者画面でも文法条件検索が正しく機能することを確認した。
+
+---
+
+## 学んだこと
+
+Controllerの `@RequestParam` とHTMLの `name` 属性は完全に一致している必要がある。
+
+検索ロジックやSQLに問題がなくても、リクエストパラメータ名が一致していなければ値はControllerへ渡らず、検索条件が常に未指定として扱われる。
+
+検索機能を実装・リファクタリングする際は、
+
+- HTML
+- Controller
+- Service
+- Repository
+
+のパラメータ名がすべて一致していることを確認することが重要である。
