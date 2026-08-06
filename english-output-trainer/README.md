@@ -189,7 +189,7 @@ English Output Trainer は、英作文のアウトプット学習に特化した
 
 また、不要になったユーザーを削除することもできます（管理者自身は削除できません）。
 
-![](../docs/images/readme015.png)
+![](../../docs/images/readme015.png)
 
 ---
 
@@ -558,7 +558,7 @@ Spring Security を利用し、
 ### 1. リポジトリを取得
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/mawsonlakes790913/english-output-trainer.git
 ```
 
 ### 2. プロジェクトへ移動
