@@ -7,5 +7,5 @@ app:
   
 log:
   file:
-    path: ${LOG_FILE_PATH:./english-output-trainer-local.log}
-    pattern: ./english-output-trainer-local.log-%d{yyyy-MM-dd}.log.zip  
+    path: ${LOG_FILE_PATH:./english-output-trainer.log}
+    pattern: ${log.file.path}-%d{yyyy-MM-dd}.log.zip

@@ -8,4 +8,4 @@ app:
 log:
   file:
     path: ${LOG_FILE_PATH:./english-output-trainer-dev.log}
-    pattern: ./english-output-trainer-dev.log-%d{yyyy-MM-dd}.log.zip  
+    pattern: ${log.file.path}-%d{yyyy-MM-dd}.log.zip  
