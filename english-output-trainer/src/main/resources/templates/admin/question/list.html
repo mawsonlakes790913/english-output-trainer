@@ -111,7 +111,7 @@
 		            </label>
 		
 		            <select class="form-select"
-		                    name="conditions">
+		                    name="condition">
 		
 		                <option value="">
 		                    すべて
@@ -308,7 +308,7 @@
 		                    page=${page.number-1},
 		                    size=${page.size},
 		                    difficulties=${selectedDifficulties},
-		                    conditions=${selectedConditions},
+		                    condition=${selectedConditions},
 		                    keyword=${keyword}
 		               )}">
 		
@@ -327,7 +327,7 @@
 		                    page=0,
 		                    size=${page.size},
 		                    difficulties=${selectedDifficulties},
-		                    conditions=${selectedConditions},
+		                    condition=${selectedConditions},
 		                    keyword=${keyword}
 		               )}">
 		
@@ -356,7 +356,7 @@
 		                    page=${i},
 		                    size=${page.size},
 		                    difficulties=${selectedDifficulties},
-		                    conditions=${selectedConditions},
+		                    condition=${selectedConditions},
 		                    keyword=${keyword}
 		               )}"
 		               th:text="${i + 1}">
@@ -383,7 +383,7 @@
 		                    page=${page.totalPages-1},
 		                    size=${page.size},
 		                    difficulties=${selectedDifficulties},
-		                    conditions=${selectedConditions},
+		                    condition=${selectedConditions},
 		                    keyword=${keyword}
 		               )}"
 		               th:text="${page.totalPages}">
@@ -401,7 +401,7 @@
 		                    page=${page.number+1},
 		                    size=${page.size},
 		                    difficulties=${selectedDifficulties},
-		                    conditions=${selectedConditions},
+		                    condition=${selectedConditions},
 		                    keyword=${keyword}
 		               )}">
 		
