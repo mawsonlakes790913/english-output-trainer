@@ -55,8 +55,11 @@ public class UserQuestionService {
 		}
 		
 		// 条件
-		if (conditions == null || conditions.isEmpty()) {
-		conditions = questionService.getAllConditions();
+		boolean includeAllConditions = (conditions == null || conditions.isEmpty());
+
+		if (includeAllConditions) {
+		    // IN句が空にならないようダミーを設定
+		    conditions = List.of("");
 		}
 		
 		// キーワード
@@ -76,6 +79,7 @@ public class UserQuestionService {
 		convertedEvaluations,
 		convertedStudyCondition,
 		convertedFavoriteCondition,
+		includeAllConditions,
 		conditions,
 		keyword,
 		pageable);

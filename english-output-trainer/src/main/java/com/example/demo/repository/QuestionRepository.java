@@ -151,7 +151,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 			AND (:favoriteCondition = 'ALL' OR (:favoriteCondition = 'FAVORITED' AND f.question_id IS NOT NULL)
 							OR (:favoriteCondition = 'NOT_FAVORITED' AND f.question_id IS NULL))
 			AND (
-			    q.condition IS NULL
+			    :includeAllConditions = true
 			    OR q.condition IN (:conditions)
 			)
 			AND (:keyword = ''
@@ -194,7 +194,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 			AND (:favoriteCondition = 'ALL' OR (:favoriteCondition = 'FAVORITED' AND f.question_id IS NOT NULL)
 							OR (:favoriteCondition = 'NOT_FAVORITED' AND f.question_id IS NULL))
 			AND (
-			    q.condition IS NULL
+			    :includeAllConditions = true
 			    OR q.condition IN (:conditions)
 			)
 			AND (:keyword = ''
@@ -209,6 +209,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 					@Param("evaluations") List<String> evaluations,
 					@Param("studyCondition") String studyCondition,
 					@Param("favoriteCondition") String favoriteCondition,
+					@Param("includeAllConditions") boolean includeAllConditions,
 					@Param("conditions") List<String> conditions,
 					@Param("keyword") String keyword,
 				    Pageable pageable
